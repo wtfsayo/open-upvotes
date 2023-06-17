@@ -7,7 +7,7 @@ import { api } from "../utils/api";
 import { signInKeyp } from "@usekeyp/js-sdk";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const hello = api.user.hello.useQuery({ text: "from tRPC" });
 
   return (
     <>
@@ -62,7 +62,7 @@ export default Home;
 const AuthShowcase: React.FC = () => {
   const { data: sessionData } = useSession();
 
-  const { data: secretMessage } = api.example.getSecretMessage.useQuery(
+  const { data: secretMessage } = api.user.getSecretMessage.useQuery(
     undefined, // no input
     { enabled: sessionData?.user !== undefined },
   );
@@ -70,7 +70,7 @@ const AuthShowcase: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <p className="text-center text-2xl text-white">
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
+        {sessionData && <span>Logged in as {sessionData.user.username}</span>}
         {secretMessage && <span> - {secretMessage}</span>}
       </p>
       <button
