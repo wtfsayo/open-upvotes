@@ -9,6 +9,10 @@ export default function CardLane(props: {title: string}){
             <IdeaCard />
             <IdeaCard />
             <IdeaCard />
+            <IdeaCard />
+            <IdeaCard />
+            <IdeaCard />
+            <IdeaCard />
 
     </Card>
     )
