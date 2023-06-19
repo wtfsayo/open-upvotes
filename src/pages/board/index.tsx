@@ -2,13 +2,25 @@ import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import CardLane from "./Components/CardLane"
 import IdeaDetails from "./Components/Modals/IdeaDetails"
-
+import { useSession } from "next-auth/react"
+import { UserNav } from "@/src/components/user-nav"
+import { api } from "@/src/utils/api";
 
 export default function Board() {
+
+  const session = useSession();
+
+  const {data: ideas} = api.idea.getAll.useQuery();
+  
+
+  console.log(ideas)
     return (
       <>
       <div className="flex flex-row justify-between fixed  p-4 bg-slate-100 w-full text-lg border-2 border-slate-200">
-            Nav Bar
+            <p>Nav Bar</p>
+
+            {session.data ? <UserNav/> : <Button variant={"secondary"} className="bg-slate-300">Login</Button>}
+            
             </div>
         <div className="h-full flex-1 flex-col space-y-8 p-8 bg-slate-100 md:flex pt-32">
           

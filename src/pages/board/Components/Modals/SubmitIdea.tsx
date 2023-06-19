@@ -1,18 +1,23 @@
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle
+} from "@/components/ui/alert-dialog";
   
-  import { Textarea } from "@/components/ui/textarea"
+  import { Textarea } from "@/components/ui/textarea";
+import { api } from "@/src/utils/api";
+import { useState } from "react";
 
 export default function SubmitIdea(){
+
+  const [newIdea, setNewIdea]= useState({title: '', description: ''});
+  
+  const {data: status} = api.idea.submit.useQuery(newIdea);
+  
     return(
   
   

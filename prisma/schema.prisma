@@ -8,43 +8,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model Account {
-//   id                String  @id @default(cuid())
-//   compoundId        String  @unique @map(name: "compound_id")
-//   userId            String  @map(name: "user_id")
-//   type              String
-//   provider          String
-//   providerAccountId String
-//   refreshToken      String? @map(name: "refresh_token")
-//   accessToken       String? @map(name: "access_token")
-//   expires_at        Int?
-//   token_type        String?
-//   scope             String?
-//   id_token          String? @map(name: "id_token")
-//   session_state     String?
-//   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-//   @@unique([provider, providerAccountId])
-// }
-
-// model Session {
-//   id           String   @id @default(cuid())
-//   sessionToken String   @unique
-//   userId       String   @map(name: "user_id")
-//   expires      DateTime
-//   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-// }
-
 model Idea {
   id          Int      @id @default(autoincrement())
   title       String
   description String
   user        User     @relation(fields: [user_id], references: [id])
-  user_id     Int
-  status      String
-  labels      Label[]
+  user_id     String
+  status      IdeaStatus @default(SUGGESTED) // Using the IdeaStatus enum
+  labels      Label[] 
   upvotes     Upvote[]
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 
   comments    Comment[]
 }
@@ -53,8 +27,9 @@ model Label {
   id        Int      @id @default(autoincrement())
   label     String
   createdAt DateTime @default(now())
+  updatedAt   DateTime @default(now())
   user      User     @relation(fields: [user_id], references: [id])
-  user_id   Int
+  user_id   String
 
   ideas     Idea[]
 }
@@ -64,8 +39,9 @@ model Upvote {
   idea      Idea     @relation(fields: [idea_id], references: [id])
   idea_id   Int
   user      User     @relation(fields: [user_id], references: [id])
-  user_id   Int
+  user_id   String
   createdAt DateTime @default(now())
+  updatedAt   DateTime @default(now())
 }
 
 model Comment {
@@ -75,13 +51,13 @@ model Comment {
   idea      Idea     @relation(fields: [idea_id], references: [id])
   idea_id   Int
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @default(now())
   user      User     @relation(fields: [user_id], references: [id])
-  user_id   Int
+  user_id   String
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
+  id       String    @id @default(cuid())
   username String
   accounts String[]
   
@@ -89,4 +65,14 @@ model User {
   labels   Label[]
   upvotes  Upvote[]
   comments Comment[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+enum IdeaStatus {
+  SUGGESTED
+  TODO
+  IN_PROGRESS
+  DONE
+  ARCHIVED
 }

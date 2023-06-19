@@ -19,7 +19,7 @@ export default function IdeaCard() {
           
            </CardContent>
            <CardFooter className="flex justify-between p-3">
-          <div>
+          <div className="gap-1">
         <Badge variant={'secondary'}>Important</Badge>
         <Badge variant={'secondary'}>Considering</Badge>
         <Badge variant={'secondary'}>To-do</Badge>
