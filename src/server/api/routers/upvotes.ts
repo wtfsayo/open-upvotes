@@ -15,7 +15,6 @@ export const upvotesRouter = createTRPCRouter({
     .mutation(({input, ctx}) => {
       if (ctx.prisma.upvote.findUnique({where: {idea_id_user_id: {idea_id: input.idea_id, user_id: String(ctx.session.user.id)}}}) != null) {
       return ctx.prisma.upvote.delete({where: {idea_id_user_id: {idea_id: input.idea_id, user_id: String(ctx.session.user.id)}}})
-    } else return 
-            throw new Error("You have not upvoted this idea")
-    }),
+      }
+    })
 })

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { IdeaStatus } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { STATUS } from "@/src/utils/const";
 
 export const ideaRouter = createTRPCRouter({
   idea: publicProcedure
@@ -12,11 +13,14 @@ export const ideaRouter = createTRPCRouter({
     }),
 
   getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.idea.findMany({include: {upvotes: true, labels:true}});
+    return ctx.prisma.idea.findMany({
+      orderBy: {
+          status: 'asc'
+    } , include: {upvotes: true, labels:true}});
   }),
 
  submit: protectedProcedure
- .input(z.object({ title: z.string(), description: z.string() }))
+ .input(z.object({ title: z.string().min(1), description: z.string().min(1) }))
  .mutation(({ input, ctx }) => { 
     return ctx.prisma.idea.create({data: {id: randomUUID().substring(0,5).toUpperCase(), user_id: String(ctx.session.user.id), status: IdeaStatus.SUGGESTED, ...input}})
  }),

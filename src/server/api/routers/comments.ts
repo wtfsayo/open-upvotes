@@ -13,7 +13,7 @@ export const commentsRouter = createTRPCRouter({
   }),
 
   createComment: protectedProcedure
-  .input(z.object({ idea_id: z.string(), comment: z.string(), time: z.date() }))
+  .input(z.object({ idea_id: z.string(), comment: z.string().min(1), time: z.date() }))
   .mutation(({ input, ctx }) => {
     return ctx.prisma.comment.create({data: {id:randomUUID(), ...input , user_id: String(ctx.session.user.id)}})
   }
