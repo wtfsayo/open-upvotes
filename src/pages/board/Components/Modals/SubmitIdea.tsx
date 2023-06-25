@@ -1,20 +1,22 @@
 import {
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialogTitle
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
 import { api } from "@/src/utils/api";
 import { useState } from "react";
 
 export default function SubmitIdea() {
   const [newIdea, setNewIdea] = useState({ title: "", description: "" });
+
 
   const { mutate } = api.idea.submit.useMutation();
   return (
@@ -45,9 +47,12 @@ export default function SubmitIdea() {
       </AlertDialogHeader>
       <AlertDialogFooter>
         <AlertDialogCancel>Cancel</AlertDialogCancel>
-        <AlertDialogAction onClick={() => mutate(newIdea)}>
-          Continue
-        </AlertDialogAction>
+        <Button onClick={() => {
+          mutate(newIdea);
+          setNewIdea({title: "", description: ""})
+        }}>
+          Submit Idea
+        </Button>
       </AlertDialogFooter>
     </AlertDialogContent>
   );

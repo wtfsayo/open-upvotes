@@ -27,16 +27,11 @@ function IdeaCard(props: IdeaCardProps) {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Card className="w-full hover:bg-gray-50 pt-2">
-          <CardHeader className="flex flex-row justify-between items-center p-3">
+          <CardHeader className=" justify-between items-start p-3">
             <CardTitle className="text-md font-medium leading-none">{truncatedTitle}</CardTitle>
-          </CardHeader>
-
-          <CardContent className="p-3">
             <CardDescription className="text-sm font-light text-muted-foreground">{truncatedDescription}</CardDescription>
-          </CardContent>
-
-          {Boolean(labels.length) && (
-            <CardFooter className="flex justify-between p-3">
+            {Boolean(labels.length) && (
+            
               <div className="gap-1">
                 {labels.map((label: Label) => (
                   <Badge key={label.id} className="px-2.5" variant={'outline'}>
@@ -44,15 +39,20 @@ function IdeaCard(props: IdeaCardProps) {
                   </Badge>
                 ))}
               </div>
-            </CardFooter>
+            
           )}
+          </CardHeader>
+
+          
+
+       
 
           <CardContent className="flex flex-row gap-1 p-3">
             <Button variant={'outline'} className="w-full bg-transparent" onClick={handleButtonClick}>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M6 16a1 1 0 0 1-.8-1.6l6-8a1 1 0 0 1 1.6 0l6 8A1 1 0 0 1 18 16H6Z" />
               </svg>
-              Upvote {'(' + upvotes.length + ')'}
+              Upvote ({upvotes.length})
             </Button>
             <Button variant={'ghost'} onClick={handleButtonClick}>
               <MoreVertical size={17} />

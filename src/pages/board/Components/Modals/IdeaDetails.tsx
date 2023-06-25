@@ -1,11 +1,10 @@
 import {
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialogTitle
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,8 +19,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/src/utils/api";
-import { STATUS, ideaProps } from "@/src/utils/const";
-import { Label, Upvote } from "@prisma/client";
+import type { ideaProps } from "@/src/utils/const";
+import { STATUS } from "@/src/utils/const";
+import type { Label, Upvote } from "@prisma/client";
 import { ChevronDown } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -96,8 +96,8 @@ export default function IdeaDetails(props: ideaProps) {
           </div>
         </AlertDialogTitle>
         <div className="flex-row-wrap flex flex-row gap-1">
-              {labels.map((label: Label, id: any) => (
-                <Badge key={id} className="px-2.5" variant={"outline"}>
+              {labels.map((label: Label) => (
+                <Badge key={label.id} className="px-2.5" variant={"outline"}>
                   {label.label}
                 </Badge>
               ))}
@@ -122,8 +122,8 @@ export default function IdeaDetails(props: ideaProps) {
         <div className="flex h-[240px]  flex-col gap-2 overflow-y-auto">
           <AddComment ideaId={props.id} />
 
-          {comments?.sort((a, b) => Date.parse(b.time as any) - Date.parse(a.time as any)) &&
-                      comments.map((comment, key) => (
+          {comments &&
+                      comments.map((comment) => (
                         <Comment
                           username={comment.user.username}
                           date={comment.time.toLocaleString()}
