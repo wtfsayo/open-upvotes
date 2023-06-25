@@ -9,47 +9,48 @@ datasource db {
 }
 
 model Idea {
-  id          Int      @id @default(autoincrement())
+  id          String     @id @default(uuid())
   title       String
   description String
-  user        User     @relation(fields: [user_id], references: [id])
+  user        User       @relation(fields: [user_id], references: [id])
   user_id     String
   status      IdeaStatus @default(SUGGESTED) // Using the IdeaStatus enum
-  labels      Label[] 
+  labels      Label[]
   upvotes     Upvote[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @default(now())
 
-  comments    Comment[]
+  comments Comment[]
 }
 
 model Label {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   label     String
   createdAt DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  updatedAt DateTime @default(now())
   user      User     @relation(fields: [user_id], references: [id])
   user_id   String
 
-  ideas     Idea[]
+  ideas Idea[]
 }
 
 model Upvote {
-  id        Int      @id @default(autoincrement())
   idea      Idea     @relation(fields: [idea_id], references: [id])
-  idea_id   Int
+  idea_id   String
   user      User     @relation(fields: [user_id], references: [id])
   user_id   String
   createdAt DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@id([idea_id, user_id])
 }
 
 model Comment {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   time      DateTime
   comment   String
   idea      Idea     @relation(fields: [idea_id], references: [id])
-  idea_id   Int
+  idea_id   String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   user      User     @relation(fields: [user_id], references: [id])
@@ -57,16 +58,18 @@ model Comment {
 }
 
 model User {
-  id       String    @id @default(cuid())
+  id       String  @id @default(cuid())
   username String
-  accounts String[]
-  
-  ideas    Idea[]
-  labels   Label[]
-  upvotes  Upvote[]
-  comments Comment[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  provider String?
+  address  String?
+  imageSrc String?
+
+  ideas     Idea[]
+  labels    Label[]
+  upvotes   Upvote[]
+  comments  Comment[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
 }
 
 enum IdeaStatus {

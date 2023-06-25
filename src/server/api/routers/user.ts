@@ -1,21 +1,28 @@
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
+import { User } from "@prisma/client";
 
 export const userRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
-
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.user.findMany();
-  }),
-
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
-  }),
+ 
+  sync: protectedProcedure
+  .mutation(({ctx}) => {
+    if (ctx.session && ctx.session.user) {
+      const { id, provider, imageSrc, username, address } = ctx.session?.user as any;
+      (async () => {
+        
+    
+        const userExists = await ctx.prisma.user.findUnique({ where: { id} });
+    
+        if (userExists) {
+          await ctx.prisma.user.update({ where: { id }, data: {id, provider, imageSrc, username, address} });
+        } else {
+          await ctx.prisma.user.create({ data: {id, provider, imageSrc, username, address} });
+        }
+      })().catch((error) => {
+        console.error('Error in callback:', error);
+        // Handle the error appropriately
+      });
+    }
+  })
 });

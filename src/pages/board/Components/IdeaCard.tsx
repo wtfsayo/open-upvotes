@@ -1,41 +1,65 @@
-import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
-import { MoreVertical } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { AlertDialog } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Idea, Label, Upvote } from "@prisma/client";
+import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
+import { MoreVertical } from "lucide-react";
+import IdeaDetails from "./Modals/IdeaDetails";
 
-export default function IdeaCard() {
+type ideaCardProps = Idea & {upvotes: Upvote[], labels: Label[]}
+
+export default function IdeaCard(props: ideaCardProps) {
+
+  const {title, description, labels, upvotes, id} = props;
+
+
+
     return (
+
+
+      <AlertDialog>
+            <AlertDialogTrigger asChild>
+            
+            
+            
+
+
       <Card className="w-full hover:bg-gray-50 pt-2">
         <CardHeader className="flex flex-row justify-between items-center p-3">
           
-          <CardTitle className="text-md font-medium leading-none">{'Hello this is my idea and its very good'.substring(0,60) + '...'}</CardTitle>
+          <CardTitle className="text-md font-medium leading-none">{title.substring(0,60) + '...'}</CardTitle>
           
         </CardHeader>
         
         <CardContent className="p-3">
           <CardDescription className="text-sm font-light text-muted-foreground">
-              {'Once upon a time, in a far-off land, there was a very lazy king who spent all day lounging on his throne. One day, his advisors came to him with a problem: the kingdom was running out of money.'.substring(0,100) + '...'}
+              {description.substring(0,100) + '...'}
           </CardDescription>
           
            </CardContent>
-           <CardFooter className="flex justify-between p-3">
+           {Boolean(labels.length) &&   <CardFooter className="flex justify-between p-3">
           <div className="gap-1">
-        <Badge variant={'secondary'}>Important</Badge>
-        <Badge variant={'secondary'}>Considering</Badge>
-        <Badge variant={'secondary'}>To-do</Badge>
+        {labels.map((label:Label) => <Badge key={label.id} className="px-2.5" variant={'outline'}>{label.label}</Badge>)}
         </div>
         
-        </CardFooter>
+        </CardFooter>}
            <CardContent className="flex flex-row gap-1 p-3">
            <Button variant={'outline'} className="w-full bg-transparent">
   
            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M6 16a1 1 0 0 1-.8-1.6l6-8a1 1 0 0 1 1.6 0l6 8A1 1 0 0 1 18 16H6Z"/></svg>
-              Upvote
+              Upvote {'(' + upvotes.length + ')'}
   </Button>
   <Button variant={'ghost'} onClick={() => console.log('overflown')}><MoreVertical size={17}/></Button>
               </CardContent>
         
       </Card>
+
+      </AlertDialogTrigger>
+            {/* <SubmitIdea/> */}
+            
+            <IdeaDetails key={props.id} {...props} />
+            </AlertDialog>
     )
   }
   
