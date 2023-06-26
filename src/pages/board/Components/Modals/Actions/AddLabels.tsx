@@ -25,6 +25,7 @@ export function AddLabels(props: { title: string, options: any[], added: any[], 
   const { options, title, allowNew = false, added } = props;
 
   const [selectedValues, setSelectedValues] = useState(added);
+  const [isChanged, setIsChanged] = useState(false);
 
   const isSelected = (option) => selectedValues.some((value) => value.id === option.id);
 
@@ -36,6 +37,12 @@ export function AddLabels(props: { title: string, options: any[], added: any[], 
     } else {
       setSelectedValues((prevSelectedValues) => [...prevSelectedValues, option]);
     }
+    setIsChanged(true); 
+  };
+
+  const handleUpdateLabels = () => {
+   // handle here
+    setIsChanged(false); 
   };
 
   return (
@@ -44,7 +51,6 @@ export function AddLabels(props: { title: string, options: any[], added: any[], 
         <Button variant="outline" size="sm" className="h-8 border-dashed">
           <PlusCircle className="mr-2 h-4 w-4" />
           {title}
-       
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
@@ -74,23 +80,17 @@ export function AddLabels(props: { title: string, options: any[], added: any[], 
                 </CommandItem>
               ))}
             </CommandGroup>
-            {(
+            {isChanged && ( // Display "Update Labels" command item if isChanged is true
               <>
                 <CommandSeparator />
                 <CommandGroup>
-                  <CommandItem
-                    onSelect={() => {
-                      selectedValues.length === 0
-                        ? setSelectedValues(options)
-                        : setSelectedValues([]);
-                    }}
-                    className="justify-center text-center"
-                  >
-                    {selectedValues.length === 0 ? "Select All" : "Clear All"}
+                  <CommandItem onSelect={handleUpdateLabels} className="justify-center text-center">
+                    Update Labels
                   </CommandItem>
                 </CommandGroup>
               </>
             )}
+           
           </CommandList>
         </Command>
       </PopoverContent>
