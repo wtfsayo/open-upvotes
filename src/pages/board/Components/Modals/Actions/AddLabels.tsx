@@ -48,16 +48,16 @@ export default function AddLabels(props: {
           <CommandInput
             placeholder={"Labels"}
             value={searchLabel}
-            onChangeCapture={(e) => setSearchLabel(e.target.value)}
+            onChangeCapture={(e) => setSearchLabel(e.target?.value)}
           />
           <CommandList>
             {!searchLabel ? (
-              <CommandEmpty> "No Labels Found" </CommandEmpty>
+              <CommandEmpty> No Labels Found </CommandEmpty>
             ) : (
               <CommandEmpty
                 onClick={() => {
                   createLabel({ label: searchLabel });
-                  context.labels.invalidate();
+                  void context.labels.invalidate();
                   setSearchLabel("");
                 }}
               >

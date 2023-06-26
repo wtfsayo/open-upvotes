@@ -1,16 +1,14 @@
-import { CreditCard, LogOut, PlusCircle, Settings, User } from "lucide-react"
+import { LogOut } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 import { signOut, useSession } from "next-auth/react"
 
@@ -24,7 +22,7 @@ export function UserNav() {
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
         
           <Avatar className="h-9 w-9 ">
-            <AvatarImage src={session.data?.user?.imageSrc} alt={session.data?.user?.username} />
+          {session.data?.user?.imageSrc && <AvatarImage src={session.data?.user?.imageSrc} alt={session.data?.user?.username} />}
             <AvatarFallback className="bg-slate-300">{session.data?.user?.username.substring(0,2)}</AvatarFallback>
           </Avatar>
           
@@ -42,7 +40,9 @@ export function UserNav() {
         <DropdownMenuSeparator />
         
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer">
+        <DropdownMenuItem onClick={() => {
+          signOut() 
+           }} className="cursor-pointer">
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
           
