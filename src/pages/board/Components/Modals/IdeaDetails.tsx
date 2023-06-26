@@ -111,7 +111,8 @@ export default function IdeaDetails(props: ideaProps) {
               {Alllabels && (
                 <AddLabels 
                     title="Labels"
-                    options={Array.from(labels)}
+                    options={Array.from(Alllabels)}
+                    added= {Array.from(labels)}
                     handle={{add: addLabel, remove: removeLabel, create: createLabel}}
                     />
               )}

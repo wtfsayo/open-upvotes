@@ -21,14 +21,22 @@ import { cn } from "@/src/lib/utils"
 import { useEffect, useState } from "react"
 
 
-export function AddLabels(props:{title: string, options: any[], allowNew?: Boolean, handle: any}) {
-  
-    const {options, title, allowNew = false} = props;
+export function AddLabels(props: { title: string, options: any[], added: any[], allowNew?: boolean, handle: any }) {
+  const { options, title, allowNew = false, added } = props;
 
-    
-    const [selectedValues, setSelectedValues] = useState(new Set(options));
+  const [selectedValues, setSelectedValues] = useState(added);
 
-    
+  const isSelected = (option) => selectedValues.some((value) => value.id === option.id);
+
+  const toggleSelection = (option) => {
+    if (isSelected(option)) {
+      setSelectedValues((prevSelectedValues) =>
+        prevSelectedValues.filter((value) => value.id !== option.id)
+      );
+    } else {
+      setSelectedValues((prevSelectedValues) => [...prevSelectedValues, option]);
+    }
+  };
 
   return (
     <Popover>
@@ -36,80 +44,35 @@ export function AddLabels(props:{title: string, options: any[], allowNew?: Boole
         <Button variant="outline" size="sm" className="h-8 border-dashed">
           <PlusCircle className="mr-2 h-4 w-4" />
           {title}
-          {selectedValues?.size > 0 && (
-            <>
-              <Separator orientation="vertical" className="mx-2 h-4" />
-              <Badge
-                variant="secondary"
-                className="rounded-sm px-1 font-normal lg:hidden"
-              >
-                {selectedValues.size}
-              </Badge>
-              <div className="hidden space-x-1 lg:flex">
-                {selectedValues.size > 2 ? (
-                  <Badge
-                    variant="secondary"
-                    className="rounded-sm px-1 font-normal"
-                  >
-                    {/* {selectedValues.size} selected */} Hey
-                  </Badge>
-                ) : (
-                  options
-                    .filter((option) => selectedValues.has(option))
-                    .map((option) => (
-                      <Badge
-                        variant="secondary"
-                        key={option.id}
-                        className="rounded-sm px-1 font-normal"
-                      >
-                        {option.label}
-                      </Badge>
-                    ))
-                )}
-              </div>
-            </>
-          )}
+       
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
         <Command>
-          <CommandInput placeholder={title}/>
+          <CommandInput placeholder={title} />
           <CommandList>
             <CommandEmpty>
-                { !allowNew ? "No results found." : "Add New"}
+              {!allowNew ? "No results found." : "Add New"}
             </CommandEmpty>
             <CommandGroup>
-              {options.map((option) => {
-                const isSelected = selectedValues.has(option)
-                return (
-                    <CommandItem
-                        key={option.id}
-                        onSelect={() => {
-                            setSelectedValues(() => {
-                            const newSelectedValues = new Set(selectedValues);
-                            return selectedValues.has(option)
-                                ? (newSelectedValues.delete(option), newSelectedValues)
-                                : (newSelectedValues.add(option), newSelectedValues);
-                            });
-                        }}
-                        >
-
-                  
-                <div
-                      className={cn(
-                        "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
-                        isSelected
-                          ? "bg-primary text-primary-foreground"
-                          : "opacity-50 [&_svg]:invisible"
-                      )}
-                    >
-                      <Check className={cn("h-4 w-4")} />
-                    </div>
-                    <span>{option.label}</span>
-                    
-                  </CommandItem>
-                )
-              })}
+              {options.map((option) => (
+                <CommandItem
+                  key={option.id}
+                  onSelect={() => toggleSelection(option)}
+                >
+                  <div
+                    className={cn(
+                      "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                      isSelected(option)
+                        ? "bg-primary text-primary-foreground"
+                        : "opacity-50 [&_svg]:invisible"
+                    )}
+                  >
+                    <Check className={cn("h-4 w-4")} />
+                  </div>
+                  <span>{option.label}</span>
+                </CommandItem>
+              ))}
             </CommandGroup>
             {(
               <>
@@ -117,13 +80,13 @@ export function AddLabels(props:{title: string, options: any[], allowNew?: Boole
                 <CommandGroup>
                   <CommandItem
                     onSelect={() => {
-                        selectedValues.size == 0 ?
-                            setSelectedValues(new Set(options))
-                            : setSelectedValues(new Set())
+                      selectedValues.length === 0
+                        ? setSelectedValues(options)
+                        : setSelectedValues([]);
                     }}
                     className="justify-center text-center"
                   >
-                  {selectedValues.size == 0 ? "Select All" : "Clear All"}
+                    {selectedValues.length === 0 ? "Select All" : "Clear All"}
                   </CommandItem>
                 </CommandGroup>
               </>
@@ -132,5 +95,5 @@ export function AddLabels(props:{title: string, options: any[], allowNew?: Boole
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
