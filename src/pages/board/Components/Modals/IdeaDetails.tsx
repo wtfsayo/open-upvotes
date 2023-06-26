@@ -122,8 +122,8 @@ export default function IdeaDetails(props: ideaProps) {
         <div className="flex h-[240px]  flex-col gap-2 overflow-y-auto">
           <AddComment ideaId={props.id} />
 
-          {comments &&
-                      comments.map((comment) => (
+          {
+                      comments?.map((comment) => (
                         <Comment
                           username={comment.user.username}
                           date={comment.time.toLocaleString()}
