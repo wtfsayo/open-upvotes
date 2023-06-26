@@ -10,12 +10,17 @@ import { useEffect, useState } from "react";
 import CardLane from "./board/Components/CardLane";
 import SubmitIdea from "./board/Components/Modals/SubmitIdea";
 import { Filter } from "./board/Components/Modals/Actions/Filter";
+import { Input } from "@/components/ui/input";
 
 export default function Board() {
   const session = useSession();
   const { data: ideas } = api.idea.getAll.useQuery();
+  const [search, setSearch] = useState('')
   const [Filterd, setFilterd] = useState(STATUS)
-  const filteredIdeas = map(Filterd, (status) => filter(ideas, { status }));
+  const filteredIdeas = map(Filterd, (status) => filter(ideas, 
+   (idea) => { return idea.status === status &&
+      (idea.title.toLowerCase().includes(search.toLowerCase()) || idea.description.toLowerCase().includes(search.toLowerCase()));
+  }));
   
   
   
@@ -65,9 +70,17 @@ export default function Board() {
           </AlertDialog>
           
         </div>
-        
+        <div className="flex flex-row justify-right ">
+        <Input
+          placeholder="Search tasks..."
+          value={search}
+          onChange={(event) =>
+            setSearch(event.target.value)
+          }
+          className="h-8 w-[150px] lg:w-[250px]"
+        />
         <Filter options={Array.from(STATUS)} title="Filter" handle={setFilterd}/>
-        
+        </div>
         <div className="flex w-full flex-row gap-2 ">
           {filteredIdeas?.map((ideas, index) => (
             <CardLane

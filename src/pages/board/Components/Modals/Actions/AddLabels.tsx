@@ -1,97 +1,136 @@
-import { api } from "@/src/utils/api";
-import { Label } from "@prisma/client";
+import { Check, PlusCircle } from "lucide-react"
+
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@radix-ui/react-popover";
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+    CommandSeparator,
+} from "@/components/ui/command"
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import { PlusCircle, Check, Square } from "lucide-react";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { Separator } from "@/components/ui/separator"
+import { cn } from "@/src/lib/utils"
+import { useEffect, useState } from "react"
 
-export default function AddLabels(props: {
-  Alllabels: Label[];
-  labels: Label[];
-  idea_id: string;
-}) {
-  const { Alllabels, labels, idea_id } = props;
-  const { mutate: addLabel } = api.idea.addLabel.useMutation();
-  const { mutate: removeLabel } = api.idea.removeLabel.useMutation();
-  const { mutate: createLabel } = api.labels.createLabel.useMutation();
 
-  const [searchLabel, setSearchLabel] = useState("");
+export function AddLabels(props:{title: string, options: any[], allowNew?: Boolean, handle: any}) {
+  
+    const {options, title, allowNew = false} = props;
 
-  const context = api.useContext();
+    
+    const [selectedValues, setSelectedValues] = useState(new Set(options));
+
+    
 
   return (
-    <Popover >
+    <Popover>
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          size={"sm"}
-          className="w-max rounded-full border-dashed  border-slate-200 px-2.5 py-0 text-xs"
-        >
-          <PlusCircle className="mr-2 h-4 w-4 " />
-          Add Labels
+        <Button variant="outline" size="sm" className="h-8 border-dashed">
+          <PlusCircle className="mr-2 h-4 w-4" />
+          {title}
+          {selectedValues?.size > 0 && (
+            <>
+              <Separator orientation="vertical" className="mx-2 h-4" />
+              <Badge
+                variant="secondary"
+                className="rounded-sm px-1 font-normal lg:hidden"
+              >
+                {selectedValues.size}
+              </Badge>
+              <div className="hidden space-x-1 lg:flex">
+                {selectedValues.size > 2 ? (
+                  <Badge
+                    variant="secondary"
+                    className="rounded-sm px-1 font-normal"
+                  >
+                    {/* {selectedValues.size} selected */} Hey
+                  </Badge>
+                ) : (
+                  options
+                    .filter((option) => selectedValues.has(option))
+                    .map((option) => (
+                      <Badge
+                        variant="secondary"
+                        key={option.id}
+                        className="rounded-sm px-1 font-normal"
+                      >
+                        {option.label}
+                      </Badge>
+                    ))
+                )}
+              </div>
+            </>
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
-        <Command >
-          <CommandInput
-            placeholder={"Labels"}
-            value={searchLabel}
-            onChangeCapture={(e) => setSearchLabel(e.target?.value)}
-          />
+        <Command>
+          <CommandInput placeholder={title}/>
           <CommandList>
-            {!searchLabel ? (
-              <CommandEmpty> No Labels Found </CommandEmpty>
-            ) : (
-              <CommandEmpty
-                onClick={() => {
-                  createLabel({ label: searchLabel });
-                  void context.labels.invalidate();
-                  setSearchLabel("");
-                }}
-              >
-                {"Create Label " + "'" + searchLabel + "'"}
-              </CommandEmpty>
-            )}
+            <CommandEmpty>
+                { !allowNew ? "No results found." : "Add New"}
+            </CommandEmpty>
             <CommandGroup>
-              {Alllabels.map((label, id) => (
-                <CommandItem key={label.id}>
-                  <div
-                    className="flex flex-row items-center gap-1"
-                    onClick={() => {
-                      labels.some((x: Label) => x.label === label.label)
-                        ? removeLabel({ id: idea_id, label_id: label.id })
-                        : addLabel({ id: idea_id, label_id: label.id });
-                    }}
-                  >
-                    {labels.some((x: Label) => x.label === label.label) ? (
-                      <Check size={16} />
-                    ) : (
-                      <Square
-                        size={16}
-                        strokeWidth={1.25}
-                        absoluteStrokeWidth
-                      />
-                    )}{" "}
-                    {label.label}
-                  </div>
-                </CommandItem>
-              ))}
+              {options.map((option) => {
+                const isSelected = selectedValues.has(option)
+                return (
+                    <CommandItem
+                        key={option.id}
+                        onSelect={() => {
+                            setSelectedValues(() => {
+                            const newSelectedValues = new Set(selectedValues);
+                            return selectedValues.has(option)
+                                ? (newSelectedValues.delete(option), newSelectedValues)
+                                : (newSelectedValues.add(option), newSelectedValues);
+                            });
+                        }}
+                        >
+
+                  
+                <div
+                      className={cn(
+                        "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                        isSelected
+                          ? "bg-primary text-primary-foreground"
+                          : "opacity-50 [&_svg]:invisible"
+                      )}
+                    >
+                      <Check className={cn("h-4 w-4")} />
+                    </div>
+                    <span>{option.label}</span>
+                    
+                  </CommandItem>
+                )
+              })}
             </CommandGroup>
+            {(
+              <>
+                <CommandSeparator />
+                <CommandGroup>
+                  <CommandItem
+                    onSelect={() => {
+                        selectedValues.size == 0 ?
+                            setSelectedValues(new Set(options))
+                            : setSelectedValues(new Set())
+                    }}
+                    className="justify-center text-center"
+                  >
+                  {selectedValues.size == 0 ? "Select All" : "Clear All"}
+                  </CommandItem>
+                </CommandGroup>
+              </>
+            )}
           </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
-  );
+  )
 }

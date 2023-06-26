@@ -27,7 +27,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import AddComment from "./Actions/AddComment";
-import AddLabels from "./Actions/AddLabels";
+import { AddLabels } from "./Actions/AddLabels";
 import Comment from "./sub/Comment";
 
 export default function IdeaDetails(props: ideaProps) {
@@ -43,6 +43,12 @@ export default function IdeaDetails(props: ideaProps) {
   const containsUpvote = props.upvotes?.some(
     (upvote: Upvote) => upvote.user_id == sessionData?.user?.id
   );
+    
+  const { mutate: addLabel } = api.idea.addLabel.useMutation();
+  const { mutate: removeLabel } = api.idea.removeLabel.useMutation();
+  const { mutate: createLabel } = api.labels.createLabel.useMutation();
+
+
 
   const [ideaStatus, setIdeaStatus] = useState(props.status)
 
@@ -103,11 +109,11 @@ export default function IdeaDetails(props: ideaProps) {
               ))}
 
               {Alllabels && (
-                <AddLabels
-                  Alllabels={Alllabels}
-                  labels={labels}
-                  idea_id={props.id}
-                />
+                <AddLabels 
+                    title="Labels"
+                    options={Array.from(labels)}
+                    handle={{add: addLabel, remove: removeLabel, create: createLabel}}
+                    />
               )}
             </div>
       </AlertDialogHeader>
