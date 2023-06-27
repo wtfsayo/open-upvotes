@@ -7,12 +7,12 @@ import { signInKeyp } from "@usekeyp/js-sdk";
 import { filter, map } from "lodash";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import CardLane from "./board/Components/CardLane";
-import SubmitIdea from "./board/Components/Modals/SubmitIdea";
-import { Filter } from "./board/Components/Modals/Actions/Filter";
+import CardLane from "@/src/components/CardLane";
+import SubmitIdea from "@/src/components/Modals/SubmitIdea";
+import { Filter } from "@/src/components/Modals/Actions/Filter";
 import { Input } from "@/components/ui/input";
 
-export default function Board() {
+export default function Home() {
   const session = useSession();
   const { data: ideas } = api.idea.getAll.useQuery();
   const [search, setSearch] = useState('')
