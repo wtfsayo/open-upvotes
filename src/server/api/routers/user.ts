@@ -7,8 +7,8 @@ export const userRouter = createTRPCRouter({
  
   sync: protectedProcedure
   .mutation(({ctx}) => {
-    if (ctx.session && ctx.session.user) {
-      const { id, provider, imageSrc, username, address } = ctx.session?.user as any;
+    if (ctx?.session && ctx.session.user) {
+      const { id, provider, imageSrc, username, address } = ctx.session?.user as User;
       (async () => {
         
     
