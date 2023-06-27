@@ -19,6 +19,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/src/lib/utils"
 import { useEffect, useState } from "react"
+import { Label } from "@prisma/client"
 
 
 export function AddLabels(props: { title: string, options: any[], added: any[], allowNew?: boolean, handle: any }) {
@@ -27,9 +28,9 @@ export function AddLabels(props: { title: string, options: any[], added: any[], 
   const [selectedValues, setSelectedValues] = useState(added);
   const [isChanged, setIsChanged] = useState(false);
 
-  const isSelected = (option) => selectedValues.some((value) => value.id === option.id);
+  const isSelected = (option: Label) => selectedValues.some((value) => value.id === option.id);
 
-  const toggleSelection = (option) => {
+  const toggleSelection = (option: Label) => {
     if (isSelected(option)) {
       setSelectedValues((prevSelectedValues) =>
         prevSelectedValues.filter((value) => value.id !== option.id)
