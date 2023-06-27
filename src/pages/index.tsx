@@ -29,7 +29,9 @@ export default function Board() {
   
   useEffect(() => {
     if (session.data?.user) {
-      mutate.mutateAsync();
+      mutate.mutateAsync()
+      .catch((e:Error) => e);
+    
     }
   }, [session.data?.expires]);
 
