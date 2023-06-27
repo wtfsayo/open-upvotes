@@ -1,23 +1,25 @@
 import { Check, PlusCircle } from "lucide-react"
 
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+    CommandSeparator,
 } from "@/components/ui/command"
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
 } from "@/components/ui/popover"
+import { Separator } from "@/components/ui/separator"
 import { cn } from "@/src/lib/utils"
-import type { Label } from "@prisma/client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { Label } from "@prisma/client"
 
 
 export function AddLabels(props: { title: string, options: any[], added: any[], allowNew?: boolean, handle: any }) {
@@ -26,15 +28,15 @@ export function AddLabels(props: { title: string, options: any[], added: any[], 
   const [selectedValues, setSelectedValues] = useState(added);
   const [isChanged, setIsChanged] = useState(false);
 
-  const isSelected = (option: Label) => selectedValues.some((value:Label) => value.id === option.id);
+  const isSelected = (option: Label) => selectedValues.some((value) => value.id === option.id);
 
   const toggleSelection = (option: Label) => {
     if (isSelected(option)) {
-      setSelectedValues((prevSelectedValues:Label[]) =>
-        prevSelectedValues.filter((value:Label) => value.id !== option.id)
+      setSelectedValues((prevSelectedValues) =>
+        prevSelectedValues.filter((value) => value.id !== option.id)
       );
     } else {
-      setSelectedValues((prevSelectedValues:Label[]) => [...prevSelectedValues, option]);
+      setSelectedValues((prevSelectedValues) => [...prevSelectedValues, option]);
     }
     setIsChanged(true); 
   };
@@ -60,7 +62,7 @@ export function AddLabels(props: { title: string, options: any[], added: any[], 
               {!allowNew ? "No results found." : "Add New"}
             </CommandEmpty>
             <CommandGroup>
-              {options.map((option:Label) => (
+              {options.map((option) => (
                 <CommandItem
                   key={option.id}
                   onSelect={() => toggleSelection(option)}

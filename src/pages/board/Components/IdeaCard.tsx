@@ -2,7 +2,7 @@ import { AlertDialog } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import type { Idea, Label, Upvote } from '@prisma/client';
+import { Idea, Label, Upvote } from '@prisma/client';
 import { AlertDialogTrigger } from '@radix-ui/react-alert-dialog';
 import { MoreVertical } from 'lucide-react';
 import { useMemo } from 'react';

@@ -1,6 +1,6 @@
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { KeypAuth } from "@usekeyp/js-sdk";
-import type { AuthOptions } from "next-auth";
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 
 export const authOptions =  KeypAuth({
     clientId: process.env.KEYP_CLIENT_ID, // From dev portal
@@ -9,4 +9,4 @@ export const authOptions =  KeypAuth({
 })
 
 
-export default NextAuth(authOptions as unknown as AuthOptions);
+export default NextAuth(authOptions as any);
