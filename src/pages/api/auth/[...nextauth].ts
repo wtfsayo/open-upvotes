@@ -1,5 +1,6 @@
 import { KeypAuth } from "@usekeyp/js-sdk";
-import NextAuth, { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 
 export const authOptions =  KeypAuth({
     clientId: process.env.KEYP_CLIENT_ID, // From dev portal
