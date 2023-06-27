@@ -1,4 +1,3 @@
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { KeypAuth } from "@usekeyp/js-sdk";
 import NextAuth, { NextAuthOptions } from "next-auth";
 
@@ -9,4 +8,4 @@ export const authOptions =  KeypAuth({
 })
 
 
-export default NextAuth(authOptions as any);
+export default NextAuth(authOptions as any as NextAuthOptions);
