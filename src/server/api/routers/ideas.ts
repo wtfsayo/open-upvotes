@@ -3,7 +3,6 @@ import { z } from "zod";
 import { IdeaStatus } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import { STATUS } from "@/src/utils/const";
 
 export const ideaRouter = createTRPCRouter({
   idea: publicProcedure
