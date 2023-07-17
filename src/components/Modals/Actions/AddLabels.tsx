@@ -18,6 +18,7 @@ import {
 import { cn } from "@/src/lib/utils"
 import type { Label } from "@prisma/client"
 import { useState } from "react"
+import { set } from "lodash"
 
 
 export function AddLabels(props: { title: string, options: any[], added: any[], allowNew?: boolean, handle: any }) {

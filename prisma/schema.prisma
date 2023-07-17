@@ -5,22 +5,36 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_URL")
+  url      = env("POSTGRES_PRISMA_URL")
+}
+
+model Board {
+  id        String   @id @default(uuid())
+  title     String
+  path      String   @default("/") @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  ideas Idea[]
+
+  admin    User   @relation(fields: [admin_id], references: [id])
+  admin_id String
 }
 
 model Idea {
   id          String     @id @default(uuid())
   title       String
   description String
+  board       Board      @relation(fields: [board_id], references: [id])
+  board_id    String
   user        User       @relation(fields: [user_id], references: [id])
   user_id     String
-  status      IdeaStatus @default(SUGGESTED) // Using the IdeaStatus enum
+  status      IdeaStatus @default(SUGGESTED)
   labels      Label[]
   upvotes     Upvote[]
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @default(now())
-
-  comments Comment[]
+  comments    Comment[]
 }
 
 model Label {
@@ -63,6 +77,7 @@ model User {
   provider String?
   address  String?
   imageSrc String?
+  boards   Board[]
 
   ideas     Idea[]
   labels    Label[]

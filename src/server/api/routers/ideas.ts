@@ -1,8 +1,10 @@
 import { z } from "zod";
 
-import { IdeaStatus } from "@prisma/client";
-import { randomUUID } from "crypto";
+import { Board, IdeaStatus } from "@prisma/client";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { orderBy } from "lodash";
+
+
 
 export const ideaRouter = createTRPCRouter({
   idea: publicProcedure
@@ -17,12 +19,28 @@ export const ideaRouter = createTRPCRouter({
           status: 'asc'
     } , include: {upvotes: true, labels:true}});
   }),
+  
+submit: protectedProcedure
+  .input(z.object({ title: z.string().min(1), description: z.string().min(1), board_path: z.string().min(1) }))
+  .mutation(async ({ input, ctx }) => {
+    
+    const board = await ctx.prisma.board.findUnique({ where: { path: input.board_path } });
+    
 
- submit: protectedProcedure
- .input(z.object({ title: z.string().min(1), description: z.string().min(1) }))
- .mutation(({ input, ctx }) => { 
-    return ctx.prisma.idea.create({data: {id: randomUUID().substring(0,5).toUpperCase(), user_id: String(ctx.session.user.id), status: IdeaStatus.SUGGESTED, ...input}})
- }),
+    if (!board) {
+      return new Error("Board not found");
+    }
+
+    return ctx.prisma.idea.create({
+      data: {
+        title: input.title,
+        status: IdeaStatus.SUGGESTED,
+        description: input.description,
+        board: { connect: { id: board.id } },
+        user: { connect: { id: ctx.session.user.id } },
+      },
+    });
+  }),
  
  updateStatus: protectedProcedure
   .input(z.object({ id: z.string(), status: z.nativeEnum(IdeaStatus) }))

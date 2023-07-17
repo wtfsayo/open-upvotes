@@ -10,15 +10,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
 import { api } from "@/src/utils/api";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function SubmitIdea() {
-  const [newIdea, setNewIdea] = useState({ title: "", description: "" });
+
+  const router = useRouter();
+  const [newIdea, setNewIdea] = useState({ title: "", description: "", board_path: router.pathname });
 
 
   const { mutate } = api.idea.submit.useMutation();
+  
   return (
     <AlertDialogContent>
       <AlertDialogHeader>
@@ -49,7 +52,7 @@ export default function SubmitIdea() {
         <AlertDialogCancel>Cancel</AlertDialogCancel>
         <Button onClick={() => {
           mutate(newIdea);
-          setNewIdea({title: "", description: ""})
+          setNewIdea({title: "", description: "", board_path: router.pathname})
         }}>
           Submit Idea
         </Button>
