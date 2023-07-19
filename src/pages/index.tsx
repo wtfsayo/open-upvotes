@@ -11,17 +11,19 @@ import CardLane from "@/src/components/CardLane";
 import SubmitIdea from "@/src/components/Modals/SubmitIdea";
 import { Filter } from "@/src/components/Modals/Actions/Filter";
 import { Input } from "@/components/ui/input";
-
+import BoardSwitcher from "../components/board-switcher";
+import { ThemeToggle } from "../components/theme-toggle";
 export default function Home() {
   const session = useSession();
   const { data: ideas } = api.idea.getAll.useQuery();
   const [search, setSearch] = useState('')
   const [Filterd, setFilterd] = useState(STATUS)
+  
+  
   const filteredIdeas = map(Filterd, (status) => filter(ideas, 
    (idea) => { return idea.status === status &&
       (idea.title.toLowerCase().includes(search.toLowerCase()) || idea.description.toLowerCase().includes(search.toLowerCase()));
   }));
-  
   
   
   const mutate = api.user.sync.useMutation();
@@ -37,11 +39,14 @@ export default function Home() {
 
   return (
     <div>
-      <div className="fixed flex w-full flex-row justify-between border-2 bg-white  p-4 text-lg">
-        <p className="text-md font-bold">Open Vote</p>
+      <div className="fixed flex w-full flex-row justify-between border-2   p-4 text-lg">
+        <BoardSwitcher />
+        <div className="flex flex-row gap-2 align-middle">
         {session.data ? (
+          
           <UserNav />
         ) : (
+          
           <Button
             variant="secondary"
             className="bg-slate-300"
@@ -50,6 +55,8 @@ export default function Home() {
             Login
           </Button>
         )}
+        <ThemeToggle/>
+        </div>
       </div>
       <div className="h-full flex-1 flex-col space-y-8  p-8 pt-32 md:flex">
         <div className="flex flex-row justify-between">
