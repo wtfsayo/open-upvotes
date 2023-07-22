@@ -1,8 +1,7 @@
 import { z } from "zod";
 
-import { Board, IdeaStatus } from "@prisma/client";
+import { IdeaStatus } from "@prisma/client";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import { orderBy } from "lodash";
 
 
 
@@ -71,7 +70,18 @@ submit: protectedProcedure
         }
       }
     });
-  })
-
-  
-});
+  }),
+  updateLabels: protectedProcedure
+  .input(z.object({ id: z.string(), label_ids: z.array(z.string()) }))
+  .mutation(({ input, ctx }) => {
+    return ctx.prisma.idea.update({
+      where: { id: input.id },
+      data: {
+        labels: {
+          set: input.label_ids.map(id => ({ id }))
+        }
+      }
+    });
+  }),
+},
+);

@@ -1,5 +1,5 @@
 import { Check, PlusCircle } from "lucide-react"
-
+import { api } from "@/src/utils/api"
 import { Button } from "@/components/ui/button"
 import {
   Command,
@@ -21,12 +21,12 @@ import { useState } from "react"
 import { set } from "lodash"
 
 
-export function AddLabels(props: { title: string, options: any[], added: any[], allowNew?: boolean, handle: any }) {
-  const { options, title, allowNew = false, added } = props;
+export function AddLabels(props: { title: string, options: any[], added: any[], allowNew?: boolean, handle: any, ideaId: string }) {
+  const { options, title, allowNew = false, added, ideaId } = props;
 
   const [selectedValues, setSelectedValues] = useState(added);
   const [isChanged, setIsChanged] = useState(false);
-
+  const {mutate} = api.idea.updateLabels.useMutation();
   const isSelected = (option: Label) => selectedValues.some((value:Label) => value.id === option.id);
 
   const toggleSelection = (option: Label) => {
@@ -42,6 +42,7 @@ export function AddLabels(props: { title: string, options: any[], added: any[], 
 
   const handleUpdateLabels = () => {
    // handle here
+    mutate({id: ideaId, label_ids: selectedValues.map((value:Label) => value.id)})
     setIsChanged(false); 
   };
 

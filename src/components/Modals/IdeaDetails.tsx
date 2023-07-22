@@ -114,6 +114,7 @@ export default function IdeaDetails(props: ideaProps) {
                     options={Array.from(Alllabels)}
                     added= {Array.from(labels)}
                     handle={{add: addLabel, remove: removeLabel, create: createLabel}}
+                    ideaId={props.id}
                     />
               )}
             </div>
