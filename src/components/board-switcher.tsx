@@ -55,7 +55,7 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
   });
   const [open, setOpen] = React.useState(false);
   const [showNewBoardDialog, setShowNewBoardDialog] = React.useState(false);
-  const [selectedBoard, setSelectedBoard] = React.useState<Board>({
+  const [selectedBoard, setSelectedBoard] = React.useState({
     title: "Default",
     path: "/",
   });
