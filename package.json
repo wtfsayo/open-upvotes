@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
+    "@hookform/resolvers": "^3.1.1",
     "@next-auth/prisma-adapter": "^1.0.5",
     "@prisma/client": "^4.15.0",
     "@radix-ui/react-accordion": "^1.1.2",
@@ -62,12 +63,13 @@
     "next-themes": "^0.2.1",
     "node-fs": "^0.1.7",
     "react": "18.2.0",
-    "react-day-picker": "^8.7.1",
+    "react-day-picker": "^8.8.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.45.2",
     "superjson": "1.9.1",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.6",
-    "zod": "^3.20.2"
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",

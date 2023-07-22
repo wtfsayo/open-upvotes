@@ -1,5 +1,3 @@
-import { Check, PlusCircle } from "lucide-react";
-import { api } from "@/src/utils/api";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -16,9 +14,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/src/lib/utils";
+import { api } from "@/src/utils/api";
 import type { Label } from "@prisma/client";
+import { Check, PlusCircle } from "lucide-react";
 import { useState } from "react";
-import { set } from "lodash";
 
 export function AddLabels(props: {
   title: string;
