@@ -1,15 +1,14 @@
 "use client";
 
-import { api } from "../utils/api";
 import { CheckIcon, ChevronDown, PlusCircleIcon } from "lucide-react";
 import * as React from "react";
+import { api } from "../utils/api";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
-  CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
@@ -31,55 +30,29 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { cn } from "../lib/utils";
 
-const groups = [
-  {
-    label: "Personal Account",
-    Boards: [
-      {
-        label: "Alicia Koch",
-        value: "personal",
-      },
-    ],
-  },
-  {
-    label: "Boards",
-    Boards: [
-      {
-        label: "Acme Inc.",
-        value: "acme-inc",
-      },
-      {
-        label: "Monsters Inc.",
-        value: "monsters",
-      },
-    ],
-  },
-];
-
-type Board = (typeof groups)[number]["Boards"][number];
+interface Board {
+  title: string;
+  path: string;
+}
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
 >;
 
 export default function BoardSwitcher({ className }: PopoverTriggerProps) {
-
-  const { data: boards } = api.boards.getAllByUser.useQuery();
-  console.log(boards);
+  const { data: rawBoards } = api.boards.getAllByUser.useQuery();
+  const {mutate: addBoard} = api.boards.createBoard.useMutation()
+  const boards = rawBoards?.map((board) => {
+    return { title: board.title, path: board.path };
+  });
+  const [createBoard, setCreateBoard] = React.useState<Board>({title:"", path:""})
   const [open, setOpen] = React.useState(false);
   const [showNewBoardDialog, setShowNewBoardDialog] = React.useState(false);
   const [selectedBoard, setSelectedBoard] = React.useState<Board>({
-    label: "Default",
-    value: "acme-inc",
+    title: "Default",
+    path: "/",
   });
 
   return (
@@ -90,17 +63,17 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            aria-label="Select a Board"
+            aria-title="Select a Board"
             className={cn("w-[200px] justify-between", className)}
           >
             <Avatar className="mr-2 h-5 w-5">
               <AvatarImage
-                src={`https://avatar.vercel.sh/${selectedBoard.value}.png`}
-                alt={selectedBoard.label}
+                src={`https://avatar.vercel.sh/${selectedBoard.path}.png`}
+                alt={selectedBoard.title}
               />
               <AvatarFallback>SC</AvatarFallback>
             </Avatar>
-            {selectedBoard.label}
+            {selectedBoard.title}
             <ChevronDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -109,54 +82,49 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
             <CommandList>
               <CommandInput placeholder="Search Board..." />
               <CommandEmpty>No Board found.</CommandEmpty>
-              {groups.map((group) => (
-                <CommandGroup key={group.label} heading={group.label}>
-                  {group.Boards.map((Board) => (
-                    <CommandItem
-                      key={Board.value}
-                      onSelect={() => {
-                        setSelectedBoard(Board);
-                        setOpen(false);
-                      }}
-                      className="text-sm"
-                    >
-                      <Avatar className="mr-2 h-5 w-5">
-                        <AvatarImage
-                          src={`https://avatar.vercel.sh/${Board.value}.png`}
-                          alt={Board.label}
-                          className="grayscale"
-                        />
-                        <AvatarFallback>SC</AvatarFallback>
-                      </Avatar>
-                      {Board.label}
-                      <CheckIcon
-                        className={cn(
-                          "ml-auto h-4 w-4",
-                          selectedBoard.value === Board.value
-                            ? "opacity-100"
-                            : "opacity-0",
-                        )}
+              {rawBoards &&
+                boards?.map((Board) => (
+                  <CommandItem
+                    key={Board.path}
+                    onSelect={() => {
+                      setSelectedBoard(Board);
+                      setOpen(false);
+                    }}
+                    className="text-sm"
+                  >
+                    <Avatar className="mr-2 h-5 w-5">
+                      <AvatarImage
+                        src={`https://avatar.vercel.sh/${Board.path}.png`}
+                        alt={Board.title}
+                        className="grayscale"
                       />
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              ))}
+                      <AvatarFallback>SC</AvatarFallback>
+                    </Avatar>
+                    {Board.title}
+                    <CheckIcon
+                      className={cn(
+                        "ml-auto h-4 w-4",
+                        selectedBoard.path === Board.path
+                          ? "opacity-100"
+                          : "opacity-0",
+                      )}
+                    />
+                  </CommandItem>
+                ))}
             </CommandList>
             <CommandSeparator />
             <CommandList>
-              <CommandGroup>
-                <DialogTrigger asChild>
-                  <CommandItem
-                    onSelect={() => {
-                      setOpen(false);
-                      setShowNewBoardDialog(true);
-                    }}
-                  >
-                    <PlusCircleIcon className="mr-2 h-5 w-5" />
-                    Create Board
-                  </CommandItem>
-                </DialogTrigger>
-              </CommandGroup>
+              <DialogTrigger asChild>
+                <CommandItem
+                  onSelect={() => {
+                    setOpen(false);
+                    setShowNewBoardDialog(true);
+                  }}
+                >
+                  <PlusCircleIcon className="mr-2 h-5 w-5" />
+                  Create Board
+                </CommandItem>
+              </DialogTrigger>
             </CommandList>
           </Command>
         </PopoverContent>
@@ -165,36 +133,18 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
         <DialogHeader>
           <DialogTitle>Create Board</DialogTitle>
           <DialogDescription>
-            Add a new Board to manage products and customers.
+            Add a new Board to manage your tasks and ideas.
           </DialogDescription>
         </DialogHeader>
         <div>
           <div className="space-y-4 py-2 pb-4">
             <div className="space-y-2">
               <Label htmlFor="name">Board name</Label>
-              <Input id="name" placeholder="Acme Inc." />
+              <Input id="name" placeholder="Acme Inc." value={createBoard.title} onChange={(e) => setCreateBoard({title: e.target.value, path: createBoard.path})}/>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="plan">Subscription plan</Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a plan" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="free">
-                    <span className="font-medium">Free</span> -{" "}
-                    <span className="text-muted-foreground">
-                      Trial for two weeks
-                    </span>
-                  </SelectItem>
-                  <SelectItem value="pro">
-                    <span className="font-medium">Pro</span> -{" "}
-                    <span className="text-muted-foreground">
-                      $9/month per user
-                    </span>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+              <Label htmlFor="plan">Board URL path</Label>
+              <Input id="path" placeholder="/" value={createBoard.path} onChange={(e) => setCreateBoard({path: e.target.value, title: createBoard.title})}/>
             </div>
           </div>
         </div>
@@ -205,7 +155,7 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
           >
             Cancel
           </Button>
-          <Button type="submit">Continue</Button>
+          <Button onClick={() => addBoard(createBoard)}>Continue</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
