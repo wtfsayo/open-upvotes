@@ -21,7 +21,6 @@ export const serverSchema = z.object({
   ),
   KEYP_CLIENT_ID: z.string().min(1),
   KEYP_COOKIE_SECRET: z.string().min(1),
-  
 });
 
 /**

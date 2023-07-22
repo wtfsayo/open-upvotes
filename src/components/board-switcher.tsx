@@ -43,11 +43,14 @@ type PopoverTriggerProps = React.ComponentPropsWithoutRef<
 
 export default function BoardSwitcher({ className }: PopoverTriggerProps) {
   const { data: rawBoards } = api.boards.getAllByUser.useQuery();
-  const {mutate: addBoard} = api.boards.createBoard.useMutation()
+  const { mutate: addBoard } = api.boards.createBoard.useMutation();
   const boards = rawBoards?.map((board) => {
     return { title: board.title, path: board.path };
   });
-  const [createBoard, setCreateBoard] = React.useState<Board>({title:"", path:""})
+  const [createBoard, setCreateBoard] = React.useState<Board>({
+    title: "",
+    path: "",
+  });
   const [open, setOpen] = React.useState(false);
   const [showNewBoardDialog, setShowNewBoardDialog] = React.useState(false);
   const [selectedBoard, setSelectedBoard] = React.useState<Board>({
@@ -140,11 +143,31 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
           <div className="space-y-4 py-2 pb-4">
             <div className="space-y-2">
               <Label htmlFor="name">Board name</Label>
-              <Input id="name" placeholder="Acme Inc." value={createBoard.title} onChange={(e) => setCreateBoard({title: e.target.value, path: createBoard.path})}/>
+              <Input
+                id="name"
+                placeholder="Acme Inc."
+                value={createBoard.title}
+                onChange={(e) =>
+                  setCreateBoard({
+                    title: e.target.value,
+                    path: createBoard.path,
+                  })
+                }
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="plan">Board URL path</Label>
-              <Input id="path" placeholder="/" value={createBoard.path} onChange={(e) => setCreateBoard({path: e.target.value, title: createBoard.title})}/>
+              <Input
+                id="path"
+                placeholder="/"
+                value={createBoard.path}
+                onChange={(e) =>
+                  setCreateBoard({
+                    path: e.target.value,
+                    title: createBoard.title,
+                  })
+                }
+              />
             </div>
           </div>
         </div>
