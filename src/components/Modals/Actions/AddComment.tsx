@@ -1,34 +1,40 @@
-import { Textarea } from "@/components/ui/textarea";
-import { api } from "@/src/utils/api";
-import { useState } from "react";
+import AutoForm from "@/components/ui/auto-form";
 import { Button } from "@/components/ui/button";
+import { api } from "@/src/utils/api";
+
+import { z } from "zod";
 
 export default function AddComment(props: { ideaId: string }) {
-  const [newComment, setNewComment] = useState("");
   const { mutate: createNewComment } = api.comments.createComment.useMutation();
   return (
     <div className="relative">
-      <Textarea
-        className="h-[80px] w-full resize-none"
-        placeholder="Add a comment"
-        value={newComment}
-        onChange={(e) => setNewComment(e.target.value)}
-      />
-      <Button
-        variant="secondary"
-        onClick={() => {
-          newComment &&
-            createNewComment({
-              idea_id: props.ideaId,
-              comment: newComment,
-              time: new Date(),
-            });
-          setNewComment("");
+      <AutoForm
+        formSchema={z.object({
+          comment: z.string().nonempty(),
+        })}
+        fieldConfig={{
+          comment: {
+            fieldType: "textarea",
+            inputProps: {
+              placeholder: "Your comment...",
+            },
+          }}}
+        onSubmit={(data) => {
+          createNewComment({
+            idea_id: props.ideaId,
+            comment: data.comment,
+            time: new Date(),
+          });
         }}
-        className="z-2 absolute bottom-2 right-2"
       >
-        Submit
-      </Button>
+        <Button
+          variant="secondary"
+          type="submit"
+          className="z-2 absolute bottom-2 right-2"
+        >
+          Submit
+        </Button>
+      </AutoForm>
     </div>
   );
 }

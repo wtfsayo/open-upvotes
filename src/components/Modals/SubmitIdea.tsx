@@ -32,27 +32,17 @@ export default function SubmitIdea() {
           sprint.
         </DialogDescription>
       </DialogHeader>
-      {/* <Textarea
-        className="mt-4 h-[300px] w-full resize-none"
-        placeholder="Please explain your idea as a user: how would you benefit, what problem this will solve"
-        onChange={(e) =>
-          setNewIdea({ ...newIdea, description: e.target.value })
-        }
-      /> */}
-
       <AutoForm
-        
         formSchema={zForm}
         fieldConfig={{
           title: {
             inputProps: {
-              type: "text",
               placeholder: "Your idea in short...",
-            }
+            },
           },
           description: {
+            fieldType: "textarea",
             inputProps: {
-              type: "textarea",
               placeholder:
                 "Please explain your idea as a user: how would you benefit, what problem this will solve",
             },
