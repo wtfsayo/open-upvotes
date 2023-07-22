@@ -1,4 +1,5 @@
 import {
+  DialogTrigger,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -53,7 +54,9 @@ export default function SubmitIdea() {
         }}
       >
         <DialogFooter>
-          <Button type="reset">Cancel</Button>
+          <DialogTrigger asChild>
+            <Button type="reset">Cancel</Button>
+          </DialogTrigger>
           <Button type="submit">Submit Idea</Button>
         </DialogFooter>
       </AutoForm>

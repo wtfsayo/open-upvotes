@@ -128,10 +128,8 @@ export default function IdeaDetails(props: ideaProps) {
         </AlertDialogDescription>
       </div>
       <div>
-        <p className="py-2 text-lg font-semibold">Comments</p>
+        <AddComment ideaId={props.id} />
         <div className="flex h-[240px]  flex-col gap-2 overflow-y-auto">
-          <AddComment ideaId={props.id} />
-
           {comments?.map((comment) => (
             <Comment
               username={comment.user.username}

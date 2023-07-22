@@ -9,6 +9,7 @@ export default function AddComment(props: { ideaId: string }) {
   return (
     <div className="relative">
       <AutoForm
+        className="mb-2"
         formSchema={z.object({
           comment: z.string().nonempty(),
         })}
@@ -18,7 +19,8 @@ export default function AddComment(props: { ideaId: string }) {
             inputProps: {
               placeholder: "Your comment...",
             },
-          }}}
+          },
+        }}
         onSubmit={(data) => {
           createNewComment({
             idea_id: props.ideaId,

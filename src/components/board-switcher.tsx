@@ -4,6 +4,7 @@ import { CheckIcon, ChevronDown, PlusCircleIcon } from "lucide-react";
 import * as React from "react";
 import { api } from "../utils/api";
 
+import AutoForm from "@/components/ui/auto-form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,19 +24,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import * as z from "zod";
 import { cn } from "../lib/utils";
 
-interface Board {
-  title: string;
-  path: string;
-}
+const zForm = z.object({
+  title: z.string().nonempty(),
+  path: z.string().nonempty(),
+});
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -44,12 +44,14 @@ type PopoverTriggerProps = React.ComponentPropsWithoutRef<
 export default function BoardSwitcher({ className }: PopoverTriggerProps) {
   const { data: rawBoards } = api.boards.getAllByUser.useQuery();
   const { mutate: addBoard } = api.boards.createBoard.useMutation();
+  const { data: allBoards } = api.boards.getAllBoards.useQuery();
+  console.log(
+    allBoards?.map((board) => {
+      board.path, board.title;
+    }),
+  );
   const boards = rawBoards?.map((board) => {
     return { title: board.title, path: board.path };
-  });
-  const [createBoard, setCreateBoard] = React.useState<Board>({
-    title: "",
-    path: "",
   });
   const [open, setOpen] = React.useState(false);
   const [showNewBoardDialog, setShowNewBoardDialog] = React.useState(false);
@@ -66,7 +68,6 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            aria-title="Select a Board"
             className={cn("w-[200px] justify-between", className)}
           >
             <Avatar className="mr-2 h-5 w-5">
@@ -140,46 +141,38 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
           </DialogDescription>
         </DialogHeader>
         <div>
-          <div className="space-y-4 py-2 pb-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Board name</Label>
-              <Input
-                id="name"
-                placeholder="Acme Inc."
-                value={createBoard.title}
-                onChange={(e) =>
-                  setCreateBoard({
-                    title: e.target.value,
-                    path: createBoard.path,
-                  })
-                }
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="plan">Board URL path</Label>
-              <Input
-                id="path"
-                placeholder="/"
-                value={createBoard.path}
-                onChange={(e) =>
-                  setCreateBoard({
-                    path: e.target.value,
-                    title: createBoard.title,
-                  })
-                }
-              />
-            </div>
-          </div>
-        </div>
-        <DialogFooter>
-          <Button
-            variant="outline"
-            onClick={() => setShowNewBoardDialog(false)}
+          <AutoForm
+            formSchema={zForm}
+            fieldConfig={{
+              title: {
+                description: "This will be the name of your board.",
+                inputProps: {
+                  placeholder: "Board Title",
+                },
+              },
+              path: {
+                description:
+                  "This will be used to create a unique URL for your board.",
+                inputProps: {
+                  placeholder: "/your-board-path",
+                },
+              },
+            }}
+            onSubmit={(data) => {
+              addBoard(data);
+            }}
           >
-            Cancel
-          </Button>
-          <Button onClick={() => addBoard(createBoard)}>Continue</Button>
-        </DialogFooter>
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setShowNewBoardDialog(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit">Continue</Button>
+            </DialogFooter>
+          </AutoForm>
+        </div>
       </DialogContent>
     </Dialog>
   );
