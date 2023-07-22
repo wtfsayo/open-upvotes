@@ -42,12 +42,28 @@ export default function SubmitIdea() {
 
       <AutoForm
         formSchema={zForm}
+        fieldConfig={{
+          title: {
+            inputProps: {
+              type: "text",
+              placeholder: "Your idea in short...",
+            }
+          },
+          description: {
+            inputProps: {
+              type: "textarea",
+              placeholder:
+                "Please explain your idea as a user: how would you benefit, what problem this will solve",
+              
+            },
+          },
+        }}
         onSubmit={(data) => {
           mutate({ ...data, board_path: router.pathname });
         }}
       >
         <DialogFooter>
-          <Button>Cancel</Button>
+          <Button type="reset">Cancel</Button>
           <Button type="submit">Submit Idea</Button>
         </DialogFooter>
       </AutoForm>
