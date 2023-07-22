@@ -73,7 +73,7 @@ export default function IdeaDetails(props: ideaProps) {
                   
                   <Separator orientation="vertical" className="h-[20px] " />
 
-                  <ChevronDown className="h-4 w-4 text-white" />
+                  <ChevronDown className="h-4 w-4 text-theme" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -120,7 +120,7 @@ export default function IdeaDetails(props: ideaProps) {
       </AlertDialogHeader>
       <div>
         <p className="py-2 font-semibold">Description</p>
-        <AlertDialogDescription className="h-min-[120px] h-max-[180px] flex flex-col gap-2 overflow-y-auto rounded-lg bg-slate-100 p-4 text-sm font-light text-muted-foreground">
+        <AlertDialogDescription className="h-min-[120px] h-max-[180px] flex flex-col gap-2 overflow-y-auto rounded-lg bg-secondary/75 p-4 text-sm">
           {props.description}
         </AlertDialogDescription>
       </div>

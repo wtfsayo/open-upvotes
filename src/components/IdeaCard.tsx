@@ -26,7 +26,7 @@ function IdeaCard(props: IdeaCardProps) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Card className="w-full hover:bg-gray-50 pt-2">
+        <Card className="w-full hover:bg-secondary/40 hover:cursor-pointer pt-2">
           <CardHeader className=" justify-between items-start p-3">
             <CardTitle className="text-md font-medium leading-none">{truncatedTitle}</CardTitle>
             <CardDescription className="text-sm font-light text-muted-foreground">{truncatedDescription}</CardDescription>

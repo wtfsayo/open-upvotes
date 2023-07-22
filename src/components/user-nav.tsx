@@ -24,7 +24,7 @@ export function UserNav() {
         
           <Avatar className="h-9 w-9 ">
           {session.data?.user?.imageSrc && <AvatarImage src={session.data?.user?.imageSrc} alt={session.data?.user?.username} />}
-            <AvatarFallback className="bg-slate-300">{session.data?.user?.username.substring(0,2)}</AvatarFallback>
+            <AvatarFallback className="bg-background-100">{session.data?.user?.username.substring(0,2)}</AvatarFallback>
           </Avatar>
           
         </Button>

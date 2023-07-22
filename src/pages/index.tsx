@@ -49,7 +49,7 @@ export default function Home() {
           
           <Button
             variant="secondary"
-            className="bg-slate-300"
+            className="bg-accent hover:bg-accent/80"
             onClick={() => signInKeyp("DISCORD")}
           >
             Login
