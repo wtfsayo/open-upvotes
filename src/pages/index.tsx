@@ -1,5 +1,9 @@
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import CardLane from "@/src/components/CardLane";
+import { Filter } from "@/src/components/Modals/Actions/Filter";
+import SubmitIdea from "@/src/components/Modals/SubmitIdea";
 import { UserNav } from "@/src/components/user-nav";
 import { api } from "@/src/utils/api";
 import { STATUS, type ideaProps } from "@/src/utils/const";
@@ -7,13 +11,8 @@ import { signInKeyp } from "@usekeyp/js-sdk";
 import { filter, map } from "lodash";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import CardLane from "@/src/components/CardLane";
-import SubmitIdea from "@/src/components/Modals/SubmitIdea";
-import { Filter } from "@/src/components/Modals/Actions/Filter";
-import { Input } from "@/components/ui/input";
 import BoardSwitcher from "../components/board-switcher";
 import { ThemeToggle } from "../components/theme-toggle";
-import { useToast } from "@/components/ui/use-toast";
 export default function Home() {
   const session = useSession();
   const { data: ideas } = api.idea.getAll.useQuery();
@@ -75,7 +74,7 @@ export default function Home() {
             <SubmitIdea />
           </AlertDialog>
         </div>
-        <div className="justify-right flex flex-row ">
+        <div className="justify-right flex flex-row gap-2">
           <Input
             placeholder="Search tasks..."
             value={search}
@@ -88,7 +87,7 @@ export default function Home() {
             handle={setFilterd}
           />
         </div>
-        <div className="flex w-full flex-row gap-2 ">
+        <div className="flex flex-row gap-2 max-xl:flex-wrap">
           {filteredIdeas?.map((ideas, index) => (
             <CardLane
               key={STATUS[index]}
