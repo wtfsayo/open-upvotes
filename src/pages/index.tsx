@@ -1,4 +1,4 @@
-import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import CardLane from "@/src/components/CardLane";
@@ -67,12 +67,12 @@ export default function Home() {
             </p>
           </div>
 
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
+          <Dialog>
+            <DialogTrigger asChild>
               <Button className="w-max">Submit Idea</Button>
-            </AlertDialogTrigger>
+            </DialogTrigger>
             <SubmitIdea />
-          </AlertDialog>
+          </Dialog>
         </div>
         <div className="justify-right flex flex-row gap-2">
           <Input
