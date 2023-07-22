@@ -240,7 +240,7 @@ function AutoFormTextarea({
         {isRequired && <span className="text-destructive"> *</span>}
       </FormLabel>
       <FormControl>
-        <Textarea {...fieldProps} />
+        <Textarea {...fieldProps} className="resize-none h-32"/>
       </FormControl>
       {fieldConfigItem.description && (
         <FormDescription>{fieldConfigItem.description}</FormDescription>

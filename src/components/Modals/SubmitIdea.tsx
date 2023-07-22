@@ -41,6 +41,7 @@ export default function SubmitIdea() {
       /> */}
 
       <AutoForm
+        
         formSchema={zForm}
         fieldConfig={{
           title: {
@@ -54,7 +55,6 @@ export default function SubmitIdea() {
               type: "textarea",
               placeholder:
                 "Please explain your idea as a user: how would you benefit, what problem this will solve",
-              
             },
           },
         }}
