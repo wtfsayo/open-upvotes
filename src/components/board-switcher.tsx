@@ -1,51 +1,44 @@
-"use client"
+"use client";
 
-import {
-    CheckIcon,
-    ChevronDown,
-    PlusCircleIcon
-} from "lucide-react"
-import * as React from "react"
+import { api } from "../utils/api";
+import { CheckIcon, ChevronDown, PlusCircleIcon } from "lucide-react";
+import * as React from "react";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
-    Avatar,
-    AvatarFallback,
-    AvatarImage,
-} from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "@/components/ui/command";
 import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-    CommandSeparator,
-} from "@/components/ui/command"
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import { cn } from "../lib/utils"
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { cn } from "../lib/utils";
 
 const groups = [
   {
@@ -70,18 +63,24 @@ const groups = [
       },
     ],
   },
-]
+];
 
-type Board = (typeof groups)[number]["Boards"][number]
+type Board = (typeof groups)[number]["Boards"][number];
 
-type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>
-
-
+type PopoverTriggerProps = React.ComponentPropsWithoutRef<
+  typeof PopoverTrigger
+>;
 
 export default function BoardSwitcher({ className }: PopoverTriggerProps) {
-  const [open, setOpen] = React.useState(false)
-  const [showNewBoardDialog, setShowNewBoardDialog] = React.useState(false)
-  const [selectedBoard, setSelectedBoard] = React.useState<Board>({label: "Acme Inc.", value: "acme-inc"})
+
+  const { data: boards } = api.boards.getAllByUser.useQuery();
+  console.log(boards);
+  const [open, setOpen] = React.useState(false);
+  const [showNewBoardDialog, setShowNewBoardDialog] = React.useState(false);
+  const [selectedBoard, setSelectedBoard] = React.useState<Board>({
+    label: "Default",
+    value: "acme-inc",
+  });
 
   return (
     <Dialog open={showNewBoardDialog} onOpenChange={setShowNewBoardDialog}>
@@ -116,8 +115,8 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
                     <CommandItem
                       key={Board.value}
                       onSelect={() => {
-                        setSelectedBoard(Board)
-                        setOpen(false)
+                        setSelectedBoard(Board);
+                        setOpen(false);
                       }}
                       className="text-sm"
                     >
@@ -135,7 +134,7 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
                           "ml-auto h-4 w-4",
                           selectedBoard.value === Board.value
                             ? "opacity-100"
-                            : "opacity-0"
+                            : "opacity-0",
                         )}
                       />
                     </CommandItem>
@@ -149,8 +148,8 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
                 <DialogTrigger asChild>
                   <CommandItem
                     onSelect={() => {
-                      setOpen(false)
-                      setShowNewBoardDialog(true)
+                      setOpen(false);
+                      setShowNewBoardDialog(true);
                     }}
                   >
                     <PlusCircleIcon className="mr-2 h-5 w-5" />
@@ -200,12 +199,15 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setShowNewBoardDialog(false)}>
+          <Button
+            variant="outline"
+            onClick={() => setShowNewBoardDialog(false)}
+          >
             Cancel
           </Button>
           <Button type="submit">Continue</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

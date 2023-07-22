@@ -4,7 +4,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -41,16 +41,14 @@ export default function IdeaDetails(props: ideaProps) {
   });
   const { data: sessionData } = useSession();
   const containsUpvote = props.upvotes?.some(
-    (upvote: Upvote) => upvote.user_id == sessionData?.user?.id
+    (upvote: Upvote) => upvote.user_id == sessionData?.user?.id,
   );
-    
+
   const { mutate: addLabel } = api.idea.addLabel.useMutation();
   const { mutate: removeLabel } = api.idea.removeLabel.useMutation();
   const { mutate: createLabel } = api.labels.createLabel.useMutation();
 
-
-
-  const [ideaStatus, setIdeaStatus] = useState(props.status)
+  const [ideaStatus, setIdeaStatus] = useState(props.status);
 
   return (
     <AlertDialogContent>
@@ -59,7 +57,6 @@ export default function IdeaDetails(props: ideaProps) {
           <div className="flex flex-col gap-2">
             <Badge className="w-max rounded-md">{props.id}</Badge>
             {props.title}
-            
           </div>
 
           <div>
@@ -70,10 +67,10 @@ export default function IdeaDetails(props: ideaProps) {
                   className="gap-2 bg-blue-700 px-2 font-medium text-white hover:bg-blue-800"
                 >
                   {ideaStatus}
-                  
+
                   <Separator orientation="vertical" className="h-[20px] " />
 
-                  <ChevronDown className="h-4 w-4 text-theme" />
+                  <ChevronDown className="text-theme h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -88,11 +85,12 @@ export default function IdeaDetails(props: ideaProps) {
                   <DropdownMenuCheckboxItem
                     key={status}
                     checked={Boolean(
-                      status.toLowerCase() == ideaStatus.toLowerCase()
+                      status.toLowerCase() == ideaStatus.toLowerCase(),
                     )}
                     onClick={() => {
-                      setIdeaStatus(status)
-                      updateStatus({ id: props.id, status })}}
+                      setIdeaStatus(status);
+                      updateStatus({ id: props.id, status });
+                    }}
                   >
                     {status}
                   </DropdownMenuCheckboxItem>
@@ -102,22 +100,26 @@ export default function IdeaDetails(props: ideaProps) {
           </div>
         </AlertDialogTitle>
         <div className="flex-row-wrap flex flex-row gap-1">
-              {labels.map((label: Label) => (
-                <Badge key={label.id} className="px-2.5" variant={"outline"}>
-                  {label.label}
-                </Badge>
-              ))}
+          {labels.map((label: Label) => (
+            <Badge key={label.id} className="px-2.5" variant={"outline"}>
+              {label.label}
+            </Badge>
+          ))}
 
-              {Alllabels && (
-                <AddLabels 
-                    title="Labels"
-                    options={Array.from(Alllabels)}
-                    added= {Array.from(labels)}
-                    handle={{add: addLabel, remove: removeLabel, create: createLabel}}
-                    ideaId={props.id}
-                    />
-              )}
-            </div>
+          {Alllabels && (
+            <AddLabels
+              title="Labels"
+              options={Array.from(Alllabels)}
+              added={Array.from(labels)}
+              handle={{
+                add: addLabel,
+                remove: removeLabel,
+                create: createLabel,
+              }}
+              ideaId={props.id}
+            />
+          )}
+        </div>
       </AlertDialogHeader>
       <div>
         <p className="py-2 font-semibold">Description</p>
@@ -130,41 +132,42 @@ export default function IdeaDetails(props: ideaProps) {
         <div className="flex h-[240px]  flex-col gap-2 overflow-y-auto">
           <AddComment ideaId={props.id} />
 
-          {
-                      comments?.map((comment) => (
-                        <Comment
-                          username={comment.user.username}
-                          date={comment.time.toLocaleString()}
-                          comment={comment.comment}
-                          key={comment.time.toLocaleString()} 
-                          imageSrc={comment.user.imageSrc?.toString()}
-                        />
-                      ))}
-
+          {comments?.map((comment) => (
+            <Comment
+              username={comment.user.username}
+              date={comment.time.toLocaleString()}
+              comment={comment.comment}
+              key={comment.time.toLocaleString()}
+              imageSrc={comment.user.imageSrc?.toString()}
+            />
+          ))}
         </div>
       </div>
 
       <AlertDialogFooter>
         <AlertDialogCancel>Close</AlertDialogCancel>
         <Button
-          
-          variant={containsUpvote ? 'outline' : 'default'}
+          variant={containsUpvote ? "outline" : "default"}
           onClick={() => {
             containsUpvote
               ? deleteUpvote({ idea_id: props.id })
               : Upvote({ idea_id: props.id });
           }}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M6 16a1 1 0 0 1-.8-1.6l6-8a1 1 0 0 1 1.6 0l6 8A1 1 0 0 1 18 16H6Z" />
-              </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M6 16a1 1 0 0 1-.8-1.6l6-8a1 1 0 0 1 1.6 0l6 8A1 1 0 0 1 18 16H6Z"
+            />
+          </svg>
           {containsUpvote ? "Upvoted" : "Upvote"}
         </Button>
       </AlertDialogFooter>
     </AlertDialogContent>
   );
 }
-
-
-
-

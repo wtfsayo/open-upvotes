@@ -4,7 +4,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,13 +15,15 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function SubmitIdea() {
-
   const router = useRouter();
-  const [newIdea, setNewIdea] = useState({ title: "", description: "", board_path: router.pathname });
-
+  const [newIdea, setNewIdea] = useState({
+    title: "",
+    description: "",
+    board_path: router.pathname,
+  });
 
   const { mutate } = api.idea.submit.useMutation();
-  
+
   return (
     <AlertDialogContent>
       <AlertDialogHeader>
@@ -50,10 +52,16 @@ export default function SubmitIdea() {
       </AlertDialogHeader>
       <AlertDialogFooter>
         <AlertDialogCancel>Cancel</AlertDialogCancel>
-        <Button onClick={() => {
-          mutate(newIdea);
-          setNewIdea({title: "", description: "", board_path: router.pathname})
-        }}>
+        <Button
+          onClick={() => {
+            mutate(newIdea);
+            setNewIdea({
+              title: "",
+              description: "",
+              board_path: router.pathname,
+            });
+          }}
+        >
           Submit Idea
         </Button>
       </AlertDialogFooter>

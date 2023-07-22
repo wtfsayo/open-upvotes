@@ -13,27 +13,28 @@ import { Filter } from "@/src/components/Modals/Actions/Filter";
 import { Input } from "@/components/ui/input";
 import BoardSwitcher from "../components/board-switcher";
 import { ThemeToggle } from "../components/theme-toggle";
+import { useToast } from "@/components/ui/use-toast";
 export default function Home() {
   const session = useSession();
   const { data: ideas } = api.idea.getAll.useQuery();
-  const [search, setSearch] = useState('')
-  const [Filterd, setFilterd] = useState(STATUS)
-  
-  
-  const filteredIdeas = map(Filterd, (status) => filter(ideas, 
-   (idea) => { return idea.status === status &&
-      (idea.title.toLowerCase().includes(search.toLowerCase()) || idea.description.toLowerCase().includes(search.toLowerCase()));
-  }));
-  
-  
+  const [search, setSearch] = useState("");
+  const [Filterd, setFilterd] = useState(STATUS);
+
+  const filteredIdeas = map(Filterd, (status) =>
+    filter(ideas, (idea) => {
+      return (
+        idea.status === status &&
+        (idea.title.toLowerCase().includes(search.toLowerCase()) ||
+          idea.description.toLowerCase().includes(search.toLowerCase()))
+      );
+    }),
+  );
+
   const mutate = api.user.sync.useMutation();
-  
-  
+
   useEffect(() => {
     if (session.data?.user) {
-      mutate.mutateAsync()
-      .catch((e:Error) => e);
-    
+      mutate.mutateAsync().catch((e: Error) => e);
     }
   }, [session.data?.expires]);
 
@@ -42,20 +43,18 @@ export default function Home() {
       <div className="fixed flex w-full flex-row justify-between border-2   p-4 text-lg">
         <BoardSwitcher />
         <div className="flex flex-row gap-2 align-middle">
-        {session.data ? (
-          
-          <UserNav />
-        ) : (
-          
-          <Button
-            variant="secondary"
-            className="bg-accent hover:bg-accent/80"
-            onClick={() => signInKeyp("DISCORD")}
-          >
-            Login
-          </Button>
-        )}
-        <ThemeToggle/>
+          {session.data ? (
+            <UserNav />
+          ) : (
+            <Button
+              variant="secondary"
+              className="bg-accent hover:bg-accent/80"
+              onClick={() => signInKeyp("DISCORD")}
+            >
+              Login
+            </Button>
+          )}
+          <ThemeToggle />
         </div>
       </div>
       <div className="h-full flex-1 flex-col space-y-8  p-8 pt-32 md:flex">
@@ -68,27 +67,26 @@ export default function Home() {
               Upvote or give new ideas to work on
             </p>
           </div>
-          
-          
-          
+
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button className="w-max">Submit Idea</Button>
             </AlertDialogTrigger>
             <SubmitIdea />
           </AlertDialog>
-          
         </div>
-        <div className="flex flex-row justify-right ">
-        <Input
-          placeholder="Search tasks..."
-          value={search}
-          onChange={(event) =>
-            setSearch(event.target.value)
-          }
-          className="h-8 w-[150px] lg:w-[250px]"
-        />
-        <Filter options={Array.from(STATUS)} title="Filter" handle={setFilterd}/>
+        <div className="justify-right flex flex-row ">
+          <Input
+            placeholder="Search tasks..."
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            className="h-8 w-[150px] lg:w-[250px]"
+          />
+          <Filter
+            options={Array.from(STATUS)}
+            title="Filter"
+            handle={setFilterd}
+          />
         </div>
         <div className="flex w-full flex-row gap-2 ">
           {filteredIdeas?.map((ideas, index) => (

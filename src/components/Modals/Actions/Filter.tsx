@@ -1,35 +1,36 @@
-import { Check, PlusCircle } from "lucide-react"
+import { Check, PlusCircle } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-    CommandSeparator,
-} from "@/components/ui/command"
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import { Separator } from "@/components/ui/separator"
-import { cn } from "@/src/lib/utils"
-import type { Dispatch} from "react";
-import { useEffect, useState } from "react"
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/src/lib/utils";
+import type { Dispatch } from "react";
+import { useEffect, useState } from "react";
 
+export function Filter(props: {
+  title: string;
+  options: string[];
+  allowNew?: boolean;
+  handle: Dispatch<any>;
+}) {
+  const { options, title, allowNew = false, handle } = props;
 
-export function Filter(props:{title: string, options: string[], allowNew?: boolean, handle: Dispatch<any>}) {
-  
-    const {options, title, allowNew = false, handle} = props;
+  const [selectedValues, setSelectedValues] = useState(new Set(options));
 
-    
-    const [selectedValues, setSelectedValues] = useState(new Set(options));
-
-    useEffect(()=> handle(Array.from(selectedValues)), [selectedValues, handle])
+  useEffect(() => handle(Array.from(selectedValues)), [selectedValues, handle]);
 
   return (
     <Popover>
@@ -74,45 +75,43 @@ export function Filter(props:{title: string, options: string[], allowNew?: boole
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
         <Command>
-          <CommandInput placeholder={title}/>
+          <CommandInput placeholder={title} />
           <CommandList>
             <CommandEmpty>
-                { !allowNew ? "No results found." : "Add New"}
+              {!allowNew ? "No results found." : "Add New"}
             </CommandEmpty>
             <CommandGroup>
               {options.map((option) => {
-                const isSelected = selectedValues.has(option)
+                const isSelected = selectedValues.has(option);
                 return (
-                    <CommandItem
-                        key={option}
-                        onSelect={() => {
-                            setSelectedValues(() => {
-                            const newSelectedValues = new Set(selectedValues);
-                            return selectedValues.has(option)
-                                ? (newSelectedValues.delete(option), newSelectedValues)
-                                : (newSelectedValues.add(option), newSelectedValues);
-                            });
-                        }}
-                        >
-
-                  
-                <div
+                  <CommandItem
+                    key={option}
+                    onSelect={() => {
+                      setSelectedValues(() => {
+                        const newSelectedValues = new Set(selectedValues);
+                        return selectedValues.has(option)
+                          ? (newSelectedValues.delete(option),
+                            newSelectedValues)
+                          : (newSelectedValues.add(option), newSelectedValues);
+                      });
+                    }}
+                  >
+                    <div
                       className={cn(
                         "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
                         isSelected
                           ? "bg-primary text-primary-foreground"
-                          : "opacity-50 [&_svg]:invisible"
+                          : "opacity-50 [&_svg]:invisible",
                       )}
                     >
                       <Check className={cn("h-4 w-4")} />
                     </div>
                     <span>{option}</span>
-                    
                   </CommandItem>
-                )
+                );
               })}
             </CommandGroup>
-            {(
+            {/* {(
               <>
                 <CommandSeparator />
                 <CommandGroup>
@@ -128,10 +127,10 @@ export function Filter(props:{title: string, options: string[], allowNew?: boole
                   </CommandItem>
                 </CommandGroup>
               </>
-            )}
+            )} */}
           </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
