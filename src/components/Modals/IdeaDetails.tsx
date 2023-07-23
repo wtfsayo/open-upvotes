@@ -27,7 +27,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import AddComment from "./Actions/AddComment";
-import { AddLabels } from "./Actions/AddLabels";
+import { AddLabels } from "./Actions/UpdateLabels";
 import Comment from "./sub/Comment";
 
 export default function IdeaDetails(props: ideaProps) {

@@ -7,7 +7,7 @@ export default function Comment(props: {
   imageSrc?: string;
 }) {
   return (
-    <div className="flex flex-col gap-2 rounded-lg bg-slate-50 p-4 text-sm">
+    <div className="flex flex-col gap-2 rounded-lg bg-secondary/70 p-4 text-sm">
       <div className="flex flex-row items-center gap-2">
         <Avatar className="h-[24px] w-[24px]">
           <AvatarImage src={props.imageSrc} alt={props.username} />
