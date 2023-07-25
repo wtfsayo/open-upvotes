@@ -33,13 +33,15 @@ export default function Board(props: { path: string }) {
     })
   );
 
-  const mutate = api.user.sync.useMutation();
+  const userSync =  api.user.sync.useMutation();
 
-  useEffect(() => {
-    if (session.data?.user) {
-      mutate.mutateAsync().catch((e: Error) => e);
-    }
-  }, [session.data?.expires]);
+    useEffect(() => {
+
+    
+       () => userSync.mutate();
+    
+  });
+  
 
   return (
     <div>
@@ -96,7 +98,7 @@ export default function Board(props: { path: string }) {
             <CardLane
               key={STATUS[index]}
               title={STATUS[index] as string}
-              ideas={ideas as ideaProps[]}
+              ideas=  {ideas}
             />
           ))}
         </div>
