@@ -4,7 +4,7 @@ import { type AppType } from "next/app";
 import { Toaster } from "@/components/ui/toaster";
 
 import { ThemeProvider } from "../components/theme-provider";
-import "app/globals.css";
+import "src/styles/globals.css";
 import { api } from "../utils/api";
 
 const MyApp: AppType<{ session: Session | null }> = ({

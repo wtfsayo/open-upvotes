@@ -22,7 +22,7 @@ import { api } from "@/src/utils/api";
 import type { ideaProps } from "@/src/utils/const";
 import { STATUS } from "@/src/utils/const";
 import type { Label, Upvote } from "@prisma/client";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
@@ -33,9 +33,9 @@ import Comment from "./sub/Comment";
 export default function IdeaDetails(props: ideaProps) {
   const { labels } = props;
   const { data: Alllabels } = api.labels.getAll.useQuery();
-  const { mutate: Upvote } = api.upvote.create.useMutation();
-  const { mutate: deleteUpvote } = api.upvote.delete.useMutation();
-  const { mutate: updateStatus } = api.idea.updateStatus.useMutation();
+  const { mutate: Upvote, isSuccess:isUpvoted, isLoading:isUpvoting } = api.upvote.create.useMutation();
+  const { mutate: deleteUpvote, isSuccess: isUnUpvoted, isLoading: isUnUpvoting } = api.upvote.delete.useMutation();
+  const { mutate: updateStatus, isLoading: isUpdatingStatus } = api.idea.updateStatus.useMutation();
   const { data: comments } = api.comments.getByIdea.useQuery({
     idea_id: props.id,
   });
@@ -65,7 +65,10 @@ export default function IdeaDetails(props: ideaProps) {
                 <Button
                   variant="secondary"
                   className="gap-2 bg-blue-700 px-2 font-medium text-white hover:bg-blue-800"
+                  disabled={isUpdatingStatus}
                 >
+                  
+                  { isUpdatingStatus && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   {ideaStatus}
 
                   <Separator orientation="vertical" className="h-[20px] " />
@@ -151,8 +154,9 @@ export default function IdeaDetails(props: ideaProps) {
               ? deleteUpvote({ idea_id: props.id })
               : Upvote({ idea_id: props.id });
           }}
+          disabled={isUpvoting || isUnUpvoting}
         >
-          <svg
+          {!(isUpvoting || isUnUpvoting) ? <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
@@ -162,8 +166,11 @@ export default function IdeaDetails(props: ideaProps) {
               fill="currentColor"
               d="M6 16a1 1 0 0 1-.8-1.6l6-8a1 1 0 0 1 1.6 0l6 8A1 1 0 0 1 18 16H6Z"
             />
-          </svg>
-          {containsUpvote ? "Upvoted" : "Upvote"}
+          </svg> : <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {containsUpvote ? "Upvoted" : "Upvote"} 
+          {" "}
+          ({props.upvotes?.length})
+          
         </Button>
       </AlertDialogFooter>
     </AlertDialogContent>

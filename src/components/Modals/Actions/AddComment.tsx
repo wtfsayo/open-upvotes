@@ -1,11 +1,12 @@
 import AutoForm from "@/components/ui/auto-form";
 import { Button } from "@/components/ui/button";
 import { api } from "@/src/utils/api";
+import { Loader2 } from "lucide-react";
 
 import { z } from "zod";
 
 export default function AddComment(props: { ideaId: string }) {
-  const { mutate: createNewComment } = api.comments.createComment.useMutation();
+  const { mutate: createNewComment, isLoading, isSuccess } = api.comments.createComment.useMutation();
   return (
     <div className="relative">
       <AutoForm
@@ -18,6 +19,7 @@ export default function AddComment(props: { ideaId: string }) {
             fieldType: "textarea",
             inputProps: {
               placeholder: "Your comment...",
+              disabled: isLoading,
             },
           },
         }}
@@ -33,7 +35,9 @@ export default function AddComment(props: { ideaId: string }) {
           variant="secondary"
           type="submit"
           className="z-2 absolute bottom-2 right-2"
+          disabled={isLoading}
         >
+           { isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Submit
         </Button>
       </AutoForm>

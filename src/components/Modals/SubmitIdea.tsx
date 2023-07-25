@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/src/utils/api";
 import { useRouter } from "next/router";
 import { z } from "zod";
+import { Loader2 } from "lucide-react";
 
 export default function SubmitIdea() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function SubmitIdea() {
     description: z.string().nonempty(),
   });
 
-  const { mutate } = api.idea.submit.useMutation();
+  const { mutate, isLoading, isSuccess } = api.idea.submit.useMutation();
 
   return (
     <DialogContent>
@@ -39,6 +40,7 @@ export default function SubmitIdea() {
           title: {
             inputProps: {
               placeholder: "Your idea in short...",
+              disabled: isLoading,
             },
           },
           description: {
@@ -46,6 +48,7 @@ export default function SubmitIdea() {
             inputProps: {
               placeholder:
                 "Please explain your idea as a user: how would you benefit, what problem this will solve",
+              disabled: isLoading,  
             },
           },
         }}
@@ -54,10 +57,12 @@ export default function SubmitIdea() {
         }}
       >
         <DialogFooter>
-          <DialogTrigger asChild>
+          {/* <DialogTrigger asChild>
             <Button type="reset">Cancel</Button>
-          </DialogTrigger>
-          <Button type="submit">Submit Idea</Button>
+          </DialogTrigger> */}
+          <Button type="submit" disabled={isLoading}>
+          { isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Submit Idea</Button>
         </DialogFooter>
       </AutoForm>
     </DialogContent>

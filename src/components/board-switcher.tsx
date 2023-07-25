@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckIcon, ChevronDown, PlusCircleIcon } from "lucide-react";
+import { CheckIcon, ChevronDown, Loader2, PlusCircleIcon } from "lucide-react";
 import * as React from "react";
 import { api } from "../utils/api";
 
@@ -43,7 +43,7 @@ type PopoverTriggerProps = React.ComponentPropsWithoutRef<
 
 export default function BoardSwitcher({ className }: PopoverTriggerProps) {
   const { data: rawBoards } = api.boards.getAllByUser.useQuery();
-  const { mutate: addBoard } = api.boards.createBoard.useMutation();
+  const { mutate: addBoard, isLoading, isSuccess } = api.boards.createBoard.useMutation();
   const { data: allBoards } = api.boards.getAllBoards.useQuery();
   console.log(
     allBoards?.map((board) => {
@@ -160,16 +160,13 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
             }}
             onSubmit={(data) => {
               addBoard(data);
+              
             }}
           >
             <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => setShowNewBoardDialog(false)}
-              >
-                Cancel
-              </Button>
-              <Button type="submit">Continue</Button>
+              
+            <Button type="submit" disabled={isLoading}>
+          { isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Create</Button>
             </DialogFooter>
           </AutoForm>
         </div>

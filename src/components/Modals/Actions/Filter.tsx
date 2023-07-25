@@ -111,23 +111,6 @@ export function Filter(props: {
                 );
               })}
             </CommandGroup>
-            {/* {(
-              <>
-                <CommandSeparator />
-                <CommandGroup>
-                  <CommandItem
-                    onSelect={() => {
-                        selectedValues.size == 0 ?
-                            setSelectedValues(new Set(options))
-                            : setSelectedValues(new Set())
-                    }}
-                    className="justify-center text-center"
-                  >
-                  {selectedValues.size == 0 ? "Select All" : "Clear All"}
-                  </CommandItem>
-                </CommandGroup>
-              </>
-            )} */}
           </CommandList>
         </Command>
       </PopoverContent>

@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/card";
 import type { Idea, Label, Upvote } from "@prisma/client";
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
-import { MoreVertical } from "lucide-react";
 import { useMemo } from "react";
 import IdeaDetails from "./Modals/IdeaDetails";
 
@@ -74,7 +73,7 @@ function IdeaCard(props: IdeaCardProps) {
                   d="M6 16a1 1 0 0 1-.8-1.6l6-8a1 1 0 0 1 1.6 0l6 8A1 1 0 0 1 18 16H6Z"
                 />
               </svg>
-              Upvote ({upvotes.length})
+              {upvotes.length}
             </Button>
           </CardContent>
         </Card>
