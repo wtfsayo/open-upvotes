@@ -29,12 +29,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useRouter } from "next/router";
 import * as z from "zod";
 import { cn } from "../lib/utils";
-
 const zForm = z.object({
   title: z.string().nonempty(),
-  path: z.string().nonempty(),
+  path: z.string().refine((val) => val.match("^[a-z0-9]+(?:-[a-z0-9]+)*$") ,"Please provide a valid path"),
 });
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
@@ -42,14 +42,19 @@ type PopoverTriggerProps = React.ComponentPropsWithoutRef<
 >;
 
 export default function BoardSwitcher({ className }: PopoverTriggerProps) {
+  const router = useRouter();
   const { data: rawBoards } = api.boards.getAllByUser.useQuery();
-  const { mutate: addBoard, isLoading, isSuccess } = api.boards.createBoard.useMutation();
+  const {
+    mutate: addBoard,
+    isLoading,
+    isSuccess,
+  } = api.boards.createBoard.useMutation();
   const { data: allBoards } = api.boards.getAllBoards.useQuery();
-  console.log(
-    allBoards?.map((board) => {
-      board.path, board.title;
-    }),
-  );
+  // console.log(
+  //   allBoards?.map((board) => {
+  //     board.path, board.title;
+  //   }),
+  // );
   const boards = rawBoards?.map((board) => {
     return { title: board.title, path: board.path };
   });
@@ -57,8 +62,10 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
   const [showNewBoardDialog, setShowNewBoardDialog] = React.useState(false);
   const [selectedBoard, setSelectedBoard] = React.useState({
     title: "Default",
-    path: "/",
+    path: router?.pathname,
   });
+  const [values, setValues] = React.useState<Partial<z.infer<typeof zForm>>>({});
+
 
   return (
     <Dialog open={showNewBoardDialog} onOpenChange={setShowNewBoardDialog}>
@@ -110,7 +117,7 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
                         "ml-auto h-4 w-4",
                         selectedBoard.path === Board.path
                           ? "opacity-100"
-                          : "opacity-0",
+                          : "opacity-0"
                       )}
                     />
                   </CommandItem>
@@ -142,6 +149,8 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
         </DialogHeader>
         <div>
           <AutoForm
+          values={values}
+          onValuesChange={setValues}
             formSchema={zForm}
             fieldConfig={{
               title: {
@@ -152,21 +161,24 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
               },
               path: {
                 description:
-                  "This will be used to create a unique URL for your board.",
+                    "Your board path will be /" + String(router.basePath) + String(values?.path),
                 inputProps: {
-                  placeholder: "/your-board-path",
+                  placeholder: "your-unique-board-path",
+                  // pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$",
                 },
               },
             }}
             onSubmit={(data) => {
-              addBoard(data);
               
+              console.log(data);
+              addBoard(data);
             }}
           >
             <DialogFooter>
-              
-            <Button type="submit" disabled={isLoading}>
-          { isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Create</Button>
+              <Button type="submit" disabled={isLoading}>
+                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Create
+              </Button>
             </DialogFooter>
           </AutoForm>
         </div>
