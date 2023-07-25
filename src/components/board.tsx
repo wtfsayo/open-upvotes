@@ -14,22 +14,23 @@ import { useEffect, useState } from "react";
 import BoardSwitcher from "../components/board-switcher";
 import { ThemeToggle } from "../components/theme-toggle";
 
-export default function Board(props:{path:string}) {
+export default function Board(props: { path: string }) {
   const session = useSession();
-  
-  const { data: ideas } = api.idea.getAllByBoard.useQuery({board_path: props.path});
+
+  const { data: ideas } = api.idea.getAllByBoard.useQuery({
+    board_path: props.path,
+  });
   const [search, setSearch] = useState("");
   const [Filterd, setFilterd] = useState(STATUS);
 
-
   const filteredIdeas = map(Filterd, (status) =>
-    filter(ideas, (idea) => {
+    filter(ideas as ideaProps[], (idea) => {
       return (
         idea.status === status &&
-        (idea.title.toLowerCase().includes(search.toLowerCase()) ||
-          idea.description.toLowerCase().includes(search.toLowerCase()))
+        (idea.title?.toLowerCase().includes(search.toLowerCase()) ||
+          idea.description?.toLowerCase().includes(search.toLowerCase()))
       );
-    }),
+    })
   );
 
   const mutate = api.user.sync.useMutation();
