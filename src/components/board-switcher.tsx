@@ -59,12 +59,14 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
     return { title: board.title, path: board.path };
   });
   const [open, setOpen] = React.useState(false);
+  
   const [showNewBoardDialog, setShowNewBoardDialog] = React.useState(false);
   const [selectedBoard, setSelectedBoard] = React.useState({
     title: "Default",
-    path: router?.pathname,
+    path: "/",
   });
   const [values, setValues] = React.useState<Partial<z.infer<typeof zForm>>>({});
+  
 
 
   return (
@@ -100,6 +102,7 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
                     onSelect={() => {
                       setSelectedBoard(Board);
                       setOpen(false);
+                      void router.push(Board.path);
                     }}
                     className="text-sm"
                   >

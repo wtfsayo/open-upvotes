@@ -19,6 +19,29 @@ export const ideaRouter = createTRPCRouter({
     });
   }),
 
+  getAllByBoard: publicProcedure
+  .input(z.object({ board_path: z.string() }))
+  .query(async ({ ctx, input }) => {
+
+    const board = await ctx.prisma.board.findUnique({
+      where: { path: input.board_path},
+    });
+
+    if (!board) {
+      return new Error("Board not found");
+    }
+
+    return ctx.prisma.idea.findMany({
+      where: { board_id: board?.id },
+      orderBy: {
+        status: "asc",
+      },
+      include: { upvotes: true, labels: true },
+    
+    });
+  }),
+
+
   submit: protectedProcedure
     .input(
       z.object({
