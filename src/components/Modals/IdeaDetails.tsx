@@ -33,9 +33,18 @@ import Comment from "./sub/Comment";
 export default function IdeaDetails(props: ideaProps) {
   const { labels } = props;
   const { data: Alllabels } = api.labels.getAll.useQuery();
-  const { mutate: Upvote, isSuccess:isUpvoted, isLoading:isUpvoting } = api.upvote.create.useMutation();
-  const { mutate: deleteUpvote, isSuccess: isUnUpvoted, isLoading: isUnUpvoting } = api.upvote.delete.useMutation();
-  const { mutate: updateStatus, isLoading: isUpdatingStatus } = api.idea.updateStatus.useMutation();
+  const {
+    mutate: Upvote,
+    isSuccess: isUpvoted,
+    isLoading: isUpvoting,
+  } = api.upvote.create.useMutation();
+  const {
+    mutate: deleteUpvote,
+    isSuccess: isUnUpvoted,
+    isLoading: isUnUpvoting,
+  } = api.upvote.delete.useMutation();
+  const { mutate: updateStatus, isLoading: isUpdatingStatus } =
+    api.idea.updateStatus.useMutation();
   const { data: comments } = api.comments.getByIdea.useQuery({
     idea_id: props.id,
   });
@@ -67,8 +76,9 @@ export default function IdeaDetails(props: ideaProps) {
                   className="gap-2 bg-blue-700 px-2 font-medium text-white hover:bg-blue-800"
                   disabled={isUpdatingStatus}
                 >
-                  
-                  { isUpdatingStatus && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {isUpdatingStatus && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
                   {ideaStatus}
 
                   <Separator orientation="vertical" className="h-[20px] " />
@@ -156,21 +166,22 @@ export default function IdeaDetails(props: ideaProps) {
           }}
           disabled={isUpvoting || isUnUpvoting}
         >
-          {!(isUpvoting || isUnUpvoting) ? <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill="currentColor"
-              d="M6 16a1 1 0 0 1-.8-1.6l6-8a1 1 0 0 1 1.6 0l6 8A1 1 0 0 1 18 16H6Z"
-            />
-          </svg> : <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {containsUpvote ? "Upvoted" : "Upvote"} 
-          {" "}
-          ({props.upvotes?.length})
-          
+          {!(isUpvoting || isUnUpvoting) ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M6 16a1 1 0 0 1-.8-1.6l6-8a1 1 0 0 1 1.6 0l6 8A1 1 0 0 1 18 16H6Z"
+              />
+            </svg>
+          ) : (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          )}
+          {containsUpvote ? "Upvoted" : "Upvote"} ({props.upvotes?.length})
         </Button>
       </AlertDialogFooter>
     </AlertDialogContent>

@@ -1,11 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export default function Comment(props: {
-  username: string;
-  comment: string;
-  date: string;
-  imageSrc?: string;
-}) {
+export default function Comment(
+  props: {
+    username: string;
+    comment: string;
+    date: string;
+    imageSrc?: string;
+  },
+) {
   return (
     <div className="flex flex-col gap-2 rounded-lg bg-secondary/70 p-4 text-sm">
       <div className="flex flex-row items-center gap-2">

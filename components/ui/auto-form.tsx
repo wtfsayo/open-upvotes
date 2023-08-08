@@ -179,9 +179,11 @@ export type FieldConfigItem = {
     | keyof typeof INPUT_COMPONENTS
     | React.FC<AutoFormInputComponentProps>;
 
-  renderParent?: (props: {
-    children: React.ReactNode;
-  }) => React.ReactElement | null | undefined;
+  renderParent?: (
+    props: {
+      children: React.ReactNode;
+    },
+  ) => React.ReactElement | null | undefined;
 };
 
 export type FieldConfig<SchemaType extends z.infer<z.ZodObject<any, any>>> = {
@@ -204,12 +206,14 @@ export type AutoFormInputComponentProps = {
   zodItem: z.ZodAny;
 };
 
-function AutoFormInput({
-  label,
-  isRequired,
-  fieldConfigItem,
-  fieldProps,
-}: AutoFormInputComponentProps) {
+function AutoFormInput(
+  {
+    label,
+    isRequired,
+    fieldConfigItem,
+    fieldProps,
+  }: AutoFormInputComponentProps,
+) {
   return (
     <FormItem>
       <FormLabel>
@@ -227,12 +231,14 @@ function AutoFormInput({
   );
 }
 
-function AutoFormTextarea({
-  label,
-  isRequired,
-  fieldConfigItem,
-  fieldProps,
-}: AutoFormInputComponentProps) {
+function AutoFormTextarea(
+  {
+    label,
+    isRequired,
+    fieldConfigItem,
+    fieldProps,
+  }: AutoFormInputComponentProps,
+) {
   return (
     <FormItem>
       <FormLabel>
@@ -250,13 +256,15 @@ function AutoFormTextarea({
   );
 }
 
-function AutoFormCheckbox({
-  label,
-  isRequired,
-  field,
-  fieldConfigItem,
-  fieldProps,
-}: AutoFormInputComponentProps) {
+function AutoFormCheckbox(
+  {
+    label,
+    isRequired,
+    field,
+    fieldConfigItem,
+    fieldProps,
+  }: AutoFormInputComponentProps,
+) {
   return (
     <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
       <FormControl>
@@ -279,13 +287,15 @@ function AutoFormCheckbox({
   );
 }
 
-function AutoFormSwitch({
-  label,
-  isRequired,
-  field,
-  fieldConfigItem,
-  fieldProps,
-}: AutoFormInputComponentProps) {
+function AutoFormSwitch(
+  {
+    label,
+    isRequired,
+    field,
+    fieldConfigItem,
+    fieldProps,
+  }: AutoFormInputComponentProps,
+) {
   return (
     <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
       <FormControl>
@@ -308,13 +318,15 @@ function AutoFormSwitch({
   );
 }
 
-function AutoFormRadioGroup({
-  label,
-  isRequired,
-  field,
-  zodItem,
-  fieldProps,
-}: AutoFormInputComponentProps) {
+function AutoFormRadioGroup(
+  {
+    label,
+    isRequired,
+    field,
+    zodItem,
+    fieldProps,
+  }: AutoFormInputComponentProps,
+) {
   const values = (zodItem as unknown as z.ZodEnum<any>)._def.values;
 
   return (
@@ -345,13 +357,15 @@ function AutoFormRadioGroup({
   );
 }
 
-function AutoFormDate({
-  label,
-  isRequired,
-  field,
-  fieldConfigItem,
-  fieldProps,
-}: AutoFormInputComponentProps) {
+function AutoFormDate(
+  {
+    label,
+    isRequired,
+    field,
+    fieldConfigItem,
+    fieldProps,
+  }: AutoFormInputComponentProps,
+) {
   return (
     <FormItem>
       <FormLabel>
@@ -373,13 +387,15 @@ function AutoFormDate({
   );
 }
 
-function AutoFormEnum({
-  label,
-  isRequired,
-  field,
-  fieldConfigItem,
-  zodItem,
-}: AutoFormInputComponentProps) {
+function AutoFormEnum(
+  {
+    label,
+    isRequired,
+    field,
+    fieldConfigItem,
+    zodItem,
+  }: AutoFormInputComponentProps,
+) {
   const values = (zodItem as unknown as z.ZodEnum<any>)._def.values;
 
   return (
@@ -438,17 +454,19 @@ function DefaultParent({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-function AutoFormObject<SchemaType extends z.ZodObject<any, any>>({
-  schema,
-  form,
-  fieldConfig,
-  path = [],
-}: {
-  schema: SchemaType;
-  form: ReturnType<typeof useForm>;
-  fieldConfig?: FieldConfig<z.infer<SchemaType>>;
-  path?: string[];
-}) {
+function AutoFormObject<SchemaType extends z.ZodObject<any, any>>(
+  {
+    schema,
+    form,
+    fieldConfig,
+    path = [],
+  }: {
+    schema: SchemaType;
+    form: ReturnType<typeof useForm>;
+    fieldConfig?: FieldConfig<z.infer<SchemaType>>;
+    path?: string[];
+  },
+) {
   const { shape } = schema;
 
   return (
@@ -533,23 +551,25 @@ export function AutoFormSubmit({ children }: { children?: React.ReactNode }) {
   return <Button type="submit">{children ?? "Submit"}</Button>;
 }
 
-function AutoForm<SchemaType extends z.ZodObject<any, any>>({
-  formSchema,
-  values: valuesProp,
-  onValuesChange: onValuesChangeProp,
-  onSubmit: onSubmitProp,
-  fieldConfig,
-  children,
-  className,
-}: {
-  formSchema: SchemaType;
-  values?: Partial<z.infer<SchemaType>>;
-  onValuesChange?: (values: Partial<z.infer<SchemaType>>) => void;
-  onSubmit?: (values: z.infer<SchemaType>) => void;
-  fieldConfig?: FieldConfig<z.infer<SchemaType>>;
-  children?: React.ReactNode;
-  className?: string;
-}) {
+function AutoForm<SchemaType extends z.ZodObject<any, any>>(
+  {
+    formSchema,
+    values: valuesProp,
+    onValuesChange: onValuesChangeProp,
+    onSubmit: onSubmitProp,
+    fieldConfig,
+    children,
+    className,
+  }: {
+    formSchema: SchemaType;
+    values?: Partial<z.infer<SchemaType>>;
+    onValuesChange?: (values: Partial<z.infer<SchemaType>>) => void;
+    onSubmit?: (values: z.infer<SchemaType>) => void;
+    fieldConfig?: FieldConfig<z.infer<SchemaType>>;
+    children?: React.ReactNode;
+    className?: string;
+  },
+) {
   const defaultValues: DefaultValues<z.infer<typeof formSchema>> =
     getDefaultValues(formSchema);
 

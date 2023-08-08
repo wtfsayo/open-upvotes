@@ -48,12 +48,12 @@ export default function SubmitIdea() {
             inputProps: {
               placeholder:
                 "Please explain your idea as a user: how would you benefit, what problem this will solve",
-              disabled: isLoading,  
+              disabled: isLoading,
             },
           },
         }}
         onSubmit={(data) => {
-          mutate({ ...data, board_path: router?.query.slug as string});
+          mutate({ ...data, board_path: router?.query.slug as string });
         }}
       >
         <DialogFooter>
@@ -61,8 +61,9 @@ export default function SubmitIdea() {
             <Button type="reset">Cancel</Button>
           </DialogTrigger> */}
           <Button type="submit" disabled={isLoading}>
-          { isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Submit Idea</Button>
+            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Submit Idea
+          </Button>
         </DialogFooter>
       </AutoForm>
     </DialogContent>

@@ -19,14 +19,16 @@ import type { Label } from "@prisma/client";
 import { Check, PlusCircle } from "lucide-react";
 import { useState } from "react";
 
-export function AddLabels(props: {
-  title: string;
-  options: any[];
-  added: any[];
-  allowNew?: boolean;
-  handle: any;
-  ideaId: string;
-}) {
+export function AddLabels(
+  props: {
+    title: string;
+    options: any[];
+    added: any[];
+    allowNew?: boolean;
+    handle: any;
+    ideaId: string;
+  },
+) {
   const { options, title, allowNew = false, added, ideaId } = props;
 
   const [selectedValues, setSelectedValues] = useState(added);

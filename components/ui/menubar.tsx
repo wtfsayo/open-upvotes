@@ -200,10 +200,9 @@ const MenubarSeparator = React.forwardRef<
 ));
 MenubarSeparator.displayName = MenubarPrimitive.Separator.displayName;
 
-const MenubarShortcut = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLSpanElement>) => {
+const MenubarShortcut = (
+  { className, ...props }: React.HTMLAttributes<HTMLSpanElement>,
+) => {
   return (
     <span
       className={cn(

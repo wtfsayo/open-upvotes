@@ -30,18 +30,14 @@ export default function Board(props: { path: string }) {
         (idea.title?.toLowerCase().includes(search.toLowerCase()) ||
           idea.description?.toLowerCase().includes(search.toLowerCase()))
       );
-    })
+    }),
   );
 
-  const userSync =  api.user.sync.useMutation();
+  const userSync = api.user.sync.useMutation();
 
-    useEffect(() => {
-
-    
-       () => userSync.mutate();
-    
+  useEffect(() => {
+    () => userSync.mutate();
   });
-  
 
   return (
     <div>
@@ -98,7 +94,7 @@ export default function Board(props: { path: string }) {
             <CardLane
               key={STATUS[index]}
               title={STATUS[index] as string}
-              ideas=  {ideas}
+              ideas={ideas}
             />
           ))}
         </div>

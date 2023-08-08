@@ -9,8 +9,6 @@ export const boardsRouter = createTRPCRouter({
     });
   }),
 
-  
-
   createBoard: protectedProcedure
     .input(z.object({ title: z.string().min(1), path: z.string().min(2) }))
     .mutation(({ input, ctx }) => {
@@ -22,11 +20,11 @@ export const boardsRouter = createTRPCRouter({
         },
       });
     }),
-    getAllBoards: publicProcedure.query(({ ctx }) => {
-      return ctx.prisma.board.findMany({
-        orderBy: {
-          title: "asc",
-        },
-      });
-    })
+  getAllBoards: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.board.findMany({
+      orderBy: {
+        title: "asc",
+      },
+    });
+  }),
 });

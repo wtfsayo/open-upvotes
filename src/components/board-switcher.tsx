@@ -34,7 +34,12 @@ import * as z from "zod";
 import { cn } from "../lib/utils";
 const zForm = z.object({
   title: z.string().nonempty(),
-  path: z.string().refine((val) => val.match("^[a-z0-9]+(?:-[a-z0-9]+)*$") ,"Please provide a valid path"),
+  path: z
+    .string()
+    .refine(
+      (val) => val.match("^[a-z0-9]+(?:-[a-z0-9]+)*$"),
+      "Please provide a valid path",
+    ),
 });
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
@@ -59,15 +64,15 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
     return { title: board.title, path: board.path };
   });
   const [open, setOpen] = React.useState(false);
-  
+
   const [showNewBoardDialog, setShowNewBoardDialog] = React.useState(false);
   const [selectedBoard, setSelectedBoard] = React.useState({
     title: "Default",
     path: "/",
   });
-  const [values, setValues] = React.useState<Partial<z.infer<typeof zForm>>>({});
-  
-
+  const [values, setValues] = React.useState<Partial<z.infer<typeof zForm>>>(
+    {},
+  );
 
   return (
     <Dialog open={showNewBoardDialog} onOpenChange={setShowNewBoardDialog}>
@@ -120,7 +125,7 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
                         "ml-auto h-4 w-4",
                         selectedBoard.path === Board.path
                           ? "opacity-100"
-                          : "opacity-0"
+                          : "opacity-0",
                       )}
                     />
                   </CommandItem>
@@ -152,8 +157,8 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
         </DialogHeader>
         <div>
           <AutoForm
-          values={values}
-          onValuesChange={setValues}
+            values={values}
+            onValuesChange={setValues}
             formSchema={zForm}
             fieldConfig={{
               title: {
@@ -164,7 +169,9 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
               },
               path: {
                 description:
-                    "Your board path will be /" + String(router.basePath) + String(values?.path),
+                  "Your board path will be /" +
+                  String(router.basePath) +
+                  String(values?.path),
                 inputProps: {
                   placeholder: "your-unique-board-path",
                   // pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$",
@@ -172,7 +179,6 @@ export default function BoardSwitcher({ className }: PopoverTriggerProps) {
               },
             }}
             onSubmit={(data) => {
-              
               console.log(data);
               addBoard(data);
             }}

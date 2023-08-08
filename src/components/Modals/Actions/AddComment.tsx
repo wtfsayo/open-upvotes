@@ -6,7 +6,11 @@ import { Loader2 } from "lucide-react";
 import { z } from "zod";
 
 export default function AddComment(props: { ideaId: string }) {
-  const { mutate: createNewComment, isLoading, isSuccess } = api.comments.createComment.useMutation();
+  const {
+    mutate: createNewComment,
+    isLoading,
+    isSuccess,
+  } = api.comments.createComment.useMutation();
   return (
     <div className="relative">
       <AutoForm
@@ -37,7 +41,7 @@ export default function AddComment(props: { ideaId: string }) {
           className="z-2 absolute bottom-2 right-2"
           disabled={isLoading}
         >
-           { isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Submit
         </Button>
       </AutoForm>

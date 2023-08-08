@@ -20,12 +20,14 @@ import { cn } from "@/src/lib/utils";
 import type { Dispatch } from "react";
 import { useEffect, useState } from "react";
 
-export function Filter(props: {
-  title: string;
-  options: string[];
-  allowNew?: boolean;
-  handle: Dispatch<any>;
-}) {
+export function Filter(
+  props: {
+    title: string;
+    options: string[];
+    allowNew?: boolean;
+    handle: Dispatch<any>;
+  },
+) {
   const { options, title, allowNew = false, handle } = props;
 
   const [selectedValues, setSelectedValues] = useState(new Set(options));
