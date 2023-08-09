@@ -9,7 +9,7 @@ export default function Comment(
   },
 ) {
   return (
-    <div className="flex flex-col gap-2 rounded-lg bg-muted/20 p-4 text-sm">
+    <div className="flex flex-col gap-2 rounded-lg bg-muted/30 p-4 text-sm">
       <div className="flex flex-row items-center gap-2">
         <Avatar className="h-[24px] w-[24px]">
           <AvatarImage src={props.imageSrc} alt={props.username} />

@@ -136,7 +136,7 @@ export default function IdeaDetails(props: ideaProps) {
       </AlertDialogHeader>
       <div>
         <p className="py-2 font-semibold">Description</p>
-        <AlertDialogDescription className="h-min-[120px] h-max-[180px] flex flex-col gap-2 overflow-y-auto rounded-lg bg-muted/20 p-4 text-white">
+        <AlertDialogDescription className="h-min-[120px] h-max-[180px] flex flex-col gap-2 overflow-y-auto rounded-lg bg-muted/40 p-4">
           {props.description}
         </AlertDialogDescription>
       </div>
