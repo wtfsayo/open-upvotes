@@ -41,7 +41,7 @@ export default function Board(props: { path: string }) {
 
   return (
     <div>
-      <div className="fixed flex w-full flex-row justify-between border-2   p-4 text-lg">
+      <div className="sticky top-0 z-50 flex h-16 w-full shrink-0 items-center justify-between border-b bg-gradient-to-b from-background/10 via-background/50 to-background/80 px-4 backdrop-blur-xl">
         <BoardSwitcher />
         <div className="flex flex-row gap-2 align-middle">
           {session.data ? (
@@ -58,7 +58,7 @@ export default function Board(props: { path: string }) {
           <ThemeToggle />
         </div>
       </div>
-      <div className="h-full flex-1 flex-col space-y-8  p-8 pt-32 md:flex">
+      <div className="h-full flex-1 flex-col space-y-8 bg-muted/50 p-8 pt-32 md:flex">
         <div className="flex flex-row justify-between">
           <div>
             <h3 className="text-2xl font-bold tracking-tight">

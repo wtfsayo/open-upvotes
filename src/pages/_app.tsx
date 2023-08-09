@@ -14,7 +14,7 @@ const MyApp: AppType<{ session: Session | null }> = (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <SessionProvider session={session}>
         <Toaster />
-        <Component {...pageProps} />
+        <Component {...pageProps}/>
       </SessionProvider>
     </ThemeProvider>
   );
