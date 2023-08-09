@@ -37,7 +37,7 @@ function IdeaCard(props: IdeaCardProps) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Card className="w-full pt-2 rounded-md bg-muted/10 hover:cursor-pointer shadow-none hover:bg-muted/20">
+        <Card className="w-full pt-2 pb-2 relative rounded-md bg-muted/10 hover:cursor-pointer shadow-none hover:bg-muted/20">
           <CardHeader className=" items-start justify-between p-3">
             <CardTitle className="text-md font-medium leading-none">
               {truncatedTitle}
@@ -46,9 +46,9 @@ function IdeaCard(props: IdeaCardProps) {
               {truncatedDescription}
             </CardDescription>
             {Boolean(labels.length) && (
-              <div className="gap-1">
+              <div className="gap-1 m-1">
                 {labels.map((label: Label) => (
-                  <Badge key={label.id} className="px-2.5" variant={"outline"}>
+                  <Badge key={label.id} className="py-1 px-4 text-sm font-light rounded-md" variant={"outline"}>
                     {label.label}
                   </Badge>
                 ))}
@@ -56,10 +56,10 @@ function IdeaCard(props: IdeaCardProps) {
             )}
           </CardHeader>
 
-          <CardContent className="flex flex-row gap-1 p-3">
-            <Button
+          
+          <Button
               variant={"outline"}
-              className="w-full bg-transparent hover:bg-muted/40"
+              className="w-12 absolute top-2 right-2 h-16 flex-col bg-muted/30 hover:bg-muted/40"
               onClick={handleButtonClick}
             >
               <svg
@@ -75,7 +75,7 @@ function IdeaCard(props: IdeaCardProps) {
               </svg>
               {upvotes.length}
             </Button>
-          </CardContent>
+          
         </Card>
       </AlertDialogTrigger>
 

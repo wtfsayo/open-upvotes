@@ -76,3 +76,20 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+@layer utilities {
+  .bg-custom {
+    @apply bg-[url('/bg.png')];
+    background-position: top;
+  }
+  .spacer-x {
+    margin-left: var(--spacer);
+    margin-right: var(--spacer);
+  }
+
+  .spacer-y {
+    margin-top: var(--spacer);
+    margin-bottom: var(--spacer);
+  }
+}
