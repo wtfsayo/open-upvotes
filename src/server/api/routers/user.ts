@@ -1,30 +1,36 @@
-import { z } from "zod";
-
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import type { User } from "@prisma/client";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const userRouter = createTRPCRouter({
   sync: protectedProcedure.mutation(({ ctx }) => {
     if (ctx?.session && ctx.session.user) {
-      const { id, provider, imageSrc, username, address } = ctx.session
-        ?.user as User;
+      const { id, provider, imageSrc, username, address } = ctx.session?.user as User;
       (async () => {
-        const userExists = await ctx.prisma.user.findUnique({ where: { id } });
-
-        if (userExists) {
-          await ctx.prisma.user.update({
-            where: { id },
-            data: { id, provider, imageSrc, username, address },
-          });
-        } else {
-          await ctx.prisma.user.create({
-            data: { id, provider, imageSrc, username, address },
-          });
-        }
+        await ctx.prisma.user.upsert({
+          where: { id },
+          update: { provider, imageSrc, username, address },
+          create: { id, provider, imageSrc, username, address },
+        });
       })().catch((error) => {
         console.error("Error in callback:", error);
         // Handle the error appropriately
       });
     }
   }),
+  get: protectedProcedure.query(({ ctx }) => {
+    if (ctx?.session && ctx.session.user) { 
+      return ctx.prisma.user.findUnique({
+        where: { id: ctx.session.user.id },
+        include: {
+          ideas: true,
+          comments: true,
+          upvotes: true,
+          adminBoards: true,
+          moderatorBoards: true,
+          viewerBoards: true,
+        }
+        });
+    }
+  }
+  ),
 });

@@ -1,15 +1,14 @@
 import { z } from "zod";
-
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { randomUUID } from "crypto";
 
 export const commentsRouter = createTRPCRouter({
   getByIdea: publicProcedure
-    .input(z.object({ idea_id: z.string() }))
+    .input(z.object({ ideaId: z.string() }))
     .query(({ input, ctx }) => {
       return ctx.prisma.comment.findMany({
         include: { user: true },
-        where: { idea_id: input.idea_id },
+        where: { idea_id: input.ideaId },
         orderBy: {
           createdAt: "desc",
         },
@@ -19,7 +18,7 @@ export const commentsRouter = createTRPCRouter({
   createComment: protectedProcedure
     .input(
       z.object({
-        idea_id: z.string(),
+        ideaId: z.string(),
         comment: z.string().min(1),
         time: z.date(),
       }),
@@ -28,9 +27,12 @@ export const commentsRouter = createTRPCRouter({
       return ctx.prisma.comment.create({
         data: {
           id: randomUUID(),
-          ...input,
+          comment: input.comment,
+          time: input.time,
+          idea_id: input.ideaId,
           user_id: String(ctx.session.user.id),
         },
       });
     }),
+
 });

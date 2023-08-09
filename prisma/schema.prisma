@@ -8,18 +8,18 @@ datasource db {
 }
 
 model Board {
-  id         String   @id @default(uuid())
-  title      String
-  path       String   @unique @default("/")
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now())
-  ideas      Idea[]
+  id        String   @id @default(uuid())
+  title     String
+  path      String   @unique @default("/")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  ideas     Idea[]
 
-  admin      User     @relation("admin", fields: [admin_id], references: [id])
-  admin_id   String
+  admin    User   @relation("admin", fields: [admin_id], references: [id])
+  admin_id String
 
   moderators BoardModerator[]
-  viewers    BoardViewer[] 
+  viewers    BoardViewer[]
 }
 
 model Idea {
@@ -73,42 +73,42 @@ model Comment {
 }
 
 model BoardModerator {
-  boardId    String
-  userId     String
-  board      Board  @relation(fields: [boardId], references: [id])
-  user       User   @relation(fields: [userId], references: [id])
+  board_id String
+  user_id  String
+  board   Board  @relation(fields: [board_id], references: [id])
+  user    User   @relation(fields: [user_id], references: [id])
 
-  @@id([boardId, userId])
+  @@id([board_id, user_id])
 }
 
 model BoardViewer {
-  boardId    String
-  userId     String
-  board      Board  @relation(fields: [boardId], references: [id])
-  user       User   @relation(fields: [userId], references: [id])
+  board_id String
+  user_id  String
+  board   Board  @relation(fields: [board_id], references: [id])
+  user    User   @relation(fields: [user_id], references: [id])
 
-  @@id([boardId, userId])
+  @@id([board_id, user_id])
 }
 
 model User {
-  id              String  @id @default(uuid())
-  username        String
-  provider        String?
-  address         String?
-  imageSrc        String?
+  id       String  @id @default(uuid())
+  username String
+  provider String?
+  address  String?
+  imageSrc String?
 
-  ideas           Idea[]
-  labels          Label[]
-  upvotes         Upvote[]
-  comments        Comment[]
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @default(now())
+  ideas     Idea[]
+  labels    Label[]
+  upvotes   Upvote[]
+  comments  Comment[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
 
-  adminBoards     Board[] @relation("admin")
+  adminBoards Board[] @relation("admin")
 
   moderatorBoards BoardModerator[]
 
-  viewerBoards    BoardViewer[]
+  viewerBoards BoardViewer[]
 }
 
 enum IdeaStatus {

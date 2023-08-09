@@ -1,37 +1,36 @@
 import { z } from "zod";
-
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const upvotesRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(z.object({ idea_id: z.string() }))
+    .input(
+      z.object({ ideaId: z.string(), userId: z.string() })
+    )
     .mutation(({ input, ctx }) => {
       return ctx.prisma.upvote.create({
-        data: { idea_id: input.idea_id, user_id: String(ctx.session.user.id) },
+        data: { idea_id: input.ideaId, user_id: input.userId },
       });
     }),
 
   delete: protectedProcedure
-    .input(z.object({ idea_id: z.string() }))
-    .mutation(({ input, ctx }) => {
-      if (
-        ctx.prisma.upvote.findUnique({
+    .input(
+      z.object({ ideaId: z.string(), userId: z.string() })
+    )
+    .mutation(async ({ input, ctx }) => {
+      try {
+        return await ctx.prisma.upvote.delete({
           where: {
             idea_id_user_id: {
-              idea_id: input.idea_id,
-              user_id: String(ctx.session.user.id),
-            },
-          },
-        }) != null
-      ) {
-        return ctx.prisma.upvote.delete({
-          where: {
-            idea_id_user_id: {
-              idea_id: input.idea_id,
-              user_id: String(ctx.session.user.id),
+              idea_id: input.ideaId,
+              user_id: input.userId,
             },
           },
         });
+      } catch (error) {
+        if (error?.code === 'P2025') {
+          throw new Error("Upvote not found");
+        }
+        throw error;
       }
     }),
 });

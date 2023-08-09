@@ -7,35 +7,32 @@ export const ideaRouter = createTRPCRouter({
   idea: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(({ input, ctx }) => {
-      return ctx.prisma.idea.findUnique({ where: { id: input.id } });
+      return ctx.prisma.idea.findUnique({ 
+        where: { id: input.id },
+        include: { labels: true, upvotes: true, comments: true },
+       });
     }),
 
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.idea.findMany({
-      orderBy: {
-        status: "asc",
-      },
-      include: { upvotes: true, labels: true },
+      orderBy: { createdAt: "desc" },
+      include: { labels: true, upvotes: true, board: true, user: true },
     });
   }),
 
   getAllByBoard: publicProcedure
-    .input(z.object({ board_path: z.string() }))
+    .input(z.object({ boardPath: z.string() }))
     .query(async ({ ctx, input }) => {
-      const board = await ctx.prisma.board.findUnique({
-        where: { path: input.board_path },
-      });
+      const board = await ctx.prisma.board.findUnique({ where: { path: input.boardPath } });
 
       if (!board) {
-        return new Error("Board not found");
+        throw new Error("Board not found");
       }
 
       return ctx.prisma.idea.findMany({
-        where: { board_id: board?.id },
-        orderBy: {
-          status: "asc",
-        },
-        include: { upvotes: true, labels: true },
+        where: { board_id: board.id },
+        orderBy: { createdAt: "desc", status: "asc" },
+        include: { upvotes: true, labels: true, user: true },
       });
     }),
 
@@ -44,16 +41,15 @@ export const ideaRouter = createTRPCRouter({
       z.object({
         title: z.string().min(1),
         description: z.string().min(1),
-        board_path: z.string().min(1),
+        boardPath: z.string().min(1),
+        userId: z.string(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const board = await ctx.prisma.board.findUnique({
-        where: { path: input.board_path },
-      });
+      const board = await ctx.prisma.board.findUnique({ where: { path: input.boardPath } });
 
       if (!board) {
-        return new Error("Board not found");
+        throw new Error("Board not found");
       }
 
       return ctx.prisma.idea.create({
@@ -61,8 +57,8 @@ export const ideaRouter = createTRPCRouter({
           title: input.title,
           status: IdeaStatus.SUGGESTED,
           description: input.description,
-          board: { connect: { id: board.id } },
-          user: { connect: { id: ctx.session.user.id } },
+          board_id: board.id,
+          user_id: input.userId,
         },
       });
     }),
@@ -77,37 +73,39 @@ export const ideaRouter = createTRPCRouter({
     }),
 
   addLabel: protectedProcedure
-    .input(z.object({ id: z.string(), label_id: z.string() }))
+    .input(z.object({ ideaId: z.string(), labelId: z.string() }))
     .mutation(({ input, ctx }) => {
       return ctx.prisma.idea.update({
-        where: { id: input.id },
+        where: { id: input.ideaId },
         data: {
           labels: {
-            connect: [{ id: input.label_id }],
+            connect: [{ id: input.labelId }],
           },
         },
       });
     }),
+    
   removeLabel: protectedProcedure
-    .input(z.object({ id: z.string(), label_id: z.string() }))
+    .input(z.object({ ideaId: z.string(), labelId: z.string() }))
     .mutation(({ input, ctx }) => {
       return ctx.prisma.idea.update({
-        where: { id: input.id },
+        where: { id: input.ideaId },
         data: {
           labels: {
-            disconnect: [{ id: input.label_id }],
+            disconnect: [{ id: input.labelId }],
           },
         },
       });
     }),
+
   updateLabels: protectedProcedure
-    .input(z.object({ id: z.string(), label_ids: z.array(z.string()) }))
+    .input(z.object({ ideaId: z.string(), labelIds: z.array(z.string()) }))
     .mutation(({ input, ctx }) => {
       return ctx.prisma.idea.update({
-        where: { id: input.id },
+        where: { id: input.ideaId },
         data: {
           labels: {
-            set: input.label_ids.map((id) => ({ id })),
+            set: input.labelIds.map((id) => ({ id })),
           },
         },
       });

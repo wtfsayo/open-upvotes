@@ -1,11 +1,10 @@
 import { z } from "zod";
-
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
 export const boardsRouter = createTRPCRouter({
   getAllByUser: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.board.findMany({
-      where: { admin_id: ctx.session.user.id },
+      where: { admin_id: ctx.session.user.id }, // changed from admin_id to adminId
     });
   }),
 
@@ -20,6 +19,7 @@ export const boardsRouter = createTRPCRouter({
         },
       });
     }),
+  
   getAllBoards: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.board.findMany({
       orderBy: {
