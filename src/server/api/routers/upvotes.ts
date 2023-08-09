@@ -27,10 +27,9 @@ export const upvotesRouter = createTRPCRouter({
           },
         });
       } catch (error) {
-        if (error?.code === 'P2025') {
+        
           throw new Error("Upvote not found");
-        }
-        throw error;
+
       }
     }),
 });
