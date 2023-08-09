@@ -1,5 +1,5 @@
 import { type GetServerSidePropsContext } from "next";
-import type { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions} from "next-auth";
 import { getServerSession } from "next-auth";
 
 import { authOptions } from "../pages/api/auth/[...nextauth]";
@@ -14,12 +14,10 @@ import { authOptions } from "../pages/api/auth/[...nextauth]";
  * @see https://next-auth.js.org/configuration/nextjs
  */
 
-export const getServerAuthSession = async (
-  ctx: {
-    req: GetServerSidePropsContext["req"];
-    res: GetServerSidePropsContext["res"];
-  },
-) => {
+export const getServerAuthSession = async (ctx: {
+  req: GetServerSidePropsContext["req"];
+  res: GetServerSidePropsContext["res"];
+}) => {
   return await getServerSession(
     ctx.req,
     ctx.res,

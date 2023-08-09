@@ -31,7 +31,6 @@ export const ideaRouter = createTRPCRouter({
 
       return ctx.prisma.idea.findMany({
         where: { board_id: board.id },
-        orderBy: { createdAt: "desc", status: "asc" },
         include: { upvotes: true, labels: true, user: true },
       });
     }),

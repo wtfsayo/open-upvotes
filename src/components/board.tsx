@@ -35,9 +35,9 @@ export default function Board(props: { path: string }) {
 
   const userSync = api.user.sync.useMutation();
 
-  useEffect(() => {
-    () => userSync.mutate();
-  });
+  // useEffect(() => {
+  //   () => userSync.mutate();
+  // });
 
   return (
     <div className="">
