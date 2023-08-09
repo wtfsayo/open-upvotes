@@ -37,7 +37,7 @@ function IdeaCard(props: IdeaCardProps) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Card className="w-full pt-2 hover:cursor-pointer hover:bg-secondary/40">
+        <Card className="w-full pt-2 rounded-md bg-muted/10 hover:cursor-pointer hover:bg-muted/20">
           <CardHeader className=" items-start justify-between p-3">
             <CardTitle className="text-md font-medium leading-none">
               {truncatedTitle}
@@ -59,7 +59,7 @@ function IdeaCard(props: IdeaCardProps) {
           <CardContent className="flex flex-row gap-1 p-3">
             <Button
               variant={"outline"}
-              className="w-full bg-transparent"
+              className="w-full bg-transparent hover:bg-muted/40"
               onClick={handleButtonClick}
             >
               <svg

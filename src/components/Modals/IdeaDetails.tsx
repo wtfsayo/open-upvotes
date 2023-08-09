@@ -64,7 +64,7 @@ export default function IdeaDetails(props: ideaProps) {
       <AlertDialogHeader>
         <AlertDialogTitle className="flex flex-row justify-between">
           <div className="flex flex-col gap-2">
-            <Badge className="w-max rounded-md">{props.id}</Badge>
+            <Badge className="w-max rounded-md">{props.id.substring(0,6).toUpperCase()}</Badge>
             {props.title}
           </div>
 
@@ -136,7 +136,7 @@ export default function IdeaDetails(props: ideaProps) {
       </AlertDialogHeader>
       <div>
         <p className="py-2 font-semibold">Description</p>
-        <AlertDialogDescription className="h-min-[120px] h-max-[180px] flex flex-col gap-2 overflow-y-auto rounded-lg bg-secondary/75 p-4 text-sm">
+        <AlertDialogDescription className="h-min-[120px] h-max-[180px] flex flex-col gap-2 overflow-y-auto rounded-lg bg-muted/20 p-4 text-white">
           {props.description}
         </AlertDialogDescription>
       </div>
