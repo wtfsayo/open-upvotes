@@ -7,7 +7,7 @@ export default function CardLane(props: { title: string; ideas: ideaProps[] }) {
   const { title, ideas } = props;
 
   return (
-    <Card className="flex h-full w-full flex-col space-y-4 overflow-y-auto  rounded-lg border bg-background p-4">
+    <Card className="flex h-full w-full flex-col space-y-4 overflow-y-auto  rounded-lg shadow-none border bg-background p-4">
       <p className="leading-normal text-muted-foreground">
         {title}
       </p>
