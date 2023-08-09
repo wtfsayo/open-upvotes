@@ -80,8 +80,10 @@
 
 @layer utilities {
   .bg-custom {
-    @apply bg-[url('/bg.png')];
-    background-position: top;
+    @apply bg-[url('/bg2.png')];
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-size: auto;
   }
   .spacer-x {
     margin-left: var(--spacer);

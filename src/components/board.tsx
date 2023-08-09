@@ -58,21 +58,21 @@ export default function Board(props: { path: string }) {
           <ThemeToggle />
         </div>
       </div>
-      <div className="h-full flex-1 flex-col space-y-8 bg-custom min-h-screen
+      <div className="h-full flex-1 flex-col space-y-8  bg-custom min-h-screen 
        p-8 pt-16  md:flex">
-        <div className="flex flex-row justify-between">
-          <div>
-            <h3 className="text-2xl font-bold tracking-tight">
+        <div className="flex flex-row justify-between  w-full">
+          <div className="max-w-['50%'] mr-8">
+            <h3 className="text-2xl font-bold tracking-tight ">
               Here are the ideas we are working on
             </h3>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground max-w-['50%']">
               Upvote or give new ideas to work on
             </p>
           </div>
 
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="w-max">Submit Idea</Button>
+              <Button className="min-w-max ">Submit Idea</Button>
             </DialogTrigger>
             <SubmitIdea />
           </Dialog>
