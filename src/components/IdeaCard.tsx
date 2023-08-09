@@ -13,7 +13,7 @@ import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 import { useMemo } from "react";
 import IdeaDetails from "./Modals/IdeaDetails";
 
-const MAX_TITLE_LENGTH = 60;
+const MAX_TITLE_LENGTH = 160;
 const MAX_DESCRIPTION_LENGTH = 100;
 
 type IdeaCardProps = Idea & { upvotes: Upvote[]; labels: Label[] };
