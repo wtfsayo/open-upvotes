@@ -1,10 +1,17 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
+
+TimeAgo.addDefaultLocale(en);
+
+const timeAgo = new TimeAgo('en-US');
+
 
 export default function Comment(
   props: {
     username: string;
     comment: string;
-    date: string;
+    date: Date;
     imageSrc?: string;
   },
 ) {
@@ -16,7 +23,7 @@ export default function Comment(
           <AvatarFallback>{props.username.substring(0, 2)}</AvatarFallback>
         </Avatar>
         <p className="font-medium leading-none">{props.username + "\t"}</p>
-        <p className=" text-muted-foreground">{props.date}</p>
+        <p className=" text-muted-foreground">{timeAgo.format(props.date)}</p>
       </div>
       {props.comment}
     </div>

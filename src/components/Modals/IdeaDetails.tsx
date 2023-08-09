@@ -146,7 +146,7 @@ export default function IdeaDetails(props: ideaProps) {
           {comments?.map((comment) => (
             <Comment
               username={comment.user.username}
-              date={comment.time.toLocaleString()}
+              date={comment.time}
               comment={comment.comment}
               key={comment.time.toLocaleString()}
               imageSrc={comment.user.imageSrc?.toString()}
