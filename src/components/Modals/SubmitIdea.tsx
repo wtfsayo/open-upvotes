@@ -53,7 +53,9 @@ export default function SubmitIdea() {
           },
         }}
         onSubmit={(data) => {
-          mutate({ ...data, board_path: router?.query.slug as string });
+          mutate({
+            ...data, boardPath: router?.query.slug as string,
+          });
         }}
       >
         <DialogFooter>

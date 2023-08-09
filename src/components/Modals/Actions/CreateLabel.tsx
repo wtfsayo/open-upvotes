@@ -45,7 +45,7 @@ export default function CreateLabel() {
               },
             }}
             onSubmit={(data) => {
-              createLabel(data);
+              createLabel({...data});
             }}
           >
             <DialogFooter>

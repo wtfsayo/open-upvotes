@@ -29,7 +29,7 @@ export default function AddComment(props: { ideaId: string }) {
         }}
         onSubmit={(data) => {
           createNewComment({
-            idea_id: props.ideaId,
+            ideaId: props.ideaId,
             comment: data.comment,
             time: new Date(),
           });

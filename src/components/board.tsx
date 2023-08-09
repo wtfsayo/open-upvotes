@@ -18,7 +18,7 @@ export default function Board(props: { path: string }) {
   const session = useSession();
 
   const { data: ideas } = api.idea.getAllByBoard.useQuery({
-    board_path: props.path,
+    boardPath: props.path,
   });
   const [search, setSearch] = useState("");
   const [Filterd, setFilterd] = useState(STATUS);

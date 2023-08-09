@@ -54,8 +54,8 @@ export function AddLabels(
   const handleUpdateLabels = () => {
     // handle here
     mutate({
-      id: ideaId,
-      label_ids: selectedValues.map((value: Label) => value.id),
+      ideaId: ideaId,
+      labelIds: selectedValues.map((value: Label) => value.id),
     });
     setIsChanged(false);
   };

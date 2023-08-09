@@ -42,7 +42,6 @@ export const ideaRouter = createTRPCRouter({
         title: z.string().min(1),
         description: z.string().min(1),
         boardPath: z.string().min(1),
-        userId: z.string(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -58,7 +57,7 @@ export const ideaRouter = createTRPCRouter({
           status: IdeaStatus.SUGGESTED,
           description: input.description,
           board_id: board.id,
-          user_id: input.userId,
+          user_id: ctx.session.user.id
         },
       });
     }),

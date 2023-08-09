@@ -32,6 +32,7 @@ import Comment from "./sub/Comment";
 
 export default function IdeaDetails(props: ideaProps) {
   const { labels } = props;
+  const session = useSession();
   const { data: Alllabels } = api.labels.getAll.useQuery();
   const {
     mutate: Upvote,
@@ -46,7 +47,7 @@ export default function IdeaDetails(props: ideaProps) {
   const { mutate: updateStatus, isLoading: isUpdatingStatus } =
     api.idea.updateStatus.useMutation();
   const { data: comments } = api.comments.getByIdea.useQuery({
-    idea_id: props.id,
+    ideaId: props.id,
   });
   const { data: sessionData } = useSession();
   const containsUpvote = props.upvotes?.some(
@@ -161,8 +162,8 @@ export default function IdeaDetails(props: ideaProps) {
           variant={containsUpvote ? "outline" : "default"}
           onClick={() => {
             containsUpvote
-              ? deleteUpvote({ idea_id: props.id })
-              : Upvote({ idea_id: props.id });
+              ? deleteUpvote({ ideaId: props.id})
+              : Upvote({ ideaId: props.id});
           }}
           disabled={isUpvoting || isUnUpvoting}
         >
