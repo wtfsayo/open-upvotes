@@ -1,5 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -8,16 +8,18 @@ datasource db {
 }
 
 model Board {
-  id        String   @id @default(uuid())
-  title     String
-  path      String   @default("/") @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  id         String   @id @default(uuid())
+  title      String
+  path       String   @unique @default("/")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+  ideas      Idea[]
 
-  ideas Idea[]
+  admin      User     @relation("admin", fields: [admin_id], references: [id])
+  admin_id   String
 
-  admin    User   @relation(fields: [admin_id], references: [id])
-  admin_id String
+  moderators BoardModerator[]
+  viewers    BoardViewer[] 
 }
 
 model Idea {
@@ -70,20 +72,43 @@ model Comment {
   user_id   String
 }
 
-model User {
-  id       String  @id @default(cuid())
-  username String
-  provider String?
-  address  String?
-  imageSrc String?
-  boards   Board[]
+model BoardModerator {
+  boardId    String
+  userId     String
+  board      Board  @relation(fields: [boardId], references: [id])
+  user       User   @relation(fields: [userId], references: [id])
 
-  ideas     Idea[]
-  labels    Label[]
-  upvotes   Upvote[]
-  comments  Comment[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
+  @@id([boardId, userId])
+}
+
+model BoardViewer {
+  boardId    String
+  userId     String
+  board      Board  @relation(fields: [boardId], references: [id])
+  user       User   @relation(fields: [userId], references: [id])
+
+  @@id([boardId, userId])
+}
+
+model User {
+  id              String  @id @default(uuid())
+  username        String
+  provider        String?
+  address         String?
+  imageSrc        String?
+
+  ideas           Idea[]
+  labels          Label[]
+  upvotes         Upvote[]
+  comments        Comment[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @default(now())
+
+  adminBoards     Board[] @relation("admin")
+
+  moderatorBoards BoardModerator[]
+
+  viewerBoards    BoardViewer[]
 }
 
 enum IdeaStatus {
