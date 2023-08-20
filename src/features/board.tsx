@@ -1,5 +1,5 @@
 import { Drawer } from "@medusajs/ui";
-import CardLane from "@/src/features/CardLane";
+import CardLane from "@/src/features/idea-card-lane";
 import { Filter } from "@/components/ui/Filter";
 import SubmitIdea from "@/src/features/Modals/Ideas/create-idea";
 import { UserNav } from "@/components/ui/user-nav";
@@ -82,7 +82,8 @@ export default function Board(props: { path: string }) {
         </div>
         <div className="flex gap-2 max-xl:flex-wrap">
           {filteredIdeas?.map((ideas, index) => (
-            <CardLane
+            
+            (STATUS[index]!= 'ARCHIVED') && <CardLane
               key={STATUS[index]}
               title={STATUS[index] as string}
               ideas={ideas}

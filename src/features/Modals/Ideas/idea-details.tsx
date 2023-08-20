@@ -7,17 +7,22 @@ import { STATUS } from "@/src/utils/const";
 import { ChevronDown, Loader2 } from "lucide-react";
 import { useIdeas } from "./hooks";
 
-import AddComment from "./AddComment";
-import { AddLabels } from "./UpdateLabels";
+import AddComment from "./add-comment";
+import { AddLabels } from "../Labels/update-labels";
 import Comment from "../sub/Comment";
+import type { Label } from '@prisma/client';
+import { useSession } from "next-auth/react";
 
-export default function IdeaDetails({id: string}) {
-  
-  const { getIdea } = useIdeas();
-  
-  const idea = getIdea(id as string);
 
-  const { updateIdeaStatus, updatingIdeaStatus } = useIdeas();
+export default function IdeaDetails(id:string) {
+  
+  const { getIdea, updateIdeaStatus, updatingIdeaStatus } = useIdeas();
+  
+  const idea = getIdea(id);
+  const session = useSession();
+
+  const currentUserUpvoted = idea?.upvotes.some(upvote => upvote.user_id === session.data?.user?.id)
+  
 
   return (
     <Drawer>
@@ -78,17 +83,17 @@ export default function IdeaDetails({id: string}) {
             <Badge key={label.id}>{label.label}</Badge>
           ))}
 
-          {Alllabels && (
+          {idea?.labels && (
             <AddLabels
               title="Labels"
-              options={Array.from(Alllabels)}
-              added={Array.from(labels)}
+              options={Array.from(idea?.labels)}
+              added={Array.from(idea?.labels)}
               handle={{
                 add: addLabel,
                 remove: removeLabel,
                 create: createLabel,
               }}
-              ideaId={props.id}
+              ideaId={id}
             />
           )}
         </div>
@@ -96,19 +101,19 @@ export default function IdeaDetails({id: string}) {
       <div>
         <p className="py-2 font-semibold">Description</p>
         <Drawer.Description className="h-min-[120px] h-max-[180px] flex flex-col gap-2 overflow-y-auto rounded-lg bg-muted/40 p-4">
-          {props.description}
+          {idea?.description}
         </Drawer.Description>
       </div>
       <div>
-        <AddComment ideaId={props.id} />
+        <AddComment ideaId={id} />
         <div className="flex h-[240px]  flex-col gap-2 overflow-y-auto">
           {idea?.comments?.map((comment) => (
             <Comment
-              username={comment?.user?.username}
+              username={comment.user_id}
               date={comment.time}
               comment={comment.comment}
               key={comment.time.toLocaleString()}
-              imageSrc={comment?.user?.imageSrc?.toString()}
+              imageSrc={comment.user_id}
             />
           ))}
         </div>
@@ -118,7 +123,7 @@ export default function IdeaDetails({id: string}) {
         <Drawer.Close>Close</Drawer.Close>
         <Button
           onClick={() => {
-            containsUpvote
+            currentUserUpvoted
               ? deleteUpvote({ ideaId: props.id })
               : Upvote({ ideaId: props.id });
           }}
@@ -139,7 +144,7 @@ export default function IdeaDetails({id: string}) {
           ) : (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           )}
-          {containsUpvote ? "Upvoted" : "Upvote"} ({props.upvotes?.length})
+          {currentUserUpvoted ? "Upvoted" : "Upvote"} ({idea?.upvotes?.length})
         </Button>
       </Drawer.Footer>
     </Drawer>

@@ -1,7 +1,7 @@
-import { Container } from "@medusajs/ui";
+import { Badge, Container } from "@medusajs/ui";
 import type { ideaProps } from "@/src/utils/const";
 import React from "react";
-import IdeaCard from "./IdeaCard";
+import IdeaCard from "./idea-card";
 
 export default function ContainerLane(
   props: {
@@ -13,12 +13,12 @@ export default function ContainerLane(
 
   return (
     <Container className="flex h-max w-full flex-col space-y-4 overflow-y-auto  rounded-lg border bg-background p-4 shadow-none">
-      <p className="leading-normal text-muted-foreground">{title}</p>
+      <Badge color={'blue'} className="w-max">{title}</Badge>
 
       {Boolean(ideas.length) &&
         ideas?.map((idea: ideaProps) => (
           <React.Fragment key={idea.id}>
-            <IdeaCard {...idea} />
+            <IdeaCard {...idea} id={idea.id} />
           </React.Fragment>
         ))}
       {!ideas.length && (
