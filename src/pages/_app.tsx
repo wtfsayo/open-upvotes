@@ -3,7 +3,7 @@ import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { Toaster } from "@medusajs/ui"
 
-import { ThemeProvider } from "../components/theme-provider";
+import { ThemeProvider } from "../../components/ui/theme-provider";
 import "src/styles/globals.css";
 import { api } from "../utils/api";
 

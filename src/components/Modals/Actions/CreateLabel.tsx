@@ -1,18 +1,9 @@
 "use client";
 import AutoForm from "@/components/ui/auto-form";
 import { Button } from "@medusajs/ui";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { api } from "@/src/utils/api";
 import * as z from "zod";
-
+import { Drawer } from "@medusajs/ui";
 const zForm = z.object({
   label: z.string(),
 });
@@ -20,20 +11,16 @@ const zForm = z.object({
 export default function CreateLabel() {
   const { mutate: createLabel } = api.labels.createLabel.useMutation();
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button className="gap-2">
-          Add Label
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create Board</DialogTitle>
-          <DialogDescription>
+    
+    <Drawer>
+        <Drawer.Content>
+          <Drawer.Header>
+          <Drawer.Title>Create Board</Drawer.Title>
+          <Drawer.Description>
             Add a new Board to manage your tasks and ideas.
-          </DialogDescription>
-        </DialogHeader>
-        <div>
+          </Drawer.Description>
+        </Drawer.Header>
+        
           <AutoForm
             formSchema={zForm}
             fieldConfig={{
@@ -48,15 +35,12 @@ export default function CreateLabel() {
               createLabel({...data});
             }}
           >
-            <DialogFooter>
-              <Button onClick={() => console.log(false)}>
-                Cancel
-              </Button>
-              <Button type="submit">Continue</Button>
-            </DialogFooter>
+            <Button type="submit">Create Label</Button>
           </AutoForm>
-        </div>
-      </DialogContent>
-    </Dialog>
+        
+      </Drawer.Content>
+    </Drawer>
+      
+        
   );
 }
