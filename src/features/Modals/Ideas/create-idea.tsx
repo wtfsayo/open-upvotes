@@ -4,7 +4,7 @@ import { Button, FocusModal, Heading } from "@medusajs/ui";
 import AutoForm from "@/components/ui/auto-form";
 import { Loader2 } from "lucide-react";
 import * as z from "zod";
-import { api } from "@/src/utils/api";
+import { useIdeas } from "./hooks";
 
 const zForm = z.object({
   title: z.string().nonempty(),
@@ -13,7 +13,7 @@ const zForm = z.object({
 
 export default function SubmitIdea() {
   const router = useRouter();
-  const { mutate, isLoading, isSuccess } = api.idea.submit.useMutation();
+  const { submitIdea, submittingIdea:isLoading } = useIdeas();
   const [values, setValues] = useState<Partial<z.infer<typeof zForm>>>({});
 
   const formRef = useRef<HTMLButtonElement>(null);
@@ -57,7 +57,7 @@ export default function SubmitIdea() {
                 },
               }}
               onSubmit={(data) => {
-                mutate({
+                submitIdea({
                   ...data,
                   boardPath: router?.query.slug as string ?? 
                   '/',

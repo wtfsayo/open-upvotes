@@ -3,70 +3,45 @@ import { Badge } from "@medusajs/ui";
 import { Button } from "@medusajs/ui";
 import { DropdownMenu } from "@medusajs/ui";
 import { Separator } from "@/components/ui/separator";
-import { api } from "@/src/utils/api";
-import type { ideaProps } from "@/src/utils/const";
 import { STATUS } from "@/src/utils/const";
-import type { Label, Upvote } from "@prisma/client";
 import { ChevronDown, Loader2 } from "lucide-react";
-import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useIdeas } from "./hooks";
 
-import AddComment from "./Ideas/AddComment";
-import { AddLabels } from "./Ideas/UpdateLabels";
-import Comment from "./sub/Comment";
+import AddComment from "./AddComment";
+import { AddLabels } from "./UpdateLabels";
+import Comment from "../sub/Comment";
 
-export default function IdeaDetails(props: ideaProps) {
-  const { labels } = props;
-  const { data: Alllabels } = api.labels.getAll.useQuery();
-  const {
-    mutate: Upvote,
-    isSuccess: isUpvoted,
-    isLoading: isUpvoting,
-  } = api.upvote.create.useMutation();
-  const {
-    mutate: deleteUpvote,
-    isSuccess: isUnUpvoted,
-    isLoading: isUnUpvoting,
-  } = api.upvote.delete.useMutation();
-  const { mutate: updateStatus, isLoading: isUpdatingStatus } =
-    api.idea.updateStatus.useMutation();
-  const { data: comments } = api.comments.getByIdea.useQuery({
-    ideaId: props.id,
-  });
-  const { data: sessionData } = useSession();
-  const containsUpvote = props.upvotes?.some(
-    (upvote: Upvote) => upvote.user_id == sessionData?.user?.id,
-  );
+export default function IdeaDetails({id: string}) {
+  
+  const { getIdea } = useIdeas();
+  
+  const idea = getIdea(id as string);
 
-  const { mutate: addLabel } = api.idea.addLabel.useMutation();
-  const { mutate: removeLabel } = api.idea.removeLabel.useMutation();
-  const { mutate: createLabel } = api.labels.createLabel.useMutation();
-
-  const [ideaStatus, setIdeaStatus] = useState(props.status);
+  const { updateIdeaStatus, updatingIdeaStatus } = useIdeas();
 
   return (
     <Drawer>
       <Drawer.Header>
         <Drawer.Title className="flex flex-row justify-between">
           <div className="flex flex-col gap-2">
-            <Badge className="w-max rounded-md">
-              {props.id.substring(0, 6).toUpperCase()}
+            <Badge>
+              {idea?.id}
             </Badge>
-            {props.title}
+            {idea?.title}
           </div>
 
           <div>
             <DropdownMenu>
               <DropdownMenu.Trigger asChild>
                 <Button
-                  variant="secondary"
+            
                   className="gap-2 bg-blue-700 px-2 font-medium text-white hover:bg-blue-800"
-                  disabled={isUpdatingStatus}
+                  disabled={updatingIdeaStatus}
                 >
-                  {isUpdatingStatus && (
+                  {updatingIdeaStatus && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   )}
-                  {ideaStatus}
+                  {idea?.status || "Status"}
 
                   <Separator orientation="vertical" className="h-[20px] " />
 
@@ -81,15 +56,14 @@ export default function IdeaDetails(props: ideaProps) {
               >
                 <DropdownMenu.Label>Status</DropdownMenu.Label>
                 <DropdownMenu.Separator />
-                {STATUS.map((status, id) => (
+                {STATUS.map((status) => (
                   <DropdownMenu.CheckboxItem
                     key={status}
                     checked={Boolean(
-                      status.toLowerCase() == ideaStatus.toLowerCase(),
+                      status.toLowerCase() == idea?.status?.toLowerCase(),
                     )}
                     onClick={() => {
-                      setIdeaStatus(status);
-                      updateStatus({ id: props.id, status });
+                      updateIdeaStatus({ id: idea?.id as string, status });
                     }}
                   >
                     {status}
@@ -100,7 +74,7 @@ export default function IdeaDetails(props: ideaProps) {
           </div>
         </Drawer.Title>
         <div className="flex-row-wrap flex flex-row gap-1">
-          {labels.map((label: Label) => (
+          {idea?.labels.map((label: Label) => (
             <Badge key={label.id}>{label.label}</Badge>
           ))}
 
@@ -128,13 +102,13 @@ export default function IdeaDetails(props: ideaProps) {
       <div>
         <AddComment ideaId={props.id} />
         <div className="flex h-[240px]  flex-col gap-2 overflow-y-auto">
-          {comments?.map((comment) => (
+          {idea?.comments?.map((comment) => (
             <Comment
-              username={comment.user.username}
+              username={comment?.user?.username}
               date={comment.time}
               comment={comment.comment}
               key={comment.time.toLocaleString()}
-              imageSrc={comment.user.imageSrc?.toString()}
+              imageSrc={comment?.user?.imageSrc?.toString()}
             />
           ))}
         </div>

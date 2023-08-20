@@ -1,6 +1,6 @@
 import { Badge, Button, Container, Drawer, Heading, Text } from "@medusajs/ui";
 import type { Idea, Label, Upvote } from "@prisma/client";
-import IdeaDetails from "./Modals/IdeaDetails";
+import IdeaDetails from "./Modals/Ideas/idea-details";
 
 type IdeaCardProps = Idea & { upvotes: Upvote[]; labels: Label[] };
 
