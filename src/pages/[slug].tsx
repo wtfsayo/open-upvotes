@@ -1,4 +1,4 @@
-import Board from "@/src/components/board";
+import Board from "@/src/features/board";
 import { useRouter } from "next/router";
 export default function BoardView() {
   const router = useRouter();

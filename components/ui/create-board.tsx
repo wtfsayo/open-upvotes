@@ -29,8 +29,12 @@ const zForm = z.object({
       ),
   });
 
+interface CreateBoardProps {
+    createNewBoard: boolean;
+    setCreateNewBoard: (value: boolean) => void;
+  }
 
-export default function CreateBoard() {
+export default function CreateBoard({createNewBoard, setCreateNewBoard}: CreateBoardProps) {
 
     const router = useRouter();
     const [values, setValues] =useState<Partial<z.infer<typeof zForm>>>(
@@ -38,10 +42,9 @@ export default function CreateBoard() {
       );
         
     const { addBoard, isLoading } = useBoards();
-    const [showNewBoardDialog, setShowNewBoardDialog] = useState(false);
     return(
-        <Drawer open={showNewBoardDialog} onOpenChange={setShowNewBoardDialog}>
-        <Drawer.Content>
+        <Drawer open={createNewBoard} onOpenChange={setCreateNewBoard}>
+        <Drawer.Content >
           <Drawer.Header>
           <Drawer.Title>Create Board</Drawer.Title>
           <Drawer.Description>

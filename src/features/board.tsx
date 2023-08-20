@@ -1,7 +1,7 @@
 import { Drawer } from "@medusajs/ui";
-import CardLane from "@/src/components/CardLane";
-import { Filter } from "@/src/components/Modals/Actions/Filter";
-import SubmitIdea from "@/src/components/Modals/SubmitIdea";
+import CardLane from "@/src/features/CardLane";
+import { Filter } from "@/components/ui/Filter";
+import SubmitIdea from "@/src/features/Modals/SubmitIdea";
 import { UserNav } from "@/components/ui/user-nav";
 import { api } from "@/src/utils/api";
 import { STATUS, type ideaProps } from "@/src/utils/const";
@@ -11,7 +11,7 @@ import { filter, map } from "lodash";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import BoardSwitcher from "../../components/ui/board-switcher";
-import { ThemeToggle } from "../components/theme-toggle";
+import { ThemeToggle } from "./theme-toggle";
 
 export default function Board(props: { path: string }) {
   const session = useSession();

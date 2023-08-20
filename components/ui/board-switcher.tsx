@@ -1,5 +1,6 @@
 import { api } from "../../src/utils/api";
-
+import { Input } from "@medusajs/ui";
+import { PlusIcon } from "lucide-react";
 export const useBoards = () => {
   const { data: rawBoards } = api.boards.getAllByUser.useQuery();
   const { mutate: addBoard, isLoading } = api.boards.createBoard.useMutation();
@@ -14,32 +15,36 @@ export const useBoards = () => {
 };
 
 import { Avatar, Button, DropdownMenu } from "@medusajs/ui";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Plus } from "lucide-react";
 import { useRouter } from "next/router";
 import * as React from "react";
-
+import { useState } from "react";
 
 import * as z from "zod";
-const zForm = z.object({
-  title: z.string().nonempty(),
-  path: z
-    .string()
-    .refine(
-      (val) => val.match("^[a-z0-9]+(?:-[a-z0-9]+)*$"),
-      "Please provide a valid path",
-    ),
-});
+import CreateBoard from "./create-board";
 
 export default function BoardSwitcher({ className }: any) {
   const router = useRouter();
-  const { boards, addBoard, isLoading } = useBoards();
+  const { boards } = useBoards();
+  const [createBoard, setCreateBoard] = useState(false);
+
+  const [boardsInUse, setBoardsInUse] = useState(boards);
 
   const [open, setOpen] = React.useState(false);
   const [selectedBoard, setSelectedBoard] = React.useState({
     title: "Default",
     path: "/",
   });
-  
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    
+    const {value} = e.target;
+    const filteredBoards = boards?.filter((board) => board.title.toLowerCase().includes(value.toLowerCase()));
+    
+    setBoardsInUse(filteredBoards);
+
+    
+  }
 
   return (
     
@@ -58,8 +63,14 @@ export default function BoardSwitcher({ className }: any) {
           </Button>
           </DropdownMenu.Trigger>
           <DropdownMenu.Content className="z-10">
-          
-            {boards?.map((Board) => (
+            
+                <Input
+                placeholder={"Find Board"}
+                type="search"
+                onChange={handleChange}
+                autoFocus
+              />
+            {boardsInUse?.map((Board) => (
               <DropdownMenu.Item
                 key={Board.path}
                 onClick={() => {
@@ -71,9 +82,14 @@ export default function BoardSwitcher({ className }: any) {
                 {Board.title}
               </DropdownMenu.Item>
             ))}
+
+            <DropdownMenu.Item onSelect={() => setCreateBoard(true)}>
+              <PlusIcon size={16} className="mr-2" />
+              Create New Board
+            </DropdownMenu.Item>
           </DropdownMenu.Content>
           
-            
+            <CreateBoard createNewBoard={createBoard} setCreateNewBoard={() => setCreateBoard(!createBoard)}/>
 
           </DropdownMenu>
   )}

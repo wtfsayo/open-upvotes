@@ -11,8 +11,8 @@ import { ChevronDown, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-import AddComment from "./Actions/AddComment";
-import { AddLabels } from "./Actions/UpdateLabels";
+import AddComment from "./Ideas/AddComment";
+import { AddLabels } from "./Ideas/UpdateLabels";
 import Comment from "./sub/Comment";
 
 
