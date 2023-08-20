@@ -1,6 +1,6 @@
 // useBoards.js
-import { api } from "../utils/api";
 import { FocusModal } from "@medusajs/ui";
+import { api } from "../utils/api";
 
 export const useBoards = () => {
   const { data: rawBoards } = api.boards.getAllByUser.useQuery();
@@ -15,26 +15,15 @@ export const useBoards = () => {
   return { boards, allBoards, addBoard, isLoading };
 };
 
-import * as React from "react";
 import { useRouter } from "next/router";
+import * as React from "react";
 
-import { CheckIcon, ChevronDown, Loader2, PlusCircleIcon } from "lucide-react";
 import AutoForm from "@/components/ui/auto-form";
-import { Avatar, Button } from "@medusajs/ui";
-import { DropdownMenu } from "@medusajs/ui";
+import { Avatar, Button, Drawer, DropdownMenu } from "@medusajs/ui";
+import { ChevronDown, Loader2 } from "lucide-react";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 
 import * as z from "zod";
-import { cn } from "../lib/utils";
 const zForm = z.object({
   title: z.string().nonempty(),
   path: z
@@ -60,7 +49,7 @@ export default function BoardSwitcher({ className }: any) {
   );
 
   return (
-    <Dialog open={showNewBoardDialog} onOpenChange={setShowNewBoardDialog}>
+    <Drawer open={showNewBoardDialog} onOpenChange={setShowNewBoardDialog}>
       <FocusModal open={open} onOpenChange={setOpen}>
         <FocusModal.Trigger asChild>
           <Button
@@ -90,18 +79,18 @@ export default function BoardSwitcher({ className }: any) {
               </DropdownMenu.Item>
             ))}
           </DropdownMenu>
-          <DialogTrigger asChild>
+          <Drawer.Trigger>
             <DropdownMenu.Item />
-          </DialogTrigger>
+          </Drawer.Trigger>
         </FocusModal.Content>
       </FocusModal>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create Board</DialogTitle>
-          <DialogDescription>
+      <Drawer.Content>
+          <Drawer.Header>
+          <Drawer.Title>Create Board</Drawer.Title>
+          <Drawer.Description>
             Add a new Board to manage your tasks and ideas.
-          </DialogDescription>
-        </DialogHeader>
+          </Drawer.Description>
+        </Drawer.Header>
         <div>
           <AutoForm
             values={values}
@@ -128,15 +117,15 @@ export default function BoardSwitcher({ className }: any) {
               addBoard(data);
             }}
           >
-            <DialogFooter>
+            <Drawer.Footer>
               <Button type="submit" disabled={isLoading}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Create
               </Button>
-            </DialogFooter>
+            </Drawer.Footer>
           </AutoForm>
         </div>
-      </DialogContent>
-    </Dialog>
+      </Drawer.Content>
+    </Drawer>
   );
 }

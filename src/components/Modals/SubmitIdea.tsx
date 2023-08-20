@@ -1,19 +1,9 @@
-import {
-  DialogTrigger,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-
 import AutoForm from "@/components/ui/auto-form";
-import { Button } from "@medusajs/ui";
-
 import { api } from "@/src/utils/api";
+import { Button, Drawer } from "@medusajs/ui";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/router";
 import { z } from "zod";
-import { Loader2 } from "lucide-react";
 
 export default function SubmitIdea() {
   const router = useRouter();
@@ -26,15 +16,17 @@ export default function SubmitIdea() {
   const { mutate, isLoading, isSuccess } = api.idea.submit.useMutation();
 
   return (
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle>Submit New Idea</DialogTitle>
-        <DialogDescription className="text-md">
-          Got an idea? Submit it here and we will consider it for our next
-          sprint.
-        </DialogDescription>
-      </DialogHeader>
-      <AutoForm
+    <Drawer>
+  <Drawer.Trigger>
+    <Button>Submit Idea</Button>
+  </Drawer.Trigger>
+  <Drawer.Content>
+    <Drawer.Header>
+      <Drawer.Title>Drawer Title</Drawer.Title>
+    </Drawer.Header>
+    <Drawer.Body>
+
+    <AutoForm
         formSchema={zForm}
         fieldConfig={{
           title: {
@@ -58,16 +50,22 @@ export default function SubmitIdea() {
           });
         }}
       >
-        <DialogFooter>
-          {/* <DialogTrigger asChild>
-            <Button type="reset">Cancel</Button>
-          </DialogTrigger> */}
+        <Drawer.Footer>
           <Button type="submit" disabled={isLoading}>
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Submit Idea
           </Button>
-        </DialogFooter>
+        </Drawer.Footer>
       </AutoForm>
-    </DialogContent>
+
+
+    </Drawer.Body>
+    <Drawer.Footer>Footer</Drawer.Footer>
+  </Drawer.Content>
+</Drawer>
   );
 }
+
+
+
+

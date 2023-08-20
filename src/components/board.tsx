@@ -1,4 +1,4 @@
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Drawer } from "@medusajs/ui";
 import CardLane from "@/src/components/CardLane";
 import { Filter } from "@/src/components/Modals/Actions/Filter";
 import SubmitIdea from "@/src/components/Modals/SubmitIdea";
@@ -68,12 +68,9 @@ export default function Board(props: { path: string }) {
             </p>
           </div>
 
-          <Dialog>
-            <DialogTrigger>
-              <Button>Submit Idea</Button>
-            </DialogTrigger>
+          
             <SubmitIdea />
-          </Dialog>
+          
         </div>
         <div className="justify-right flex flex-row gap-2">
           <Input
@@ -85,7 +82,7 @@ export default function Board(props: { path: string }) {
           <Filter
             options={Array.from(STATUS)}
             title="Filter"
-            handle={setFilterd}
+            // handle={setFilterd}
           />
         </div>
         <div className="flex gap-2 max-xl:flex-wrap">
