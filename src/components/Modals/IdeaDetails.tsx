@@ -145,7 +145,7 @@ export default function IdeaDetails(props: ideaProps) {
       <Drawer.Footer>
         <Drawer.Close>Close</Drawer.Close>
         <Button
-//          variant={containsUpvote ? "outline" : "default"}
+      
           onClick={() => {
             containsUpvote
               ? deleteUpvote({ ideaId: props.id})

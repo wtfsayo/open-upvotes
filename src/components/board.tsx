@@ -47,7 +47,6 @@ export default function Board(props: { path: string }) {
             <UserNav />
           ) : (
             <Button
-              variant="secondary"
               className="bg-accent hover:bg-accent/80"
               onClick={() => signInKeyp("DISCORD")}
             >

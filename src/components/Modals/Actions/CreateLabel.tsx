@@ -22,7 +22,7 @@ export default function CreateLabel() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="secondary" className="gap-2">
+        <Button className="gap-2">
           Add Label
         </Button>
       </DialogTrigger>
@@ -49,7 +49,7 @@ export default function CreateLabel() {
             }}
           >
             <DialogFooter>
-              <Button variant="outline" onClick={() => console.log(false)}>
+              <Button onClick={() => console.log(false)}>
                 Cancel
               </Button>
               <Button type="submit">Continue</Button>

@@ -1,15 +1,6 @@
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-} from "@/components/ui/command";
 import { cn } from "@/src/lib/utils";
 import { api } from "@/src/utils/api";
-import { Button, FocusModal } from "@medusajs/ui";
+import { Button, DropdownMenu, FocusModal, Input } from '@medusajs/ui';
 import type { Label } from "@prisma/client";
 import { Check, PlusCircle } from "lucide-react";
 import { useState } from "react";
@@ -64,15 +55,15 @@ export function AddLabels(
         </Button>
       </FocusModal.Trigger>
       <FocusModal.Content className="w-[200px] p-0">
-        <Command>
-          <CommandInput placeholder={title} />
-          <CommandList>
-            <CommandEmpty>
+        <DropdownMenu>
+          <Input placeholder={title} />
+          <DropdownMenu.Content>
+            <DropdownMenu.Item>
               {!allowNew ? "No results found." : "Add New"}
-            </CommandEmpty>
-            <CommandGroup>
+              </DropdownMenu.Item>
+            <DropdownMenu.Group>
               {options.map((option: Label) => (
-                <CommandItem
+                <DropdownMenu.CheckboxItem
                   key={option.id}
                   onSelect={() => toggleSelection(option)}
                 >
@@ -87,24 +78,24 @@ export function AddLabels(
                     <Check className={cn("h-4 w-4")} />
                   </div>
                   <span>{option.label}</span>
-                </CommandItem>
+                </DropdownMenu.CheckboxItem>
               ))}
-            </CommandGroup>
+            </DropdownMenu.Group>
             {isChanged && ( // Display "Update Labels" command item if isChanged is true
               <>
-                <CommandSeparator />
-                <CommandGroup>
-                  <CommandItem
+                <DropdownMenu.Separator />
+                <DropdownMenu.Content>
+                  <DropdownMenu.Item
                     onSelect={handleUpdateLabels}
                     className="justify-center text-center"
                   >
                     Update Labels
-                  </CommandItem>
-                </CommandGroup>
+                  </DropdownMenu.Item>
+                </DropdownMenu.Content>
               </>
             )}
-          </CommandList>
-        </Command>
+        </DropdownMenu.Content>
+          </DropdownMenu>
       </FocusModal.Content>
     </FocusModal>
   );
