@@ -1,6 +1,6 @@
 "use client";
 import AutoForm from "@/components/ui/auto-form";
-import { Button } from "@/components/ui/button";
+import { Button } from "@medusajs/ui";
 import {
   Dialog,
   DialogContent,

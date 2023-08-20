@@ -1,6 +1,6 @@
 import { AlertDialog } from "@/components/ui/alert-dialog";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@medusajs/ui";
+import { Button } from "@medusajs/ui";
 import {
   Card,
   CardContent,
@@ -48,7 +48,7 @@ function IdeaCard(props: IdeaCardProps) {
             {Boolean(labels.length) && (
               <div className="gap-1 m-1">
                 {labels.map((label: Label) => (
-                  <Badge key={label.id} className="py-1 px-4 text-sm font-light rounded-md" variant={"outline"}>
+                  <Badge key={label.label}>
                     {label.label}
                   </Badge>
                 ))}
@@ -58,8 +58,6 @@ function IdeaCard(props: IdeaCardProps) {
 
           
           <Button
-              variant={"outline"}
-              className="w-12 absolute top-2 right-2 h-16 flex-col bg-muted/30 hover:bg-muted/40"
               onClick={handleButtonClick}
             >
               <svg

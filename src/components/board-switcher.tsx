@@ -6,7 +6,7 @@ import { api } from "../utils/api";
 
 import AutoForm from "@/components/ui/auto-form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Button } from "@medusajs/ui";
 import {
   Command,
   CommandEmpty,

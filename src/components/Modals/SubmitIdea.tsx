@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 
 import AutoForm from "@/components/ui/auto-form";
-import { Button } from "@/components/ui/button";
+import { Button } from "@medusajs/ui";
 
 import { api } from "@/src/utils/api";
 import { useRouter } from "next/router";

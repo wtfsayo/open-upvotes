@@ -1,7 +1,7 @@
 import { Check, PlusCircle } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@medusajs/ui";
+import { Button } from "@medusajs/ui";
 import {
   Command,
   CommandEmpty,
@@ -37,22 +37,22 @@ export function Filter(
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8 border-dashed">
+        <Button  className="h-8 border-dashed">
           <PlusCircle className="mr-2 h-4 w-4" />
           {title}
           {selectedValues?.size > 0 && (
             <>
               <Separator orientation="vertical" className="mx-2 h-4" />
               <Badge
-                variant="secondary"
-                className="rounded-sm px-1 font-normal lg:hidden"
+                
+                
               >
                 {selectedValues.size}
               </Badge>
               <div className="hidden space-x-1 lg:flex">
                 {selectedValues.size > 2 ? (
                   <Badge
-                    variant="secondary"
+                    
                     className="rounded-sm px-1 font-normal"
                   >
                     {selectedValues.size} selected
@@ -62,7 +62,7 @@ export function Filter(
                     .filter((option) => selectedValues.has(option))
                     .map((option) => (
                       <Badge
-                        variant="secondary"
+                        
                         key={option}
                         className="rounded-sm px-1 font-normal"
                       >

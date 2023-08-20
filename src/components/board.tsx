@@ -1,16 +1,15 @@
-import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import CardLane from "@/src/components/CardLane";
 import { Filter } from "@/src/components/Modals/Actions/Filter";
 import SubmitIdea from "@/src/components/Modals/SubmitIdea";
 import { UserNav } from "@/src/components/user-nav";
 import { api } from "@/src/utils/api";
 import { STATUS, type ideaProps } from "@/src/utils/const";
+import { Button, Input } from "@medusajs/ui";
 import { signInKeyp } from "@usekeyp/js-sdk";
 import { filter, map } from "lodash";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import BoardSwitcher from "../components/board-switcher";
 import { ThemeToggle } from "../components/theme-toggle";
 
@@ -71,8 +70,8 @@ export default function Board(props: { path: string }) {
           </div>
 
           <Dialog>
-            <DialogTrigger asChild>
-              <Button className="min-w-max ">Submit Idea</Button>
+            <DialogTrigger>
+              <Button>Submit Idea</Button>
             </DialogTrigger>
             <SubmitIdea />
           </Dialog>

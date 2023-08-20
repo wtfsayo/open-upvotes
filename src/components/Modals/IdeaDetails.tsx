@@ -6,8 +6,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@medusajs/ui";
+import { Button } from "@medusajs/ui";
 
 import {
   DropdownMenu,
@@ -115,7 +115,7 @@ export default function IdeaDetails(props: ideaProps) {
         </AlertDialogTitle>
         <div className="flex-row-wrap flex flex-row gap-1">
           {labels.map((label: Label) => (
-            <Badge key={label.id} className="px-2.5" variant={"outline"}>
+            <Badge key={label.id} >
               {label.label}
             </Badge>
           ))}
