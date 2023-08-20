@@ -1,15 +1,8 @@
 import { LogOut } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar } from "@medusajs/ui";
 import { Button } from "@medusajs/ui";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu } from "@medusajs/ui";
 import { signOut, useSession } from "next-auth/react";
 
 export function UserNav() {
@@ -17,23 +10,16 @@ export function UserNav() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-9 w-9 ">
-            {session.data?.user?.imageSrc && (
-              <AvatarImage
-                src={session.data?.user?.imageSrc}
-                alt={session.data?.user?.username}
-              />
-            )}
-            <AvatarFallback className="bg-background-100">
-              {session.data?.user?.username.substring(0, 2)}
-            </AvatarFallback>
-          </Avatar>
+      <DropdownMenu.Trigger asChild>
+        <Button className="relative h-8 w-8 rounded-full">
+        <Avatar
+      src={session.data?.user?.imageSrc}
+      fallback={session.data?.user?.username?.substring(0, 2) ?? "M"}
+/>
         </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-max" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal">
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content className="w-max" align="end" forceMount>
+        <DropdownMenu.Label className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
               {session.data?.user?.username}
@@ -42,11 +28,11 @@ export function UserNav() {
               {session.data?.user?.address}
             </p>
           </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
+        </DropdownMenu.Label>
+        <DropdownMenu.Separator />
 
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
+        <DropdownMenu.Separator />
+        <DropdownMenu.Item
           onClick={() => {
             signOut().catch((e: Error) => e);
           }}
@@ -54,8 +40,8 @@ export function UserNav() {
         >
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
+        </DropdownMenu.Item>
+      </DropdownMenu.Content>
     </DropdownMenu>
   );
 }

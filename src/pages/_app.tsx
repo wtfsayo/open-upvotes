@@ -1,7 +1,7 @@
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@medusajs/ui"
 
 import { ThemeProvider } from "../components/theme-provider";
 import "src/styles/globals.css";

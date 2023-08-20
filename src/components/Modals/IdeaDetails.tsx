@@ -1,22 +1,7 @@
-import {
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { Drawer } from "@medusajs/ui";
 import { Badge } from "@medusajs/ui";
 import { Button } from "@medusajs/ui";
-
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu } from "@medusajs/ui";
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/src/utils/api";
 import type { ideaProps } from "@/src/utils/const";
@@ -29,6 +14,7 @@ import { useState } from "react";
 import AddComment from "./Actions/AddComment";
 import { AddLabels } from "./Actions/UpdateLabels";
 import Comment from "./sub/Comment";
+
 
 export default function IdeaDetails(props: ideaProps) {
   const { labels } = props;
@@ -61,9 +47,9 @@ export default function IdeaDetails(props: ideaProps) {
   const [ideaStatus, setIdeaStatus] = useState(props.status);
 
   return (
-    <AlertDialogContent>
-      <AlertDialogHeader>
-        <AlertDialogTitle className="flex flex-row justify-between">
+    <Drawer>
+      <Drawer.Header>
+        <Drawer.Title className="flex flex-row justify-between">
           <div className="flex flex-col gap-2">
             <Badge className="w-max rounded-md">{props.id.substring(0,6).toUpperCase()}</Badge>
             {props.title}
@@ -71,7 +57,7 @@ export default function IdeaDetails(props: ideaProps) {
 
           <div>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+              <DropdownMenu.Trigger asChild>
                 <Button
                   variant="secondary"
                   className="gap-2 bg-blue-700 px-2 font-medium text-white hover:bg-blue-800"
@@ -86,17 +72,17 @@ export default function IdeaDetails(props: ideaProps) {
 
                   <ChevronDown className="text-theme h-4 w-4" />
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Content
                 align="end"
                 alignOffset={-5}
                 className="w-[200px]"
                 forceMount
               >
-                <DropdownMenuLabel>Status</DropdownMenuLabel>
-                <DropdownMenuSeparator />
+                <DropdownMenu.Label>Status</DropdownMenu.Label>
+                <DropdownMenu.Separator />
                 {STATUS.map((status, id) => (
-                  <DropdownMenuCheckboxItem
+                  <DropdownMenu.CheckboxItem
                     key={status}
                     checked={Boolean(
                       status.toLowerCase() == ideaStatus.toLowerCase(),
@@ -107,12 +93,12 @@ export default function IdeaDetails(props: ideaProps) {
                     }}
                   >
                     {status}
-                  </DropdownMenuCheckboxItem>
+                  </DropdownMenu.CheckboxItem>
                 ))}
-              </DropdownMenuContent>
+              </DropdownMenu.Content>
             </DropdownMenu>
           </div>
-        </AlertDialogTitle>
+        </Drawer.Title>
         <div className="flex-row-wrap flex flex-row gap-1">
           {labels.map((label: Label) => (
             <Badge key={label.id} >
@@ -134,12 +120,12 @@ export default function IdeaDetails(props: ideaProps) {
             />
           )}
         </div>
-      </AlertDialogHeader>
+      </Drawer.Header>
       <div>
         <p className="py-2 font-semibold">Description</p>
-        <AlertDialogDescription className="h-min-[120px] h-max-[180px] flex flex-col gap-2 overflow-y-auto rounded-lg bg-muted/40 p-4">
+        <Drawer.Description className="h-min-[120px] h-max-[180px] flex flex-col gap-2 overflow-y-auto rounded-lg bg-muted/40 p-4">
           {props.description}
-        </AlertDialogDescription>
+          </Drawer.Description>
       </div>
       <div>
         <AddComment ideaId={props.id} />
@@ -156,10 +142,10 @@ export default function IdeaDetails(props: ideaProps) {
         </div>
       </div>
 
-      <AlertDialogFooter>
-        <AlertDialogCancel>Close</AlertDialogCancel>
+      <Drawer.Footer>
+        <Drawer.Close>Close</Drawer.Close>
         <Button
-          variant={containsUpvote ? "outline" : "default"}
+//          variant={containsUpvote ? "outline" : "default"}
           onClick={() => {
             containsUpvote
               ? deleteUpvote({ ideaId: props.id})
@@ -184,7 +170,7 @@ export default function IdeaDetails(props: ideaProps) {
           )}
           {containsUpvote ? "Upvoted" : "Upvote"} ({props.upvotes?.length})
         </Button>
-      </AlertDialogFooter>
-    </AlertDialogContent>
+      </Drawer.Footer>
+    </Drawer>
   );
 }

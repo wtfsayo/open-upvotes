@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar } from '@medusajs/ui';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 
@@ -18,10 +18,13 @@ export default function Comment(
   return (
     <div className="flex flex-col gap-2 rounded-lg bg-muted/30 p-4 text-sm">
       <div className="flex flex-row items-center gap-2">
-        <Avatar className="h-[24px] w-[24px]">
-          <AvatarImage src={props.imageSrc} alt={props.username} />
-          <AvatarFallback>{props.username.substring(0, 2)}</AvatarFallback>
-        </Avatar>
+        
+                      <Avatar
+              src={props.imageSrc}
+              
+              fallback={props.username.substring(0, 2)}
+            />
+        
         <p className="font-medium leading-none">{props.username + "\t"}</p>
         <p className=" text-muted-foreground">{timeAgo.format(props.date)}</p>
       </div>

@@ -1,17 +1,9 @@
-import { AlertDialog } from "@/components/ui/alert-dialog";
-import { Badge } from "@medusajs/ui";
-import { Button } from "@medusajs/ui";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Badge, Button, Container, Drawer } from "@medusajs/ui";
 import type { Idea, Label, Upvote } from "@prisma/client";
-import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
+
 import { useMemo } from "react";
 import IdeaDetails from "./Modals/IdeaDetails";
+
 
 const MAX_TITLE_LENGTH = 160;
 const MAX_DESCRIPTION_LENGTH = 100;
@@ -35,16 +27,16 @@ function IdeaCard(props: IdeaCardProps) {
   };
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Card className="w-full pt-2 pb-2 relative rounded-md bg-muted/10 hover:cursor-pointer shadow-none hover:bg-muted/20">
-          <CardHeader className=" items-start justify-between p-3">
-            <CardTitle className="text-md font-medium leading-none">
+    <Drawer>
+      <Drawer.Trigger>
+        <Container className="w-full pt-2 pb-2 relative rounded-md bg-muted/10 hover:cursor-pointer shadow-none hover:bg-muted/20">
+          <Drawer.Header>
+          <Drawer.Title>
               {truncatedTitle}
-            </CardTitle>
-            <CardDescription className="text-sm font-light text-muted-foreground">
+              </Drawer.Title>
+            <Drawer.Description>
               {truncatedDescription}
-            </CardDescription>
+              </Drawer.Description>
             {Boolean(labels.length) && (
               <div className="gap-1 m-1">
                 {labels.map((label: Label) => (
@@ -54,7 +46,7 @@ function IdeaCard(props: IdeaCardProps) {
                 ))}
               </div>
             )}
-          </CardHeader>
+          </Drawer.Header>
 
           
           <Button
@@ -74,11 +66,12 @@ function IdeaCard(props: IdeaCardProps) {
               {upvotes.length}
             </Button>
           
-        </Card>
-      </AlertDialogTrigger>
-
+        </Container>
+      </Drawer.Trigger>
+      <Drawer.Content>
       <IdeaDetails key={props.id} {...props} />
-    </AlertDialog>
+      </Drawer.Content>
+    </Drawer>
   );
 }
 

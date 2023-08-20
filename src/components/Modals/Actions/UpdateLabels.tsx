@@ -1,4 +1,3 @@
-import { Button } from "@medusajs/ui";
 import {
   Command,
   CommandEmpty,
@@ -8,13 +7,9 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { cn } from "@/src/lib/utils";
 import { api } from "@/src/utils/api";
+import { Button, FocusModal } from "@medusajs/ui";
 import type { Label } from "@prisma/client";
 import { Check, PlusCircle } from "lucide-react";
 import { useState } from "react";
@@ -61,14 +56,14 @@ export function AddLabels(
   };
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8 border-dashed">
+    <FocusModal>
+      <FocusModal.Trigger asChild>
+        <Button  className="h-8 border-dashed">
           <PlusCircle className="mr-2 h-4 w-4" />
           {title}
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0" align="start">
+      </FocusModal.Trigger>
+      <FocusModal.Content className="w-[200px] p-0">
         <Command>
           <CommandInput placeholder={title} />
           <CommandList>
@@ -110,7 +105,7 @@ export function AddLabels(
             )}
           </CommandList>
         </Command>
-      </PopoverContent>
-    </Popover>
+      </FocusModal.Content>
+    </FocusModal>
   );
 }

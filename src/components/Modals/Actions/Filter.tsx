@@ -1,5 +1,5 @@
 import { Check, PlusCircle } from "lucide-react";
-
+import { FocusModal } from "@medusajs/ui"
 import { Badge } from "@medusajs/ui";
 import { Button } from "@medusajs/ui";
 import {
@@ -10,12 +10,9 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Separator } from "@/components/ui/separator";
+
+import { Separator } from "@radix-ui/react-separator";
+
 import { cn } from "@/src/lib/utils";
 import type { Dispatch } from "react";
 import { useEffect, useState } from "react";
@@ -35,8 +32,8 @@ export function Filter(
   useEffect(() => handle(Array.from(selectedValues)), [selectedValues, handle]);
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
+    <FocusModal>
+      <FocusModal.Trigger asChild>
         <Button  className="h-8 border-dashed">
           <PlusCircle className="mr-2 h-4 w-4" />
           {title}
@@ -74,8 +71,8 @@ export function Filter(
             </>
           )}
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0" align="start">
+      </FocusModal.Trigger>
+      <FocusModal.Content className="w-[200px] p-0" >
         <Command>
           <CommandInput placeholder={title} />
           <CommandList>
@@ -115,7 +112,7 @@ export function Filter(
             </CommandGroup>
           </CommandList>
         </Command>
-      </PopoverContent>
-    </Popover>
+      </FocusModal.Content>
+    </FocusModal>
   );
 }
