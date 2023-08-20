@@ -4,7 +4,8 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 export const userRouter = createTRPCRouter({
   sync: protectedProcedure.mutation(({ ctx }) => {
     if (ctx?.session && ctx.session.user) {
-      const { id, provider, imageSrc, username, address } = ctx.session?.user as User;
+      const { id, provider, imageSrc, username, address } = ctx.session
+        ?.user as User;
       (async () => {
         await ctx.prisma.user.upsert({
           where: { id },
@@ -18,7 +19,7 @@ export const userRouter = createTRPCRouter({
     }
   }),
   get: protectedProcedure.query(({ ctx }) => {
-    if (ctx?.session && ctx.session.user) { 
+    if (ctx?.session && ctx.session.user) {
       return ctx.prisma.user.findUnique({
         where: { id: ctx.session.user.id },
         include: {
@@ -28,9 +29,8 @@ export const userRouter = createTRPCRouter({
           adminBoards: true,
           moderatorBoards: true,
           viewerBoards: true,
-        }
-        });
+        },
+      });
     }
-  }
-  ),
+  }),
 });

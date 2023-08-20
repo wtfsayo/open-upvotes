@@ -1,7 +1,6 @@
 import { LogOut } from "lucide-react";
 
 import { Avatar } from "@medusajs/ui";
-import { Button } from "@medusajs/ui";
 import { DropdownMenu } from "@medusajs/ui";
 import { signOut, useSession } from "next-auth/react";
 
@@ -11,12 +10,10 @@ export function UserNav() {
   return (
     <DropdownMenu>
       <DropdownMenu.Trigger asChild>
-        <Button className="relative h-8 w-8 rounded-full">
         <Avatar
-      src={session.data?.user?.imageSrc}
-      fallback={session.data?.user?.username?.substring(0, 2) ?? "M"}
-/>
-        </Button>
+          src={session.data?.user?.imageSrc}
+          fallback={session.data?.user?.username?.substring(0, 2) ?? "M"}
+        />
       </DropdownMenu.Trigger>
       <DropdownMenu.Content className="w-max" align="end" forceMount>
         <DropdownMenu.Label className="font-normal">

@@ -3,12 +3,14 @@ import { CheckIcon, Dot } from "lucide-react";
 import type { Dispatch } from "react";
 import { useState } from "react";
 
-export function Filter(props: {
-  title: string;
-  options: string[];
-  allowNew?: boolean;
-  handle?: Dispatch<Event>;
-}) {
+export function Filter(
+  props: {
+    title: string;
+    options: string[];
+    allowNew?: boolean;
+    handle?: Dispatch<Event>;
+  },
+) {
   const { options, title } = props;
 
   const [selectedValues, setSelectedValues] = useState(new Set(options));
@@ -29,17 +31,17 @@ export function Filter(props: {
 
   const toggleFromSet = (option: string) => {
     if (isSelected(option)) {
-      setSelectedValues(prevSet => {
+      setSelectedValues((prevSet) => {
         const newSet = new Set(prevSet);
         newSet.delete(option);
         return newSet;
       });
     } else {
-      setSelectedValues(prevSet => new Set(prevSet).add(option));
+      setSelectedValues((prevSet) => new Set(prevSet).add(option));
     }
-  }
+  };
 
-  console.log(inputValue)
+  console.log(inputValue);
   return (
     <DropdownMenu>
       <DropdownMenu.Trigger>
@@ -54,7 +56,15 @@ export function Filter(props: {
           autoFocus
         />
         {options?.map((option: string) => (
-          <DropdownMenu.Item key={option} onClick={() => toggleFromSet(option)}> {isSelected(option) ? <CheckIcon size={16} className="mr-2"/> : <Dot size={16} className="mr-2"/>} {option} </DropdownMenu.Item>
+          <DropdownMenu.Item key={option} onClick={() => toggleFromSet(option)}>
+            {" "}
+            {isSelected(option) ? (
+              <CheckIcon size={16} className="mr-2" />
+            ) : (
+              <Dot size={16} className="mr-2" />
+            )}{" "}
+            {option}{" "}
+          </DropdownMenu.Item>
         ))}
       </DropdownMenu.Content>
     </DropdownMenu>

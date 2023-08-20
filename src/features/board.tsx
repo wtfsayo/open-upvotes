@@ -1,7 +1,7 @@
 import { Drawer } from "@medusajs/ui";
 import CardLane from "@/src/features/CardLane";
 import { Filter } from "@/components/ui/Filter";
-import SubmitIdea from "@/src/features/Modals/SubmitIdea";
+import SubmitIdea from "@/src/features/Modals/Ideas/create-idea";
 import { UserNav } from "@/components/ui/user-nav";
 import { api } from "@/src/utils/api";
 import { STATUS, type ideaProps } from "@/src/utils/const";
@@ -46,31 +46,26 @@ export default function Board(props: { path: string }) {
           {session.data ? (
             <UserNav />
           ) : (
-            <Button
-              className="bg-accent hover:bg-accent/80"
-              onClick={() => signInKeyp("DISCORD")}
-            >
-              Login
-            </Button>
+            <Button onClick={() => signInKeyp("DISCORD")}>Login</Button>
           )}
           <ThemeToggle />
         </div>
       </div>
-      <div className="h-full flex-1 flex-col space-y-8  bg-custom min-h-screen 
-       p-8 pt-16  md:flex">
-        <div className="flex flex-row justify-between  w-full">
-          <div className="max-w-['50%'] mr-8">
+      <div
+        className="bg-custom h-full min-h-screen flex-1  flex-col space-y-8 
+       p-8 pt-16  md:flex"
+      >
+        <div className="flex w-full flex-row  justify-between">
+          <div className="mr-8 max-w-['50%']">
             <h3 className="text-2xl font-bold tracking-tight ">
               Here are the ideas we are working on
             </h3>
-            <p className="text-muted-foreground max-w-['50%']">
+            <p className="max-w-['50%'] text-muted-foreground">
               Upvote or give new ideas to work on
             </p>
           </div>
 
-          
-            <SubmitIdea />
-          
+          <SubmitIdea />
         </div>
         <div className="justify-right flex flex-row gap-2">
           <Input
@@ -94,12 +89,9 @@ export default function Board(props: { path: string }) {
             />
           ))}
         </div>
-      
       </div>
-      
-      <div className="items-center p-8">
-        Footer
-      </div>
+
+      <div className="items-center p-8">Footer</div>
     </div>
   );
 }

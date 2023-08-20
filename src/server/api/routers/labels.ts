@@ -10,7 +10,7 @@ export const labelsRouter = createTRPCRouter({
   }),
 
   createLabel: protectedProcedure
-    .input(z.object({ label: z.string().min(1)}))
+    .input(z.object({ label: z.string().min(1) }))
     .mutation(({ input, ctx }) => {
       return ctx.prisma.label.create({
         data: { label: input.label, user_id: ctx.session.user.id },

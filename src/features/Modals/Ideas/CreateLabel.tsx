@@ -11,36 +11,32 @@ const zForm = z.object({
 export default function CreateLabel() {
   const { mutate: createLabel } = api.labels.createLabel.useMutation();
   return (
-    
     <Drawer>
-        <Drawer.Content>
-          <Drawer.Header>
+      <Drawer.Content>
+        <Drawer.Header>
           <Drawer.Title>Create Board</Drawer.Title>
           <Drawer.Description>
             Add a new Board to manage your tasks and ideas.
           </Drawer.Description>
         </Drawer.Header>
-        
-          <AutoForm
-            formSchema={zForm}
-            fieldConfig={{
-              label: {
-                description: "Label",
-                inputProps: {
-                  placeholder: "Your New Label",
-                },
+
+        <AutoForm
+          formSchema={zForm}
+          fieldConfig={{
+            label: {
+              description: "Label",
+              inputProps: {
+                placeholder: "Your New Label",
               },
-            }}
-            onSubmit={(data) => {
-              createLabel({...data});
-            }}
-          >
-            <Button type="submit">Create Label</Button>
-          </AutoForm>
-        
+            },
+          }}
+          onSubmit={(data) => {
+            createLabel({ ...data });
+          }}
+        >
+          <Button type="submit">Create Label</Button>
+        </AutoForm>
       </Drawer.Content>
     </Drawer>
-      
-        
   );
 }

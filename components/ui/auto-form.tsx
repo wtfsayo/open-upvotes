@@ -4,7 +4,16 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Checkbox, DatePicker, Input, RadioGroup, Select, Switch, Textarea } from "@medusajs/ui";
+import {
+  Button,
+  Checkbox,
+  DatePicker,
+  Input,
+  RadioGroup,
+  Select,
+  Switch,
+  Textarea,
+} from "@medusajs/ui";
 import React from "react";
 import {
   ControllerRenderProps,
@@ -28,7 +37,6 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
-
 
 /**
  * Beautify a camelCase string.

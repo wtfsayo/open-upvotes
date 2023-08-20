@@ -15,10 +15,8 @@ import AddComment from "./Ideas/AddComment";
 import { AddLabels } from "./Ideas/UpdateLabels";
 import Comment from "./sub/Comment";
 
-
 export default function IdeaDetails(props: ideaProps) {
   const { labels } = props;
-  const session = useSession();
   const { data: Alllabels } = api.labels.getAll.useQuery();
   const {
     mutate: Upvote,
@@ -51,7 +49,9 @@ export default function IdeaDetails(props: ideaProps) {
       <Drawer.Header>
         <Drawer.Title className="flex flex-row justify-between">
           <div className="flex flex-col gap-2">
-            <Badge className="w-max rounded-md">{props.id.substring(0,6).toUpperCase()}</Badge>
+            <Badge className="w-max rounded-md">
+              {props.id.substring(0, 6).toUpperCase()}
+            </Badge>
             {props.title}
           </div>
 
@@ -101,9 +101,7 @@ export default function IdeaDetails(props: ideaProps) {
         </Drawer.Title>
         <div className="flex-row-wrap flex flex-row gap-1">
           {labels.map((label: Label) => (
-            <Badge key={label.id} >
-              {label.label}
-            </Badge>
+            <Badge key={label.id}>{label.label}</Badge>
           ))}
 
           {Alllabels && (
@@ -125,7 +123,7 @@ export default function IdeaDetails(props: ideaProps) {
         <p className="py-2 font-semibold">Description</p>
         <Drawer.Description className="h-min-[120px] h-max-[180px] flex flex-col gap-2 overflow-y-auto rounded-lg bg-muted/40 p-4">
           {props.description}
-          </Drawer.Description>
+        </Drawer.Description>
       </div>
       <div>
         <AddComment ideaId={props.id} />
@@ -145,11 +143,10 @@ export default function IdeaDetails(props: ideaProps) {
       <Drawer.Footer>
         <Drawer.Close>Close</Drawer.Close>
         <Button
-      
           onClick={() => {
             containsUpvote
-              ? deleteUpvote({ ideaId: props.id})
-              : Upvote({ ideaId: props.id});
+              ? deleteUpvote({ ideaId: props.id })
+              : Upvote({ ideaId: props.id });
           }}
           disabled={isUpvoting || isUnUpvoting}
         >

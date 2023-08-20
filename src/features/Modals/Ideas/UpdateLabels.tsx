@@ -1,6 +1,6 @@
 import { cn } from "@/src/lib/utils";
 import { api } from "@/src/utils/api";
-import { Button, DropdownMenu, FocusModal, Input } from '@medusajs/ui';
+import { Button, DropdownMenu, FocusModal, Input } from "@medusajs/ui";
 import type { Label } from "@prisma/client";
 import { Check, PlusCircle } from "lucide-react";
 import { useState } from "react";
@@ -49,7 +49,7 @@ export function AddLabels(
   return (
     <FocusModal>
       <FocusModal.Trigger asChild>
-        <Button  className="h-8 border-dashed">
+        <Button className="h-8 border-dashed">
           <PlusCircle className="mr-2 h-4 w-4" />
           {title}
         </Button>
@@ -60,7 +60,7 @@ export function AddLabels(
           <DropdownMenu.Content>
             <DropdownMenu.Item>
               {!allowNew ? "No results found." : "Add New"}
-              </DropdownMenu.Item>
+            </DropdownMenu.Item>
             <DropdownMenu.Group>
               {options.map((option: Label) => (
                 <DropdownMenu.CheckboxItem
@@ -94,8 +94,8 @@ export function AddLabels(
                 </DropdownMenu.Content>
               </>
             )}
-        </DropdownMenu.Content>
-          </DropdownMenu>
+          </DropdownMenu.Content>
+        </DropdownMenu>
       </FocusModal.Content>
     </FocusModal>
   );

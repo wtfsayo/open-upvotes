@@ -1,7 +1,7 @@
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
-import { Toaster } from "@medusajs/ui"
+import { Toaster } from "@medusajs/ui";
 
 import { ThemeProvider } from "../../components/ui/theme-provider";
 import "src/styles/globals.css";
@@ -14,7 +14,7 @@ const MyApp: AppType<{ session: Session | null }> = (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <SessionProvider session={session}>
         <Toaster />
-        <Component {...pageProps}/>
+        <Component {...pageProps} />
       </SessionProvider>
     </ThemeProvider>
   );
