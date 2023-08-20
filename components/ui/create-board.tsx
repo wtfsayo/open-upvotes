@@ -2,20 +2,9 @@ import { Drawer } from "@medusajs/ui";
 import AutoForm from "./auto-form";
  import { Button } from "@medusajs/ui";
 import { useState } from "react";
-import { api } from "@/src/utils/api";
 import { Loader2 } from "lucide-react";
+import { useBoards } from "@/src/features/Modals/Boards/hooks";
 
-export const useBoards = () => {
-    const { data: rawBoards } = api.boards.getAllByUser.useQuery();
-    const { data: allBoards } = api.boards.getAllBoards.useQuery();
-    const { mutate: addBoard, isLoading } = api.boards.createBoard.useMutation();
-    const boards = rawBoards?.map((board) => ({
-      title: board.title,
-      path: board.path,
-    }));
-  
-    return { boards, allBoards, addBoard, isLoading };
-  };
 
 import * as z from "zod";
 import { useRouter } from "next/router";

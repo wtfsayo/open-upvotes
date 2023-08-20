@@ -1,21 +1,13 @@
-import { api } from "../../src/utils/api";
+import { useBoards } from "@/src/features/Modals/Boards/hooks";
 import { Input } from "@medusajs/ui";
+import { CheckIcon, Dot, ChevronDown } from "lucide-react";
+
 import { PlusIcon } from "lucide-react";
-export const useBoards = () => {
-  const { data: rawBoards } = api.boards.getAllByUser.useQuery();
-  const { mutate: addBoard, isLoading } = api.boards.createBoard.useMutation();
-  const { data: allBoards } = api.boards.getAllBoards.useQuery();
 
-  const boards = rawBoards?.map((board) => ({
-    title: board.title,
-    path: board.path,
-  }));
 
-  return { boards, allBoards, addBoard, isLoading };
-};
 
 import { Avatar, Button, DropdownMenu } from "@medusajs/ui";
-import { ChevronDown, Plus } from "lucide-react";
+
 import { useRouter } from "next/router";
 import * as React from "react";
 import { useState } from "react";
@@ -79,6 +71,10 @@ export default function BoardSwitcher({ className }: any) {
                   void router.push(Board.path);
                 }}
               >
+
+                    {(Board.path === selectedBoard.path) ? <CheckIcon size={16} className="mr-2"/> : <Dot size={16} className="mr-2"/>}
+
+
                 {Board.title}
               </DropdownMenu.Item>
             ))}
