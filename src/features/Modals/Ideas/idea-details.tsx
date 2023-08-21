@@ -85,7 +85,7 @@ export default function IdeaDetails({ id }: { id: string }) {
           </div>
         </FocusModal.Header>
         {/* <Labels /> */}
-        <TagInput/>
+        <TagInput possibleTags={['hello', 'world', 'the', 'quick', 'brown']}/>
 
         <div>
           <p className="py-2 font-semibold">Description</p>
