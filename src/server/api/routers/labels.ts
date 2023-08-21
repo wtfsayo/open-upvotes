@@ -21,7 +21,5 @@ export const labelsRouter = createTRPCRouter({
       return ctx.prisma.label.delete({
         where: { id: input.id },
       });
-    }
-  ),
-
+    }),
 });

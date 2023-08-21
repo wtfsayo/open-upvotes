@@ -7,33 +7,27 @@ import { api } from "@/src/utils/api";
 import { STATUS, type ideaProps } from "@/src/utils/const";
 import { Button, Input } from "@medusajs/ui";
 import { signInKeyp } from "@usekeyp/js-sdk";
-import { filter, map, set } from 'lodash';
+import { filter, map, set } from "lodash";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import BoardSwitcher from "../../components/ui/board-switcher";
 import { ThemeToggle } from "./theme-toggle";
-import IdeaCard from "./Modals/Ideas/idea-card";
 import IdeaDetails from "./Modals/Ideas/idea-details";
+import React from "react";
+import { atom, useAtom } from "jotai";
 
-
-
-
-
-
+export const openIdea = atom("");
 
 export default function Board(props: { path: string }) {
   const session = useSession();
 
-  
   const { data: ideas } = api.idea.getAllByBoard.useQuery({
     boardPath: props.path,
   });
   const [search, setSearch] = useState("");
   const [Filterd, setFilterd] = useState(STATUS);
 
-
-
-  
+  const [openidea_id] = useAtom(openIdea);
 
   const filteredIdeas = map(Filterd, (status) =>
     filter(ideas as ideaProps[], (idea) => {
@@ -79,7 +73,8 @@ export default function Board(props: { path: string }) {
           </div>
 
           <SubmitIdea />
-          <IdeaDetails/>
+
+          {openidea_id && <IdeaDetails id={openidea_id} />}
         </div>
         <div className="justify-right flex flex-row gap-2">
           <Input
@@ -95,14 +90,16 @@ export default function Board(props: { path: string }) {
           />
         </div>
         <div className="flex gap-2 max-xl:flex-wrap">
-          {filteredIdeas?.map((ideas, index) => (
-            
-            (STATUS[index]!= 'ARCHIVED') && <CardLane
-              key={STATUS[index]}
-              title={STATUS[index] as string}
-              ideas={ideas}
-            />
-          ))}
+          {filteredIdeas?.map(
+            (ideas, index) =>
+              STATUS[index] != "ARCHIVED" && (
+                <CardLane
+                  key={STATUS[index]}
+                  title={STATUS[index] as string}
+                  ideas={ideas}
+                />
+              ),
+          )}
         </div>
       </div>
 

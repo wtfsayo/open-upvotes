@@ -11,10 +11,11 @@ export default function ContainerLane(
 ) {
   const { title, ideas } = props;
 
-
   return (
     <Container className="flex h-max w-full flex-col space-y-4 overflow-y-auto  rounded-lg border bg-background p-4 shadow-none">
-      <Badge color={'blue'} className="w-max">{title}</Badge>
+      <Badge color={"blue"} className="w-max">
+        {title}
+      </Badge>
 
       {Boolean(ideas.length) &&
         ideas?.map((idea: ideaProps) => (

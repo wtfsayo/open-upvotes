@@ -9,14 +9,12 @@ import AddComment from "./add-comment";
 import type { Label } from "@prisma/client";
 
 import { useSession } from "next-auth/react";
+import { createRef } from "react";
 import Comment from "../sub/Comment";
 
+export const trigger = createRef<HTMLButtonElement>();
 
-
-export default function IdeaDetails(id: string) {
-
-
-
+export default function IdeaDetails({ id }: { id: string }) {
   const { getIdea, updateIdeaStatus, updatingIdeaStatus } = useIdeas();
   // const {addIdeaLabel, addingIdeaLabel, removeIdeaLabel, removingIdeaLabel} = useIdeas();
   const { upvoteIdea, upvotingIdea, removeVote, removingVote } = useIdeas();
@@ -28,12 +26,10 @@ export default function IdeaDetails(id: string) {
     (upvote) => upvote.user_id === session.data?.user?.id,
   );
 
-
-
   return (
     <FocusModal>
       <FocusModal.Trigger asChild>
-        <Button className="hidden">
+        <Button className="" ref={trigger}>
           Use Ref
         </Button>
       </FocusModal.Trigger>

@@ -13,11 +13,10 @@ const zForm = z.object({
 
 export default function SubmitIdea() {
   const router = useRouter();
-  const { submitIdea, submittingIdea:isLoading } = useIdeas();
+  const { submitIdea, submittingIdea: isLoading } = useIdeas();
   const [values, setValues] = useState<Partial<z.infer<typeof zForm>>>({});
 
   const formRef = useRef<HTMLButtonElement>(null);
-  
 
   return (
     <FocusModal>
@@ -32,7 +31,7 @@ export default function SubmitIdea() {
           </Button>
         </FocusModal.Header>
         <FocusModal.Body className="flex flex-col items-center py-16">
-          <div className="flex w-full max-w-lg p-6 flex-col gap-y-8">
+          <div className="flex w-full max-w-lg flex-col gap-y-8 p-6">
             <div className="flex flex-col gap-y-1">
               <Heading>Submit a new Idea</Heading>
             </div>
@@ -59,12 +58,16 @@ export default function SubmitIdea() {
               onSubmit={(data) => {
                 submitIdea({
                   ...data,
-                  boardPath: router?.query.slug as string ?? 
-                  '/',
+                  boardPath: (router?.query.slug as string) ?? "/",
                 });
               }}
             >
-              <Button type="submit" disabled={isLoading} ref={formRef} className="hidden">
+              <Button
+                type="submit"
+                disabled={isLoading}
+                ref={formRef}
+                className="hidden"
+              >
                 Submit Idea
               </Button>
             </AutoForm>
