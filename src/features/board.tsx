@@ -7,20 +7,33 @@ import { api } from "@/src/utils/api";
 import { STATUS, type ideaProps } from "@/src/utils/const";
 import { Button, Input } from "@medusajs/ui";
 import { signInKeyp } from "@usekeyp/js-sdk";
-import { filter, map } from "lodash";
+import { filter, map, set } from 'lodash';
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import BoardSwitcher from "../../components/ui/board-switcher";
 import { ThemeToggle } from "./theme-toggle";
+import IdeaCard from "./Modals/Ideas/idea-card";
+import IdeaDetails from "./Modals/Ideas/idea-details";
+
+
+
+
+
+
 
 export default function Board(props: { path: string }) {
   const session = useSession();
 
+  
   const { data: ideas } = api.idea.getAllByBoard.useQuery({
     boardPath: props.path,
   });
   const [search, setSearch] = useState("");
   const [Filterd, setFilterd] = useState(STATUS);
+
+
+
+  
 
   const filteredIdeas = map(Filterd, (status) =>
     filter(ideas as ideaProps[], (idea) => {
@@ -66,6 +79,7 @@ export default function Board(props: { path: string }) {
           </div>
 
           <SubmitIdea />
+          <IdeaDetails/>
         </div>
         <div className="justify-right flex flex-row gap-2">
           <Input

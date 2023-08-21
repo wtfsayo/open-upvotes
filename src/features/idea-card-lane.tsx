@@ -1,7 +1,7 @@
 import { Badge, Container } from "@medusajs/ui";
 import type { ideaProps } from "@/src/utils/const";
 import React from "react";
-import IdeaCard from "./idea-card";
+import IdeaCard from "./Modals/Ideas/idea-card";
 
 export default function ContainerLane(
   props: {
@@ -10,6 +10,7 @@ export default function ContainerLane(
   },
 ) {
   const { title, ideas } = props;
+
 
   return (
     <Container className="flex h-max w-full flex-col space-y-4 overflow-y-auto  rounded-lg border bg-background p-4 shadow-none">

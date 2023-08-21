@@ -14,6 +14,10 @@ export const useIdeas = () => {
 
     const { mutate: updateIdeaLabels, isLoading: updatingIdeaLabels } = api.idea.updateLabels.useMutation();
 
+    const {mutate: upvoteIdea, isLoading: upvotingIdea} = api.upvote.create.useMutation();
+
+    const {mutate: removeVote, isLoading: removingVote} = api.upvote.delete.useMutation();
+
     const getIdeasByBoard = (boardPath: string) => {
         const { data: boardIdeasRaw, isLoading: loadingBoardIdeas } = api.idea.getAllByBoard.useQuery({
             boardPath
@@ -43,5 +47,9 @@ export const useIdeas = () => {
         updatingIdeaLabels,
         getIdeasByBoard,
         getIdea,
+        upvoteIdea,
+        upvotingIdea,
+        removeVote,
+        removingVote
     };
 };

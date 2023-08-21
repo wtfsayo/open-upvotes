@@ -1,37 +1,46 @@
-import { Drawer } from "@medusajs/ui";
-import { Badge } from "@medusajs/ui";
-import { Button } from "@medusajs/ui";
-import { DropdownMenu } from "@medusajs/ui";
 import { Separator } from "@/components/ui/separator";
 import { STATUS } from "@/src/utils/const";
+import { Badge, Button, DropdownMenu, FocusModal } from "@medusajs/ui";
 import { ChevronDown, Loader2 } from "lucide-react";
 import { useIdeas } from "./hooks";
 
 import AddComment from "./add-comment";
-import { AddLabels } from "../Labels/update-labels";
-import Comment from "../sub/Comment";
-import type { Label } from '@prisma/client';
+// import { AddLabels } from "../Labels/update-labels";
+import type { Label } from "@prisma/client";
+
 import { useSession } from "next-auth/react";
+import Comment from "../sub/Comment";
 
 
-export default function IdeaDetails(id:string) {
-  
+
+export default function IdeaDetails(id: string) {
+
+
+
   const { getIdea, updateIdeaStatus, updatingIdeaStatus } = useIdeas();
-  
+  // const {addIdeaLabel, addingIdeaLabel, removeIdeaLabel, removingIdeaLabel} = useIdeas();
+  const { upvoteIdea, upvotingIdea, removeVote, removingVote } = useIdeas();
+
   const idea = getIdea(id);
   const session = useSession();
 
-  const currentUserUpvoted = idea?.upvotes.some(upvote => upvote.user_id === session.data?.user?.id)
-  
+  const currentUserUpvoted = idea?.upvotes.some(
+    (upvote) => upvote.user_id === session.data?.user?.id,
+  );
+
+
 
   return (
-    <Drawer>
-      <Drawer.Header>
-        <Drawer.Title className="flex flex-row justify-between">
+    <FocusModal>
+      <FocusModal.Trigger asChild>
+        <Button className="hidden">
+          Use Ref
+        </Button>
+      </FocusModal.Trigger>
+      <FocusModal.Content>
+        <FocusModal.Header className="flex flex-row justify-between">
           <div className="flex flex-col gap-2">
-            <Badge>
-              {idea?.id}
-            </Badge>
+            <Badge>{idea?.id}</Badge>
             {idea?.title}
           </div>
 
@@ -39,7 +48,6 @@ export default function IdeaDetails(id:string) {
             <DropdownMenu>
               <DropdownMenu.Trigger asChild>
                 <Button
-            
                   className="gap-2 bg-blue-700 px-2 font-medium text-white hover:bg-blue-800"
                   disabled={updatingIdeaStatus}
                 >
@@ -77,13 +85,13 @@ export default function IdeaDetails(id:string) {
               </DropdownMenu.Content>
             </DropdownMenu>
           </div>
-        </Drawer.Title>
+        </FocusModal.Header>
         <div className="flex-row-wrap flex flex-row gap-1">
-          {idea?.labels.map((label: Label) => (
+          {idea?.labels?.map((label: Label) => (
             <Badge key={label.id}>{label.label}</Badge>
           ))}
 
-          {idea?.labels && (
+          {/* {idea?.labels && (
             <AddLabels
               title="Labels"
               options={Array.from(idea?.labels)}
@@ -95,58 +103,58 @@ export default function IdeaDetails(id:string) {
               }}
               ideaId={id}
             />
-          )}
+          )} */}
         </div>
-      </Drawer.Header>
-      <div>
-        <p className="py-2 font-semibold">Description</p>
-        <Drawer.Description className="h-min-[120px] h-max-[180px] flex flex-col gap-2 overflow-y-auto rounded-lg bg-muted/40 p-4">
-          {idea?.description}
-        </Drawer.Description>
-      </div>
-      <div>
-        <AddComment ideaId={id} />
-        <div className="flex h-[240px]  flex-col gap-2 overflow-y-auto">
-          {idea?.comments?.map((comment) => (
-            <Comment
-              username={comment.user_id}
-              date={comment.time}
-              comment={comment.comment}
-              key={comment.time.toLocaleString()}
-              imageSrc={comment.user_id}
-            />
-          ))}
-        </div>
-      </div>
 
-      <Drawer.Footer>
-        <Drawer.Close>Close</Drawer.Close>
-        <Button
-          onClick={() => {
-            currentUserUpvoted
-              ? deleteUpvote({ ideaId: props.id })
-              : Upvote({ ideaId: props.id });
-          }}
-          disabled={isUpvoting || isUnUpvoting}
-        >
-          {!(isUpvoting || isUnUpvoting) ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M6 16a1 1 0 0 1-.8-1.6l6-8a1 1 0 0 1 1.6 0l6 8A1 1 0 0 1 18 16H6Z"
+        <div>
+          <p className="py-2 font-semibold">Description</p>
+
+          {idea?.description}
+        </div>
+        <div>
+          <AddComment ideaId={id} />
+          <div className="flex h-[240px]  flex-col gap-2 overflow-y-auto">
+            {idea?.comments?.map((comment) => (
+              <Comment
+                username={comment.user_id}
+                date={comment.time}
+                comment={comment.comment}
+                key={comment.time.toLocaleString()}
+                imageSrc={comment.user_id}
               />
-            </svg>
-          ) : (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          )}
-          {currentUserUpvoted ? "Upvoted" : "Upvote"} ({idea?.upvotes?.length})
-        </Button>
-      </Drawer.Footer>
-    </Drawer>
+            ))}
+          </div>
+        </div>
+
+        <FocusModal.Body>
+          <Button
+            onClick={() => {
+              currentUserUpvoted
+                ? upvoteIdea({ ideaId: idea?.id as string })
+                : removeVote({ ideaId: idea?.id as string });
+            }}
+            disabled={upvotingIdea || removingVote}
+          >
+            {!(removingVote || upvotingIdea) ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M6 16a1 1 0 0 1-.8-1.6l6-8a1 1 0 0 1 1.6 0l6 8A1 1 0 0 1 18 16H6Z"
+                />
+              </svg>
+            ) : (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            )}
+            {currentUserUpvoted ? "Upvoted" : "Upvote"} ({idea?.upvotes?.length}
+            )
+          </Button>
+        </FocusModal.Body>
+      </FocusModal.Content>
+    </FocusModal>
   );
 }
