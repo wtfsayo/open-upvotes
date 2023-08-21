@@ -14,7 +14,14 @@ export const labelsRouter = createTRPCRouter({
         data: { label: input.label, user_id: ctx.session.user.id },
       });
     }),
-
+  update: protectedProcedure
+    .input(z.object({ id: z.string(), label: z.string().min(1) }))
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.label.update({
+        where: { id: input.id },
+        data: { label: input.label },
+      });
+    }),
   delete: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(({ input, ctx }) => {

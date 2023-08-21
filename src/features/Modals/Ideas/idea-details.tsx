@@ -11,6 +11,8 @@ import type { Label } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { createRef } from "react";
 import Comment from "../sub/Comment";
+import Labels from "../Labels/handle-labels";
+import TagInput from "@/components/ui/tag-input";
 
 export const trigger = createRef<HTMLButtonElement>();
 
@@ -29,7 +31,7 @@ export default function IdeaDetails({ id }: { id: string }) {
   return (
     <FocusModal>
       <FocusModal.Trigger asChild>
-        <Button className="" ref={trigger}>
+        <Button className="hidden" ref={trigger}>
           Use Ref
         </Button>
       </FocusModal.Trigger>
@@ -82,25 +84,8 @@ export default function IdeaDetails({ id }: { id: string }) {
             </DropdownMenu>
           </div>
         </FocusModal.Header>
-        <div className="flex-row-wrap flex flex-row gap-1">
-          {idea?.labels?.map((label: Label) => (
-            <Badge key={label.id}>{label.label}</Badge>
-          ))}
-
-          {/* {idea?.labels && (
-            <AddLabels
-              title="Labels"
-              options={Array.from(idea?.labels)}
-              added={Array.from(idea?.labels)}
-              handle={{
-                add: addLabel,
-                remove: removeLabel,
-                create: createLabel,
-              }}
-              ideaId={id}
-            />
-          )} */}
-        </div>
+        {/* <Labels /> */}
+        <TagInput/>
 
         <div>
           <p className="py-2 font-semibold">Description</p>
