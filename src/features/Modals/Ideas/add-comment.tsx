@@ -1,16 +1,12 @@
 import AutoForm from "@/components/ui/auto-form";
 import { Button } from "@medusajs/ui";
-import { api } from "@/src/utils/api";
 import { Loader2 } from "lucide-react";
 
 import { z } from "zod";
+import { useComments } from "../Comments/hooks";
 
-export default function AddComment(props: { ideaId: string }) {
-  const {
-    mutate: createNewComment,
-    isLoading,
-    isSuccess,
-  } = api.comments.createComment.useMutation();
+export default function AddComment({ ideaId: string }) {
+  const { comments, addComment,  fetchingComments, addingComment, isError} =  useComments({id: ideaId});
   return (
     <div className="relative">
       <AutoForm
@@ -28,10 +24,9 @@ export default function AddComment(props: { ideaId: string }) {
           },
         }}
         onSubmit={(data) => {
-          createNewComment({
+          addComment({
             ideaId: props.ideaId,
             comment: data.comment,
-            time: new Date(),
           });
         }}
       >
