@@ -20,7 +20,6 @@ export const commentsRouter = createTRPCRouter({
       z.object({
         ideaId: z.string(),
         comment: z.string().min(1),
-        time: z.date(),
       }),
     )
     .mutation(({ input, ctx }) => {
@@ -28,11 +27,10 @@ export const commentsRouter = createTRPCRouter({
         data: {
           id: randomUUID(),
           comment: input.comment,
-          time: input.time,
           idea_id: input.ideaId,
+          time: new Date(),
           user_id: String(ctx.session.user.id),
         },
       });
     }),
-
 });

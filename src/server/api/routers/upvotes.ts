@@ -3,9 +3,7 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const upvotesRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(
-      z.object({ ideaId: z.string()})
-    )
+    .input(z.object({ ideaId: z.string() }))
     .mutation(({ input, ctx }) => {
       return ctx.prisma.upvote.create({
         data: { idea_id: input.ideaId, user_id: ctx.session.user.id },
@@ -13,23 +11,19 @@ export const upvotesRouter = createTRPCRouter({
     }),
 
   delete: protectedProcedure
-    .input(
-      z.object({ ideaId: z.string() })
-    )
+    .input(z.object({ ideaId: z.string() }))
     .mutation(async ({ input, ctx }) => {
       try {
         return await ctx.prisma.upvote.delete({
           where: {
             idea_id_user_id: {
               idea_id: input.ideaId,
-              user_id: ctx.session.user.id
+              user_id: ctx.session.user.id,
             },
           },
         });
       } catch (error) {
-        
-          throw new Error("Upvote not found");
-
+        throw new Error("Upvote not found");
       }
     }),
 });

@@ -2,8 +2,32 @@
 // tslint:disable
 // @ts-nocheck
 "use client";
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Button,
+  Checkbox,
+  DatePicker,
+  Input,
+  RadioGroup,
+  Select,
+  Switch,
+  Textarea,
+} from "@medusajs/ui";
 import React from "react";
+import {
+  ControllerRenderProps,
+  DefaultValues,
+  FieldValues,
+  useForm,
+} from "react-hook-form";
 import * as z from "zod";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./accordion";
 import {
   Form,
   FormControl,
@@ -13,34 +37,6 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
-import {
-  ControllerRenderProps,
-  DefaultValues,
-  FieldValues,
-  useForm,
-} from "react-hook-form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "./button";
-import { Input } from "./input";
-import { Checkbox } from "./checkbox";
-import { DatePicker } from "./date-picker";
-import { cn } from "@/lib/utils";
-import { Switch } from "./switch";
-import { Textarea } from "./textarea";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "./accordion";
-import { RadioGroup, RadioGroupItem } from "./radio-group";
 
 /**
  * Beautify a camelCase string.
@@ -406,18 +402,18 @@ function AutoFormEnum(
       </FormLabel>
       <FormControl>
         <Select onValueChange={field.onChange} defaultValue={field.value}>
-          <SelectTrigger>
-            <SelectValue className="w-full">
+          <Select.Trigger>
+            <Select.Value className="w-full">
               {field.value ?? "Select an option"}
-            </SelectValue>
-          </SelectTrigger>
-          <SelectContent>
+            </Select.Value>
+          </Select.Trigger>
+          <Select.Content>
             {values.map((value: any) => (
-              <SelectItem value={value} key={value}>
+              <Select.Item value={value} key={value}>
                 {value}
-              </SelectItem>
+              </Select.Item>
             ))}
-          </SelectContent>
+          </Select.Content>
         </Select>
       </FormControl>
       {fieldConfigItem.description && (

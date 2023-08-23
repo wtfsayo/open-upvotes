@@ -19,7 +19,7 @@ export const boardsRouter = createTRPCRouter({
         },
       });
     }),
-  
+
   getAllBoards: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.board.findMany({
       orderBy: {

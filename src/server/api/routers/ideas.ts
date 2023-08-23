@@ -7,10 +7,10 @@ export const ideaRouter = createTRPCRouter({
   idea: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(({ input, ctx }) => {
-      return ctx.prisma.idea.findUnique({ 
+      return ctx.prisma.idea.findUnique({
         where: { id: input.id },
         include: { labels: true, upvotes: true, comments: true },
-       });
+      });
     }),
 
   getAll: publicProcedure.query(({ ctx }) => {
@@ -23,7 +23,9 @@ export const ideaRouter = createTRPCRouter({
   getAllByBoard: publicProcedure
     .input(z.object({ boardPath: z.string() }))
     .query(async ({ ctx, input }) => {
-      const board = await ctx.prisma.board.findUnique({ where: { path: input.boardPath } });
+      const board = await ctx.prisma.board.findUnique({
+        where: { path: input.boardPath },
+      });
 
       if (!board) {
         throw new Error("Board not found");
@@ -44,7 +46,9 @@ export const ideaRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const board = await ctx.prisma.board.findUnique({ where: { path: input.boardPath } });
+      const board = await ctx.prisma.board.findUnique({
+        where: { path: input.boardPath },
+      });
 
       if (!board) {
         throw new Error("Board not found");
@@ -56,7 +60,7 @@ export const ideaRouter = createTRPCRouter({
           status: IdeaStatus.SUGGESTED,
           description: input.description,
           board_id: board.id,
-          user_id: ctx.session.user.id
+          user_id: ctx.session.user.id,
         },
       });
     }),
@@ -82,7 +86,7 @@ export const ideaRouter = createTRPCRouter({
         },
       });
     }),
-    
+
   removeLabel: protectedProcedure
     .input(z.object({ ideaId: z.string(), labelId: z.string() }))
     .mutation(({ input, ctx }) => {
