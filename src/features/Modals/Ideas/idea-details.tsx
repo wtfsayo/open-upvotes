@@ -21,7 +21,7 @@ export default function IdeaDetails({ id }: { id: string }) {
   // const {addIdeaLabel, addingIdeaLabel, removeIdeaLabel, removingIdeaLabel} = useIdeas();
   const { upvoteIdea, upvotingIdea, removeVote, removingVote } = useIdeas();
 
-  const idea = getIdea(id);
+  const {idea, gettingIdeaDetails} = getIdea(id);
   const session = useSession();
 
   const currentUserUpvoted = idea?.upvotes.some(
@@ -93,7 +93,7 @@ export default function IdeaDetails({ id }: { id: string }) {
           {idea?.description}
         </div>
         <div>
-          <AddComment ideaId={id} />
+          <AddComment ideaId={id} isLoading={gettingIdeaDetails} />
           <div className="flex h-[240px]  flex-col gap-2 overflow-y-auto">
             {idea?.comments?.map((comment) => (
               <Comment

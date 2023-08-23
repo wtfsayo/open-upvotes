@@ -5,8 +5,11 @@ import { Loader2 } from "lucide-react";
 import { z } from "zod";
 import { useComments } from "../Comments/hooks";
 
-export default function AddComment({ ideaId: string }) {
-  const { comments, addComment,  fetchingComments, addingComment, isError} =  useComments({id: ideaId});
+export default function AddComment(props: { ideaId: string, isLoading: boolean }) {
+
+  const { ideaId:id, isLoading } = props;
+
+  const { addComment, addingComment} =  useComments({id})
   return (
     <div className="relative">
       <AutoForm
@@ -24,19 +27,16 @@ export default function AddComment({ ideaId: string }) {
           },
         }}
         onSubmit={(data) => {
-          addComment({
-            ideaId: props.ideaId,
-            comment: data.comment,
-          });
+          addComment(data.comment);
         }}
       >
         <Button
           variant="secondary"
           type="submit"
           className="z-2 absolute bottom-2 right-2"
-          disabled={isLoading}
+          disabled={addingComment || isLoading}
         >
-          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {addingComment && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Submit
         </Button>
       </AutoForm>

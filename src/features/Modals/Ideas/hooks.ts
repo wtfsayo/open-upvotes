@@ -34,8 +34,8 @@ export const useIdeas = () => {
   };
 
   const getIdea = (ideaId: string) => {
-    const { data: ideaRaw } = api.idea.idea.useQuery({ id: ideaId });
-    return ideaRaw;
+    const { data: idea, isLoading: gettingIdeaDetails } = api.idea.idea.useQuery({ id: ideaId });
+    return {idea, gettingIdeaDetails};
   };
 
   const allIdeas = allIdeasRaw;

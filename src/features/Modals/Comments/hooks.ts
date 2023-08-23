@@ -8,7 +8,7 @@ export const useComments = ({ id }: { id: string }) => {
 
     const handleAddComment = (comment: string) => {
         try {
-            addComment({ ideaId: id, comment });
+            addComment({ comment: comment, ideaId: id});
             isSuccess && refetch();
         } catch (err) {
             failedtoAdd && console.error(err);
