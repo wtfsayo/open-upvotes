@@ -1,28 +1,69 @@
-# Create T3 App
+# Open Upvotes 🚀
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+Open Upvotes is an open-source, collaborative idea management platform built with the T3 Stack. It's designed to facilitate the sharing, discussion, and voting of ideas in various contexts.
 
-## What's next? How do I make an app with this?
+![Open Upvotes Screenshot](./screenshot.png)
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Features 🎁
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+-  Create and manage boards for organizing ideas
+-  Post ideas with descriptions and categorize them with labels
+-  Interact with ideas through comments and upvotes
+-  User authentication and authorization with NextAuth.js
+-  Type-safe API routes with tRPC
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+## Use Cases 💡
 
-## Learn More
+-  **Idea Management**: Centralized platform for teams to manage, track, and discuss ideas.
+-  **Product Feedback**: Collect and prioritize user feedback and feature requests.
+-  **Community Engagement**: Encourage participation and idea sharing in online communities.
+-  **Innovation Challenges**: Host innovation challenges or hackathons, facilitating idea submission and feedback.
+-  **Academic Research**: Facilitate idea sharing and collaboration among researchers and students.
+-  **Non-Profit Initiatives**: Gather ideas and suggestions from supporters or volunteers for decision-making and planning.
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+## Installation 🛠️
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+1. Clone the repository:
+    ```
+    git clone https://github.com/memosys/open-upvotes.git
+    ```
+2. Navigate to the project directory:
+    ```
+    cd open-upvotes
+    ```
+3. Setup environment variables. You will need to add the following environment variables to a `.env.local` file in your project root:
+    ```dotenv
+    POSTGRES_URL=your_postgres_url
+    NEXTAUTH_SECRET=your_nextauth_secret
+    NEXTAUTH_URL=http://localhost:3000/api/auth
+    KEYP_CLIENT_ID=your_keyp_client_id
+    KEYP_COOKIE_SECRET=your_keyp_cookie_secret
+    NODE_ENV=development
+    POSTGRES_PRISMA_URL=your_postgres_prisma_url
+    ```
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+4. Install dependencies using Yarn:
+    ```
+    yarn install
+    ```
+5. Start the application:
+    ```
+    yarn start
+    ```
+6. Access the application at `http://localhost:3000` in your web browser.
 
-## How do I deploy this?
+## Contributing 🤝
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+We welcome contributions from the community! If you'd like to contribute, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and commit them.
+4. Push your changes to your forked repository.
+5. Submit a pull request to the main repository.
+
+Please ensure that your code follows the project's coding style and conventions.
+
+## License 📄
+
+Open Upvotes is released under the [MIT License](https://opensource.org/licenses/MIT).

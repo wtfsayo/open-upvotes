@@ -75,8 +75,8 @@ model Comment {
 model BoardModerator {
   board_id String
   user_id  String
-  board   Board  @relation(fields: [board_id], references: [id])
-  user    User   @relation(fields: [user_id], references: [id])
+  board    Board  @relation(fields: [board_id], references: [id])
+  user     User   @relation(fields: [user_id], references: [id])
 
   @@id([board_id, user_id])
 }
@@ -84,8 +84,8 @@ model BoardModerator {
 model BoardViewer {
   board_id String
   user_id  String
-  board   Board  @relation(fields: [board_id], references: [id])
-  user    User   @relation(fields: [user_id], references: [id])
+  board    Board  @relation(fields: [board_id], references: [id])
+  user     User   @relation(fields: [user_id], references: [id])
 
   @@id([board_id, user_id])
 }
