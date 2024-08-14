@@ -2,7 +2,6 @@
 
 Open Upvotes is an open-source, collaborative idea management platform built with the T3 Stack. It's designed to facilitate the sharing, discussion, and voting of ideas in various contexts.
 
-![Open Upvotes Screenshot](./screenshot.png)
 
 ## Features 🎁
 
